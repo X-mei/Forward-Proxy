@@ -23,10 +23,11 @@ void Request::parseFirstLine(){
   }
   this->protocol = temp;
   // get port and host
-  if (http){//absolute form
-    size_t space2 = firstLine.find(' ', space1+1);
-    size_t slash = firstLine.find('/');
-    temp = firstLine.substr(slash+2, space2-slash-2);//-3?
+  size_t space2 = firstLine.find(' ', space1+1);
+  temp = firstLine.substr(space1+1, space2-space1-1);
+  if (http != string::npos){//absolute form
+    size_t slash = temp.find('/');
+    temp = temp.substr(slash+2, space2-slash-2);//-3?
     size_t slash_middle = temp.find('/');
     size_t colon = temp.find(':');
     if (colon){
@@ -37,11 +38,9 @@ void Request::parseFirstLine(){
     }
   }
   else {//authority form
-    size_t space2 = firstLine.find(' ', space1+1);
-    temp = firstLine.substr(space1, space2-space1);
     size_t colon = temp.find(':');
-    if (colon){
-      this->port = temp.substr(colon);
+    if (colon != string::npos){
+      this->port = temp.substr(colon+1);
       this->host = temp.substr(0, colon);
     }
   }
@@ -49,7 +48,7 @@ void Request::parseFirstLine(){
     this->port = (this->protocol == "http")?"80":"443";
   }
   if (this->host.empty()){//if origin form
-    std::string host = headerPair.find("Host")->second;
+    this->host = headerPair["Host"];
   }
   //get url pending
 }
