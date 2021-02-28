@@ -26,12 +26,12 @@ void Request::parseFirstLine(){
   size_t space2 = firstLine.find(' ', space1+1);
   temp = firstLine.substr(space1+1, space2-space1-1);
   if (http != string::npos){//absolute form
-    size_t slash = temp.find('/');
-    temp = temp.substr(slash+2, space2-slash-2);//-3?
+    size_t slash = firstLine.find('/');
+    temp = firstLine.substr(slash+2, space2-slash-2);//-3?
     size_t slash_middle = temp.find('/');
     size_t colon = temp.find(':');
-    if (colon){
-      if (slash_middle){
+    if (colon != string::npos){
+      if (slash_middle != string::npos){
         this->port = temp.substr(colon+1, slash_middle-colon-1);
         this->host = temp.substr(0, slash_middle);
       }
