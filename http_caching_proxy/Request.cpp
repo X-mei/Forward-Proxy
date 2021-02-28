@@ -1,15 +1,16 @@
 #include "Request.h"
-//using namespace std;
 Request::Request(){}
 
 void Request::parseFirstLine(){
   string firstLine = getFirstLine();
   // get method 
   size_t space1 = firstLine.find(' ');
-  std::string temp = firstLine.substr(0, space1);//need to store this
+  if (space1 == string::npos){
+    throw myException("Error in first line syntax.");
+  }
+  string temp = firstLine.substr(0, space1);//need to store this
   if (temp != "GET" && temp != "POST" && temp != "CONNECT"){
-      cout << "Unsupported method: " << temp << endl;
-    //throw myException("Method not suppoted.");
+    throw myException("Method not suppoted.");
   }
   this->method = temp;
   // get protocol
@@ -24,6 +25,9 @@ void Request::parseFirstLine(){
   this->protocol = temp;
   // get port and host
   size_t space2 = firstLine.find(' ', space1+1);
+  if (space2 == string::npos){
+    throw myException("Error in first line syntax.");
+  }
   temp = firstLine.substr(space1+1, space2-space1-1);
   if (http != string::npos){//absolute form
     size_t slash = firstLine.find('/');

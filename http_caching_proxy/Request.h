@@ -1,7 +1,7 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 #include "Http.h"
-#include "myException.h"
+
 using namespace std;
 
 class Request: public Http{
