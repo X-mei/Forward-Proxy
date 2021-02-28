@@ -57,8 +57,8 @@ public:
         }
         this->firstLine = msg.substr(0, endOfFirst);
         string remainHeader = msg.substr(endOfFirst + 2, endOfRemain - endOfFirst);
-        parseFirstLine();
         parseEachLine(remainHeader);
+        parseFirstLine();
     }
     
     void printPairs() {
