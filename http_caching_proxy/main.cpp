@@ -22,7 +22,9 @@ void testRequestParser(){
     h->printContents();
 }
 
-
+void testProxy(){
+    
+}
 
 int main(int argc, const char * argv[]) {
     testRequestParser();
