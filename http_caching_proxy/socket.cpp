@@ -59,16 +59,28 @@ void socketInfo::socketWaitConnect(){
   }
 }
 
-// accept request from given client, change its fd to the newly generated fd
-void socketInfo::socketAccept(int & client_fd){
+// accept request from given client, return the newly generated fd
+int socketInfo::socketAccept(){
   struct sockaddr_storage their_addr;
+  char s[INET6_ADDRSTRLEN];
   socklen_t addr_size;
   addr_size = sizeof(their_addr);
   std::cout<<"Accepting connection..."<<std::endl;
-  client_fd = accept(socket_fd, (struct sockaddr *)&their_addr, &addr_size);
+  int client_fd = accept(socket_fd, (struct sockaddr *)&their_addr, &addr_size);
   if (client_fd == -1){
     throw myException("Error accept.");
   }
+  inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
+  printf("server: got connection from %s\n", s);
+  if (!fork()) { // this is the child process
+    close(socket_fd); // child doesn't need the listener
+    if (send(client_fd, "Hello, world!", 13, 0) == -1)
+      {perror("send");}
+    close(client_fd);
+    exit(0);
+    }
+  close(client_fd);  // parent doesn't need this
+  return client_fd;
 }
 
 // make the connection through socket
@@ -86,6 +98,14 @@ socketInfo::~socketInfo(){
   if (host_info_list != nullptr){
     free(host_info_list);
   }
+}
+
+// get sockaddr, IPv4 or IPv6:
+void * socketInfo::get_in_addr(struct sockaddr *sa){
+  if (sa->sa_family == AF_INET){
+    return &(((struct sockaddr_in*)sa)->sin_addr);
+  }
+  return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
 
