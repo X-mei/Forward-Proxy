@@ -5,14 +5,15 @@
 
 class Response: public Http{
 private:
-  string status_code;
-  string status_phrase;
-  string protocol;
+    string status_code;
+    string status_phrase;
+    string protocol;
 public:
-  Response();
-  Response(const Response & rhs);
-  Response &operator=(const Response & rhs);
-  virtual void parseFirstLine();
-  ~Response();
+    Response(){}
+    string getProtocol() {return protocol;}
+    string getStatusCode() {return status_code;}
+    string getStatusPhrase() {return status_phrase;}
+    virtual void parseFirstLine();
+    ~Response(){}
 };
 #endif

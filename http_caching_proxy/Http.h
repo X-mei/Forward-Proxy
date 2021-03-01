@@ -62,6 +62,7 @@ public:
         string remainHeader = msg.substr(endOfFirst + 2, endOfRemain - endOfFirst);
         parseEachLine(remainHeader);
         parseFirstLine();
+        parseCacheControl();
     }
     
     void parseCacheControl() {
@@ -92,15 +93,49 @@ public:
         }
     }
     
-    bool checkIfCacheControlExists() {
-        if (headerPair.find("Cache-Control") == headerPair.end() || headerPair["Cache-Control"] == "") {
+    bool checkNoCacheInPragma() {
+        for (auto & [first, second] : headerPair) {
+            if (first == "Pragma" && second.find("no-cache") != string::npos) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool checkIfHeaderFieldExists(string str) {
+        if (headerPair.find(str) == headerPair.end() || headerPair[str] == "") {
             return false;
         }
         return true;
     }
     
+    bool checkCacheControlKey(string key) {
+        for (auto & [first, second] : cacheControlPair) {
+            if (first == key) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    string getCacheControlValue(string key) {
+        for (auto & [first, second] : cacheControlPair) {
+            if (first == key) {
+                return second;
+            }
+        }
+        cout << "The key does not exist." << endl;
+        return "";
+        //throw myException("The key does not exist.");
+    }
+    
     void printPairs() {
         for (auto & [first, second] : headerPair) {
+            cout << first << ": " << second << endl;
+        }
+    }
+    void printCachePairs() {
+        for (auto & [first, second] : cacheControlPair) {
             cout << first << ": " << second << endl;
         }
     }

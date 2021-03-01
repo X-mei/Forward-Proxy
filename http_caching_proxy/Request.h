@@ -17,6 +17,11 @@ public:
     ~Request();
     Request(const Request & rhs);
     Request &operator=(const Request & rhs);
+    string getMethod() {return method;}
+    string getProtocol() {return protocol;}
+    string getHost() {return host;}
+    string getPort() {return port;}
+    string getUrl() {return url;}
     virtual void parseFirstLine();
     void printContents() {
         cout << "Method: " << method << endl;
