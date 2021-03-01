@@ -10,8 +10,10 @@
 #include "socket.h"
 #include "Response.h"
 #include "Request.h"
+#include "Proxy.h"
 #include "Cache.h"
 #include "myException.h"
+
 
 void testRequestParser(){
     Request * h = new Request();
@@ -22,11 +24,14 @@ void testRequestParser(){
     h->printContents();
 }
 
-void testProxy(){
-    
+void testProxy(const char * port){
+    proxy * p = new proxy(port);
+    p->runServer();
 }
 
 int main(int argc, const char * argv[]) {
-    testRequestParser();
+    const char * port = "12345";
+    //testRequestParser();
+    testProxy(port);
     return 0;
 }

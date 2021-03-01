@@ -17,7 +17,7 @@ private:
   const char *hostname;
   const char *port;
 public:
-  socketInfo();
+  socketInfo(const char * myPort);
   void serverSetup();
   void clientSetup();
   void socketWaitConnect();
