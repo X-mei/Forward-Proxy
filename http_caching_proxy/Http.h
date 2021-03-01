@@ -5,8 +5,8 @@
 //  Created by Richard on 2021/2/28.
 //
 
-#ifndef Http_h
-#define Http_h
+#ifndef HTTP_H
+#define HTTP_H
 #include <unordered_map>
 #include <string>
 #include <iostream>

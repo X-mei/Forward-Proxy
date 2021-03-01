@@ -37,7 +37,12 @@ void Request::parseFirstLine(){
     if (colon != string::npos){
       if (slash_middle != string::npos){
         this->port = temp.substr(colon+1, slash_middle-colon-1);
-        this->host = temp.substr(0, slash_middle);
+        this->host = temp.substr(0, colon);
+      }
+    }
+    else{
+      if (slash_middle != string::npos){
+        this->host = temp.substr(0,slash_middle);
       }
     }
   }
