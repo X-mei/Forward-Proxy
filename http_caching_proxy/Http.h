@@ -10,12 +10,15 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <algorithm>
 #include "myException.h"
 using namespace std;
 
 class Http {
 protected:
     unordered_map<string, string> headerPair;
+    unordered_map<string, string> cacheControlPair;
     string firstLine;
 public:
     Http() {}
@@ -59,6 +62,41 @@ public:
         string remainHeader = msg.substr(endOfFirst + 2, endOfRemain - endOfFirst);
         parseEachLine(remainHeader);
         parseFirstLine();
+    }
+    
+    void parseCacheControl() {
+        string cacheControl;
+        for (auto & [first, second] : headerPair) {
+            if (first == "Cache-Control") {
+                cacheControl = second;
+                break;
+            }
+        }
+        if (cacheControl.empty()) {
+            return;
+        }
+        stringstream ss(cacheControl);
+        string instruction;
+        while (getline(ss, instruction, ',')) {
+            // Eliminate all spaces in instruction
+            instruction.erase(remove_if(instruction.begin(), instruction.end(), ::isspace), instruction.end());
+            if (instruction.find('=') == string::npos) {
+                cacheControlPair[instruction] = "";
+            }
+            else {
+                size_t equal = instruction.find('=');
+                string key = instruction.substr(0, equal);
+                string value = instruction.substr(equal + 1);
+                cacheControlPair[key] = value;
+            }
+        }
+    }
+    
+    bool checkIfCacheControlExists() {
+        if (headerPair.find("Cache-Control") == headerPair.end() || headerPair["Cache-Control"] == "") {
+            return false;
+        }
+        return true;
     }
     
     void printPairs() {
