@@ -13,6 +13,6 @@ public:
   Response(const Response & rhs);
   Response &operator=(const Response & rhs);
   virtual void parseFirstLine();
-  virtual ~Response();
+  ~Response();
 };
 #endif
