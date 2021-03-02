@@ -1,7 +1,5 @@
 #include "Response.h"
 
-Response::Response(){}
-
 void Response::parseFirstLine(){
     size_t space1 = firstLine.find(' ');
     if (space1 == string::npos){

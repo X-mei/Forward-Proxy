@@ -1,5 +1,4 @@
 #include "Request.h"
-Request::Request(){}
 
 void Request::parseFirstLine(){
   string firstLine = getFirstLine();

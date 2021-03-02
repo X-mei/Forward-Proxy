@@ -25,6 +25,7 @@ public:
   void socketWaitConnect();
   int socketAccept();
   void socketConnect();
+  int getFd(){return socket_fd;}
   ~socketInfo();
 };
 #endif

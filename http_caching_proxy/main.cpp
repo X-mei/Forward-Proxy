@@ -27,6 +27,7 @@ void testRequestParser(){
 void testProxy(const char * port){
     proxy * p = new proxy(port);
     p->runServer();
+    //p->runClient();
 }
 
 int main(int argc, const char * argv[]) {

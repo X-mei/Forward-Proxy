@@ -10,8 +10,9 @@ private:
   string protocol;
 public:
   Response();
-  Response(const Response & rhs);
-  Response &operator=(const Response & rhs);
+  string getProtocol() {return protocol;}
+  string getStatusCode() {return status_code;}
+  string getStatusPhrase() {return status_phrase;}
   virtual void parseFirstLine();
   ~Response();
 };
