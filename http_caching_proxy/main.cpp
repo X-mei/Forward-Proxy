@@ -10,8 +10,10 @@
 #include "socket.h"
 #include "Response.h"
 #include "Request.h"
+#include "Proxy.h"
 #include "Cache.h"
 #include "myException.h"
+
 
 void testRequestParser(){
     Request * h = new Request();
@@ -32,36 +34,14 @@ void testRequestParser(){
     }
 }
 
-void testCache() {
-    Cache *c = new Cache;
-    /*
-    string s1 = "str1";
-    string s2 = "str2";
-    string s3 = "str3";
-    string s4 = "str4";
-    string s5 = "str5";
-    string s6 = "str6";
-    c->LRUAdd(s1);
-    c->LRUAdd(s2);
-    c->LRUAdd(s3);
-    c->LRUAdd(s4);
-    c->LRUAdd(s5);
-    c->LRUAdd(s6);
-    c->printLRU();
-    cout << "========" << endl;
-    c->LRUEvict();
-    c->printLRU();
-    cout << "========" << endl;
-    c->LRUEvict();
-    c->printLRU();
-    cout << "========" << endl;
-    c->LRUAdd(s1);
-    c->printLRU();
-     */
+void testProxy(const char * port){
+    proxy * p = new proxy(port);
+    p->runServer();
 }
 
 int main(int argc, const char * argv[]) {
+    const char * port = "12345";
     //testRequestParser();
-    testCache();
+    testProxy(port);
     return 0;
 }
