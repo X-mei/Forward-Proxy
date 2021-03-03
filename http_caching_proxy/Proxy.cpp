@@ -4,26 +4,37 @@
 void proxy::runServer(){
   proxySocket.serverSetup();
   proxySocket.socketWaitConnect();
-  int client_fd = proxySocket.socketAccept();
-  Request * request = new Request(client_fd, request_id);// need modification #####
-  request_id++;
-  handler(request);// need to make this multi-thread #####
-  delete request;
+  while(true){
+    int client_fd = proxySocket.socketAccept();
+    Request * request = new Request(client_fd, request_id);// need modification #####
+    std::cout<<"######"<<request_id<<"######\n";
+    request_id++;
+    std::thread trd(&proxy::handler, this, request);// need to make this multi-thread #####
+    trd.detach();
+    //trd.join();
+  }
+  
 }
 
 void proxy::handler(Request * request){
   const int buf_size = 4096;
   char buf[buf_size];// buffer to store recieved message from client
+  //cout<<"Stucked here.\n";
   int byte_count = recv(request->getSocket(), buf, buf_size - 1, 0);
+  //cout<<"Not stucked here.\n";
   if (byte_count == -1) {// need to take care multi read? What if have zero? #####
     throw myException("Error recv.");
   }
+  if (byte_count == 0){
+    perror("Client closed connection.");
+    return;
+  }
   buf[byte_count] = '\0';
   std::string requestFull = buf;
-  std::cout<<requestFull;
   request->parseHeader(requestFull);
+  request->printFirstLine();
   if (request->getMethod() == "GET"){
-    handleGET(request);
+    handlePOST(request,requestFull);
   }
   else if (request->getMethod() == "POST"){
     handlePOST(request,requestFull);
@@ -34,6 +45,7 @@ void proxy::handler(Request * request){
   else {// shouldn't happen
     // send 501?
   }
+  delete request;
 }
 
 void proxy::handleGET(Request * request){
@@ -43,6 +55,7 @@ void proxy::handleGET(Request * request){
 // need major update #####
 void proxy::handlePOST(Request * request, std::string requestFull){
   int server_fd = runClient(request->getHost(), request->getPort());
+  std::cout<<"###################\n";
   if (send(server_fd, requestFull.c_str(), requestFull.size() + 1, 0) == -1){
     throw myException("Error send.");
   }
@@ -59,9 +72,11 @@ void proxy::handlePOST(Request * request, std::string requestFull){
 
 void proxy::handleCONNECT(Request * request){
   int server_fd = runClient(request->getHost(), request->getPort());
+  std::cout<<"###################\n";
   //**** 200 OK reponse to client
   // need changes #####
   std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\n");
+  std::cout<<"Notify success CONNECT with server.\n";
   if (send(request->getSocket(), OK_200.c_str(), OK_200.length(), 0) == -1) {
     perror("send 200 OK back failed");
   }
@@ -78,6 +93,7 @@ void proxy::handleCONNECT(Request * request){
       break;
     }
     else if (FD_ISSET(request->getSocket(), &readfds)) {
+      //std::cout<<"Receiving data from client.\n";
       len = recv(request->getSocket(), &buf, BUFFER_SIZE, 0);
       if (len < 0) {
         perror("Failed to recv from client in tunnel:");
@@ -86,13 +102,14 @@ void proxy::handleCONNECT(Request * request){
       else if (len == 0) {
         break;
       }
-      
+      //std::cout<<"Sending data to server.\n";
       if (send(server_fd, buf, len, 0) < 0){
         perror("Failed to send to server in tunnel:");
         break;
       }
     }
     else if (FD_ISSET(server_fd, &readfds)){
+      //std::cout<<"Receiving data from server.\n";
       len = recv(server_fd, &buf, BUFFER_SIZE, 0);
       if (len < 0) {
         perror("Failed to recv from server in tunnel:");
@@ -101,13 +118,15 @@ void proxy::handleCONNECT(Request * request){
       else if (len == 0) {
         break;
       }
+      //std::cout<<"Sending data to client.\n";
       if (send(request->getSocket(), buf, len, 0) < 0) {
         perror("Failed to send to client in tunnel:");
         break;
       }
     }
-    //buf.clear();
+    memset(&buf, 0, sizeof(buf));
   }
+  std::cout<<"Tunnel closed.\n";
   close(request->getSocket());
   close(server_fd);
 }

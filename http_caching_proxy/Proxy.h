@@ -1,5 +1,6 @@
 #ifndef PROXY_H
 #define PROXY_H
+#include <thread>
 #include "socket.h"
 #include "Request.h"
 #include "Response.h"
