@@ -1,7 +1,7 @@
 #include "socket.h"
 #define BACKLOG 100
 
-socketInfo::socketInfo(const char * myPort):socket_fd(0), host_info_list(nullptr), hostname(nullptr), port(myPort){}
+socketInfo::socketInfo(const char * myHost, const char * myPort):socket_fd(0), host_info_list(nullptr), hostname(myHost), port(myPort){}
 
 // do basic setup of the socket for server mode
 void socketInfo::serverSetup(){
@@ -29,7 +29,7 @@ void socketInfo::clientSetup(){
   host_info.ai_socktype = SOCK_STREAM; // TCP stream sockets
   int status;
   std::cout<<"Fetching address info(client)..."<<std::endl;
-  if ((status = getaddrinfo(host_name, port, &host_info, &host_info_list)) != 0) {
+  if ((status = getaddrinfo(hostname, port, &host_info, &host_info_list)) != 0) {
     std::stringstream ss;
     ss << "Error getaddrinfo: " << gai_strerror(status);
     throw myException(ss.str());
@@ -78,7 +78,7 @@ int socketInfo::socketAccept(){
   if (recv(client_fd, buffer, sizeof(buffer), 0) == -1) {
     throw myException("Error recv.");
   }
-  std::cout<<"recieved:\n"<<buffer<<std::endl;
+  //std::cout<<"recieved:\n"<<buffer<<std::endl;
   */
   return client_fd;
 }
@@ -88,6 +88,7 @@ void socketInfo::socketConnect(){
   std::cout<<"Initiating connection with socket..."<<std::endl;
   if (connect(socket_fd, host_info_list->ai_addr, host_info_list->ai_addrlen) == -1){
     close(socket_fd);
+    std::cout<<"Error connect.";
     throw myException("Error connect.");
   }
   /*
