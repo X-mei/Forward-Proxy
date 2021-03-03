@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		398968AE25EF30F8001F4C80 /* Proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 398968AD25EF30F8001F4C80 /* Proxy.cpp */; };
 		39B104D525EBC00C003AB4E7 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39B104D425EBC00C003AB4E7 /* main.cpp */; };
 		39B104E725EBC075003AB4E7 /* Response.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39B104DC25EBC075003AB4E7 /* Response.cpp */; };
 		39B104E825EBC075003AB4E7 /* socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 39B104DD25EBC075003AB4E7 /* socket.cpp */; };
@@ -28,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		398968AC25EF30F8001F4C80 /* Proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Proxy.h; sourceTree = "<group>"; };
+		398968AD25EF30F8001F4C80 /* Proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Proxy.cpp; sourceTree = "<group>"; };
 		39B104D125EBC00C003AB4E7 /* http_caching_proxy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = http_caching_proxy; sourceTree = BUILT_PRODUCTS_DIR; };
 		39B104D425EBC00C003AB4E7 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		39B104DC25EBC075003AB4E7 /* Response.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Response.cpp; sourceTree = "<group>"; };
@@ -80,6 +83,8 @@
 				39B104E525EBC075003AB4E7 /* myException.h */,
 				39B104DE25EBC075003AB4E7 /* Request.cpp */,
 				39B104E625EBC075003AB4E7 /* Request.h */,
+				398968AD25EF30F8001F4C80 /* Proxy.cpp */,
+				398968AC25EF30F8001F4C80 /* Proxy.h */,
 				39B104DC25EBC075003AB4E7 /* Response.cpp */,
 				39B104E225EBC075003AB4E7 /* Response.h */,
 				39B104DD25EBC075003AB4E7 /* socket.cpp */,
@@ -145,6 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				398968AE25EF30F8001F4C80 /* Proxy.cpp in Sources */,
 				39B104E725EBC075003AB4E7 /* Response.cpp in Sources */,
 				39B104E925EBC075003AB4E7 /* Request.cpp in Sources */,
 				39B104EB25EBC075003AB4E7 /* Cache.cpp in Sources */,
