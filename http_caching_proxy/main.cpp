@@ -13,6 +13,7 @@
 #include "Proxy.h"
 #include "Cache.h"
 #include "myException.h"
+#include "socket.h"
 
 
 void testRequestParser(){

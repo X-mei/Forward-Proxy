@@ -14,7 +14,8 @@ private:
     string port;
     string url;
 public:
-    Request::Request(int fd, int id):socket_fd(fd), u_id(id){}
+    Request(){}
+    Request(int fd, int id):socket_fd(fd), u_id(id){}
     ~Request(){close(socket_fd);}
     Request(const Request & rhs);
     Request &operator=(const Request & rhs);

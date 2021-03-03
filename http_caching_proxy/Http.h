@@ -13,6 +13,7 @@
 #include <sstream>
 #include <algorithm>
 #include "myException.h"
+#include "socket.h"
 using namespace std;
 
 class Http {
@@ -25,20 +26,20 @@ public:
     void parseEachLine(string & msg) {
         size_t start = 0;
         if (msg.find(':', start) == string::npos) {
-            cout <<"Invalid header"<< endl;
+            cout <<"Invalid header1"<< endl;
             //throw MyException("Invalid header");
         }
         while (start < msg.size()) {
             size_t colon = msg.find(':', start);
             size_t end = msg.find("\r\n", start);
             if (colon == string::npos) {
-                cout <<"Invalid header"<< endl;
+                cout <<"Invalid header2"<< endl;
                 //throw MyException("Invalid header");
             }
             string key = msg.substr(start, colon - start);
             string value = msg.substr(colon + 2, end - colon - 2);
             if (key.empty() || value.empty()) {
-                cout <<"Invalid header"<< endl;
+                cout <<"Invalid header3"<< endl;
                 //throw MyException("Invalid header");
             }
             headerPair[key] = value;
@@ -56,7 +57,7 @@ public:
         size_t endOfFirst = msg.find("\r\n", 0);
         size_t endOfRemain = msg.find("\r\n\r\n", endOfFirst);
         if (endOfFirst == string::npos || endOfRemain == string::npos) {
-            cout <<"Invalid header"<< endl;
+            cout <<"Invalid header4"<< endl;
             //throw MyException("Invalid header");
         }
         this->firstLine = msg.substr(0, endOfFirst);
