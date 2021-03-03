@@ -9,11 +9,11 @@ private:
     string status_phrase;
     string protocol;
 public:
-    Response(){}
-    string getProtocol() {return protocol;}
-    string getStatusCode() {return status_code;}
-    string getStatusPhrase() {return status_phrase;}
-    virtual void parseFirstLine();
-    ~Response(){}
+  Response();
+  string getProtocol() {return protocol;}
+  string getStatusCode() {return status_code;}
+  string getStatusPhrase() {return status_phrase;}
+  virtual void parseFirstLine();
+  ~Response();
 };
 #endif

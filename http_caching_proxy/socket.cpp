@@ -29,7 +29,7 @@ void socketInfo::clientSetup(){
   host_info.ai_socktype = SOCK_STREAM; // TCP stream sockets
   int status;
   std::cout<<"Fetching address info(client)..."<<std::endl;
-  if ((status = getaddrinfo(NULL, port, &host_info, &host_info_list)) != 0) {
+  if ((status = getaddrinfo(host_name, port, &host_info, &host_info_list)) != 0) {
     std::stringstream ss;
     ss << "Error getaddrinfo: " << gai_strerror(status);
     throw myException(ss.str());
@@ -62,6 +62,8 @@ void socketInfo::socketWaitConnect(){
 // accept request from given client, return the newly generated fd
 int socketInfo::socketAccept(){
   struct sockaddr_storage their_addr;
+  //int MAXDATASIZE = 8000;
+  //char buffer[MAXDATASIZE];
   char s[INET6_ADDRSTRLEN];
   socklen_t addr_size;
   addr_size = sizeof(their_addr);
@@ -72,14 +74,12 @@ int socketInfo::socketAccept(){
   }
   inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
   printf("server: got connection from %s\n", s);
-  if (!fork()) { // this is the child process
-    close(socket_fd); // child doesn't need the listener
-    if (send(client_fd, "Hello, world!", 13, 0) == -1)
-      {perror("send");}
-    close(client_fd);
-    exit(0);
-    }
-  close(client_fd);  // parent doesn't need this
+  /*
+  if (recv(client_fd, buffer, sizeof(buffer), 0) == -1) {
+    throw myException("Error recv.");
+  }
+  std::cout<<"recieved:\n"<<buffer<<std::endl;
+  */
   return client_fd;
 }
 
@@ -87,10 +87,18 @@ int socketInfo::socketAccept(){
 void socketInfo::socketConnect(){
   std::cout<<"Initiating connection with socket..."<<std::endl;
   if (connect(socket_fd, host_info_list->ai_addr, host_info_list->ai_addrlen) == -1){
+    close(socket_fd);
     throw myException("Error connect.");
   }
+  /*
+  std::cout<<"Still good"<<std::endl;
+  if (send(socket_fd, "Hello, world!", 13, 0) == -1){
+    perror("Error send.");
+  }
+  */         
 }
 
+// socketInfo destructor
 socketInfo::~socketInfo(){
   if (socket_fd == 0){
     close(socket_fd);
@@ -100,7 +108,7 @@ socketInfo::~socketInfo(){
   }
 }
 
-// get sockaddr, IPv4 or IPv6:
+// helper, get sockaddr, IPv4 or IPv6:
 void * socketInfo::get_in_addr(struct sockaddr *sa){
   if (sa->sa_family == AF_INET){
     return &(((struct sockaddr_in*)sa)->sin_addr);
