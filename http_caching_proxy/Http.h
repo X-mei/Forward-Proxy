@@ -67,6 +67,20 @@ public:
         parseCacheControl();
     }
     
+    string getHeaderValue(string key) {
+        for (auto& [first, second] : headerPair) {
+            if (first == key) {
+                return second;
+            }
+        }
+        cout << "No such a key in pairs." << endl;
+        return "";
+    }
+    
+    void addHeaderPair(string key, string value) {
+        headerPair[key] = value;
+    }
+    
     void parseCacheControl() {
         string cacheControl;
         for (auto & [first, second] : headerPair) {

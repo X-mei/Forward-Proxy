@@ -2,10 +2,23 @@
 
 //Not done
 void proxy::runServer(){
-  proxySocket.serverSetup();
-  proxySocket.socketWaitConnect();
+  try{
+    proxySocket.serverSetup();
+    proxySocket.socketWaitConnect();
+  }
+  catch(myException e){
+    std::cout<<e.what();
+    return;
+  }
   while(true){
-    int client_fd = proxySocket.socketAccept();
+    int client_fd;
+    try{
+      client_fd = proxySocket.socketAccept();
+    }
+    catch(myException e){
+      std::cout<<e.what();
+      continue;
+    }
     Request * request = new Request(client_fd, request_id);// need modification #####
     std::cout<<"######"<<request_id<<"######\n";
     request_id++;
@@ -19,31 +32,33 @@ void proxy::runServer(){
 void proxy::handler(Request * request){
   const int buf_size = 4096;
   char buf[buf_size];// buffer to store recieved message from client
-  //cout<<"Stucked here.\n";
   int byte_count = recv(request->getSocket(), buf, buf_size - 1, 0);
-  //cout<<"Not stucked here.\n";
-  if (byte_count == -1) {// need to take care multi read? What if have zero? #####
-    throw myException("Error recv.");
+  try{
+    if (byte_count == -1) {// need to take care multi read? What if have zero? #####
+      throw myException("Error recv.");
+    }
+    if (byte_count == 0){
+      throw myException("Clint closed connection.");
+    }
+    buf[byte_count] = '\0';
+    std::string requestFull = buf;
+    request->parseHeader(requestFull);
+    request->printFirstLine();
+    if (request->getMethod() == "GET"){
+      handlePOST(request,requestFull);
+    }
+    else if (request->getMethod() == "POST"){
+      handlePOST(request,requestFull);
+    }
+    else if (request->getMethod() == "CONNECT"){
+      handleCONNECT(request);
+    }
+    else {// shouldn't happen
+      // send 501?
+    }
   }
-  if (byte_count == 0){
-    perror("Client closed connection.");
-    return;
-  }
-  buf[byte_count] = '\0';
-  std::string requestFull = buf;
-  request->parseHeader(requestFull);
-  request->printFirstLine();
-  if (request->getMethod() == "GET"){
-    handlePOST(request,requestFull);
-  }
-  else if (request->getMethod() == "POST"){
-    handlePOST(request,requestFull);
-  }
-  else if (request->getMethod() == "CONNECT"){
-    handleCONNECT(request);
-  }
-  else {// shouldn't happen
-    // send 501?
+  catch(myException e){
+    e.what();
   }
   delete request;
 }
@@ -78,7 +93,7 @@ void proxy::handleCONNECT(Request * request){
   std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\n");
   std::cout<<"Notify success CONNECT with server.\n";
   if (send(request->getSocket(), OK_200.c_str(), OK_200.length(), 0) == -1) {
-    perror("send 200 OK back failed");
+    throw myException("send 200 OK back failed");
   }
   fd_set readfds;
   struct timeval tv;
@@ -96,7 +111,7 @@ void proxy::handleCONNECT(Request * request){
       //std::cout<<"Receiving data from client.\n";
       len = recv(request->getSocket(), &buf, BUFFER_SIZE, 0);
       if (len < 0) {
-        perror("Failed to recv from client in tunnel:");
+        std::cout<<"Failed to recv from client in tunnel:\n";
         break;
       } 
       else if (len == 0) {
@@ -104,7 +119,7 @@ void proxy::handleCONNECT(Request * request){
       }
       //std::cout<<"Sending data to server.\n";
       if (send(server_fd, buf, len, 0) < 0){
-        perror("Failed to send to server in tunnel:");
+        std::cout<<"Failed to send to server in tunnel:\n";
         break;
       }
     }
@@ -112,7 +127,7 @@ void proxy::handleCONNECT(Request * request){
       //std::cout<<"Receiving data from server.\n";
       len = recv(server_fd, &buf, BUFFER_SIZE, 0);
       if (len < 0) {
-        perror("Failed to recv from server in tunnel:");
+        std::cout<<"Failed to recv from server in tunnel:\n";
         break;
       } 
       else if (len == 0) {
@@ -120,7 +135,7 @@ void proxy::handleCONNECT(Request * request){
       }
       //std::cout<<"Sending data to client.\n";
       if (send(request->getSocket(), buf, len, 0) < 0) {
-        perror("Failed to send to client in tunnel:");
+        std::cout<<"Failed to send to client in tunnel:\n";
         break;
       }
     }
