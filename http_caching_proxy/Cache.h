@@ -1,3 +1,5 @@
+#ifndef CACHE_H
+#define CACHE_H
 #include "common.h"
 #include "myException.h"
 #include "Response.h"
