@@ -20,7 +20,7 @@ public:
   virtual void parseFirstLine();
   int getSocket() {return socket_fd;}
   int getUid() {return u_id;}
-    string getContents();
+  string getContents();
   ~Response();
 };
 #endif

@@ -20,6 +20,7 @@
 #include <fstream>
 
 #define LOG_PATH "/var/log/erss/proxy.log"
+
 extern std::ofstream logFile;
 
 #endif

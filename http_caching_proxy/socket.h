@@ -17,7 +17,7 @@ public:
   void serverSetup();
   void clientSetup();
   void socketWaitConnect();
-  int socketAccept(int client_id);
+  void socketAccept(int & client_fd, std::string& ip_address);
   void socketConnect();
   int getFd(){return socket_fd;}
   ~socketInfo();

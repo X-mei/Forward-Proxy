@@ -12,8 +12,9 @@ void proxy::runServer(){
   }
   while(true){
     int client_fd;
+    std::string ip_address;
     try{
-      client_fd = proxySocket.socketAccept(request_id);
+      proxySocket.socketAccept(client_fd, ip_address);
     }
     catch(myException e){
       std::cout<<e.what();
@@ -21,10 +22,13 @@ void proxy::runServer(){
     }
     Request * request = new Request(client_fd, request_id);// need modification #####
     std::cout<<"######"<<request_id<<"######\n";
+    std::time_t seconds = std::time(nullptr);
+    std::string request_time = std::string(std::asctime(std::gmtime(&seconds)));
+    request_time = request_time.substr(0, request_time.find("\n"));
+    logFile << request_id << ": \"" << request->returnFirstLine() << "\"from " << ip_address << " @ " << request_time << std::endl;
     request_id++;
     std::thread trd(&proxy::handler, this, request);// need to make this multi-thread #####
     trd.detach();
-    //trd.join();
   }
   
 }
@@ -53,6 +57,7 @@ void proxy::handler(Request * request){
       handleCONNECT(request);
     }
     else {// shouldn't happen
+      std::cout<<"Hi"<<std::endl;
       // send 501?
     }
   }
@@ -66,7 +71,7 @@ void proxy::handleGET(Request * request, std::string requestFull){
     int server_fd = runClient(request->getHost(), request->getPort());
     Response response;
     if (cache->validate(*request, response)) {
-        response = cache->getCache(request->getUrl());
+      response = cache->getCache(request->getUrl());
     }
     else {
         if (send(server_fd, requestFull.c_str(), requestFull.size() + 1, 0) == -1){

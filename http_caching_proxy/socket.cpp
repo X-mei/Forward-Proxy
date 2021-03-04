@@ -60,28 +60,26 @@ void socketInfo::socketWaitConnect(){
 }
 
 // accept request from given client, return the newly generated fd
-int socketInfo::socketAccept(int client_id){
+void socketInfo::socketAccept(int & client_fd, std::string & ip_address){
   struct sockaddr_storage their_addr;
-  //int MAXDATASIZE = 8000;
-  //char buffer[MAXDATASIZE];
-  char s[INET6_ADDRSTRLEN];
   socklen_t addr_size;
+  char s[INET6_ADDRSTRLEN];
   addr_size = sizeof(their_addr);
   std::cout<<"Accepting connection..."<<std::endl;
-  int client_fd = accept(socket_fd, (struct sockaddr *)&their_addr, &addr_size);
+  client_fd = accept(socket_fd, (struct sockaddr *)&their_addr, &addr_size);
   if (client_fd == -1){
     throw myException("Error accept.");
   }
   inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
   printf("server: got connection from %s\n", s);
-  //proxy_log << ;
+  ip_address = s;
   /*
   if (recv(client_fd, buffer, sizeof(buffer), 0) == -1) {
     throw myException("Error recv.");
   }
   //std::cout<<"recieved:\n"<<buffer<<std::endl;
   */
-  return client_fd;
+  return;
 }
 
 // make the connection through socket
