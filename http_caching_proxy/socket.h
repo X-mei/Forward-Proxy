@@ -17,7 +17,7 @@ public:
   void serverSetup();
   void clientSetup();
   void socketWaitConnect();
-  int socketAccept();
+  int socketAccept(int client_id);
   void socketConnect();
   int getFd(){return socket_fd;}
   ~socketInfo();

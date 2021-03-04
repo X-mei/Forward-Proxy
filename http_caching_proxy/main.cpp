@@ -15,6 +15,7 @@
 #include "myException.h"
 #include "socket.h"
 
+std::ofstream proxy_log;
 
 void testRequestParser(){
     Request * h = new Request();
@@ -42,8 +43,10 @@ void testProxy(const char * port){
 }
 
 int main(int argc, const char * argv[]) {
+    proxy_log.open(LOG_PATH);
     const char * port = "12345";
     //testRequestParser();
     testProxy(port);
+    proxy_log.close();
     return 0;
 }

@@ -20,7 +20,7 @@ void Response::parseFirstLine(){
     this->status_phrase = firstLine.substr(space2+1);
 }
 
-string getContents() {
+string Response::getContents() {
     string contents;
     // header + body
     return contents;

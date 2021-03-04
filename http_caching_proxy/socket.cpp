@@ -60,7 +60,7 @@ void socketInfo::socketWaitConnect(){
 }
 
 // accept request from given client, return the newly generated fd
-int socketInfo::socketAccept(){
+int socketInfo::socketAccept(int client_id){
   struct sockaddr_storage their_addr;
   //int MAXDATASIZE = 8000;
   //char buffer[MAXDATASIZE];
@@ -74,6 +74,7 @@ int socketInfo::socketAccept(){
   }
   inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
   printf("server: got connection from %s\n", s);
+  //proxy_log << ;
   /*
   if (recv(client_fd, buffer, sizeof(buffer), 0) == -1) {
     throw myException("Error recv.");

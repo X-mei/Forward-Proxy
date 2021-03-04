@@ -14,8 +14,10 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <bits/stdc++.h>
 #include <unistd.h>
 #include <sstream>
+#include <fstream>
 
 #define LOG_PATH "/var/log/erss/proxy.log"
 extern std::ofstream logFile;

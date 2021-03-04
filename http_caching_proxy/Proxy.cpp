@@ -13,7 +13,7 @@ void proxy::runServer(){
   while(true){
     int client_fd;
     try{
-      client_fd = proxySocket.socketAccept();
+      client_fd = proxySocket.socketAccept(request_id);
     }
     catch(myException e){
       std::cout<<e.what();
@@ -43,7 +43,6 @@ void proxy::handler(Request * request){
     buf[byte_count] = '\0';
     std::string requestFull = buf;
     request->parseHeader(requestFull);
-    request->printFirstLine(); // Duplicated?
     if (request->getMethod() == "GET"){
       handlePOST(request,requestFull);
     }

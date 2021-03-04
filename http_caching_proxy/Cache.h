@@ -33,3 +33,4 @@ public:
     void handle(Request & request, Response & response);
     Response getCache(string url);
 };
+#endif
