@@ -1,10 +1,4 @@
-#include <unordered_map>
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <list>
-#include <ctime>
+#include "common.h"
 #include "myException.h"
 #include "Response.h"
 #include "Request.h"
@@ -19,7 +13,6 @@ private:
     list<string> LRU;
     unordered_map<string, Response> urlPair;
     bool checkIfUrlExists(string url);
-    Response getCache(string url);
     void LRUEvict();
     void LRUAdd(string url);
     bool checkFreshness(int maxAge, int maxStale, string dateValue);
@@ -36,5 +29,5 @@ private:
 public:
     bool validate(Request & request, Response & response);
     void handle(Request & request, Response & response);
-    
+    Response getCache(string url);
 };

@@ -1,13 +1,7 @@
 #ifndef MYSOCKET_H
 #define MYSOCKET_H
 
-#include <cstdlib>
-#include <cstring>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <sstream>
+#include "common.h"
 #include "myException.h"
 class socketInfo {
 private:

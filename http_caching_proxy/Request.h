@@ -1,6 +1,7 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 #include "Http.h"
+#include "common.h"
 
 using namespace std;
 

@@ -43,7 +43,7 @@ void proxy::handler(Request * request){
     buf[byte_count] = '\0';
     std::string requestFull = buf;
     request->parseHeader(requestFull);
-    request->printFirstLine();
+    request->printFirstLine(); // Duplicated?
     if (request->getMethod() == "GET"){
       handlePOST(request,requestFull);
     }
@@ -63,8 +63,23 @@ void proxy::handler(Request * request){
   delete request;
 }
 
-void proxy::handleGET(Request * request){
-  return;
+void proxy::handleGET(Request * request, std::string requestFull){
+    int server_fd = runClient(request->getHost(), request->getPort());
+    Response response;
+    if (cache->validate(*request, response)) {
+        response = cache->getCache(request->getUrl());
+    }
+    else {
+        if (send(server_fd, requestFull.c_str(), requestFull.size() + 1, 0) == -1){
+          throw myException("Error send.");
+        }
+        std::string received_data = receiveData(BUFFER_SIZE, server_fd);
+        response.parseHeader(received_data);
+        cache->handle(*request, response);
+        close(server_fd);
+    }
+    sendData(response.getContents(), request->getSocket());
+    close(request->getSocket());
 }
 
 // need major update #####

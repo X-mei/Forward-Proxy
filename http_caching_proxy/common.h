@@ -1,0 +1,21 @@
+#ifndef COMMON_H
+#define COMMON_H
+
+#include <list>
+#include <ctime>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <iostream>
+#include <exception>
+#include <thread>
+#include <cstdlib>
+#include <cstring>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <sstream>
+
+std::ofstream logFile;
+#endif

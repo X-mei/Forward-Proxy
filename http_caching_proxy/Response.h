@@ -1,6 +1,7 @@
 #ifndef RESPONSE_H  
 #define RESPONSE_H
 
+#include "common.h"
 #include "Http.h"
 
 class Response: public Http{
@@ -19,6 +20,7 @@ public:
   virtual void parseFirstLine();
   int getSocket() {return socket_fd;}
   int getUid() {return u_id;}
+    string getContents();
   ~Response();
 };
 #endif

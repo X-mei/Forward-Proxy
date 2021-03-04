@@ -1,7 +1,6 @@
 #ifndef MYEXCEPTION_H
 #define MYEXCEPTION_H
-#include <iostream>
-#include <exception>
+#include "common.h"
 
 class myException : public std::exception{
 private:

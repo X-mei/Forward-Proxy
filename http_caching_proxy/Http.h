@@ -7,11 +7,6 @@
 
 #ifndef HTTP_H
 #define HTTP_H
-#include <unordered_map>
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <algorithm>
 #include "myException.h"
 #include "socket.h"
 using namespace std;
