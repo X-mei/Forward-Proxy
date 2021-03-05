@@ -21,7 +21,10 @@ void Response::parseFirstLine(){
 }
 
 string Response::getContents() {
-    string contents;
+    string header = firstLine + "\r\n";
     // header + body
-    return contents;
+    for (auto & [first, second] : headerPair) {
+        header += first + ": " + second + "\r\n";
+    }
+    return header + "\r\n\r\n" + body;
 }

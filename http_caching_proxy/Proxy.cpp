@@ -1,6 +1,6 @@
 #include "Proxy.h"
 
-//Not done
+// Server init and connection with client exception handled at this level
 void proxy::runServer(){
   try{
     proxySocket.serverSetup();
@@ -10,6 +10,7 @@ void proxy::runServer(){
     std::cout<<e.what();
     return;
   }
+  // Run forever, take request and handle it by branching a new thread
   while(true){
     int client_fd;
     std::string ip_address;
@@ -20,25 +21,28 @@ void proxy::runServer(){
       std::cout<<e.what();
       continue;
     }
-    Request * request = new Request(client_fd, request_id);// need modification #####
+    Request * request = new Request(client_fd, request_id);
     std::cout<<"######"<<request_id<<"######\n";
+    // Logging related action
     std::time_t seconds = std::time(nullptr);
     std::string request_time = std::string(std::asctime(std::gmtime(&seconds)));
     request_time = request_time.substr(0, request_time.find("\n"));
     logFile << request_id << ": \"" << request->returnFirstLine() << "\"from " << ip_address << " @ " << request_time << std::endl;
     request_id++;
-    std::thread trd(&proxy::handler, this, request);// need to make this multi-thread #####
-    trd.detach();
+    std::thread trd(&proxy::handler, this, request);// Branching a new thread, handle it
+    trd.detach();// Detach the thread from the main thread
   }
   
 }
 
+// This functions handles the request based on its method
+// Request error is handled at this level
 void proxy::handler(Request * request){
   const int buf_size = 4096;
   char buf[buf_size];// buffer to store recieved message from client
   int byte_count = recv(request->getSocket(), buf, buf_size - 1, 0);
   try{
-    if (byte_count == -1) {// need to take care multi read? What if have zero? #####
+    if (byte_count == -1) {
       throw myException("Error recv.");
     }
     if (byte_count == 0){
@@ -48,17 +52,13 @@ void proxy::handler(Request * request){
     std::string requestFull = buf;
     request->parseHeader(requestFull);
     if (request->getMethod() == "GET"){
-      handlePOST(request,requestFull);
+      handleGET(request,requestFull);
     }
     else if (request->getMethod() == "POST"){
       handlePOST(request,requestFull);
     }
-    else if (request->getMethod() == "CONNECT"){
+    else {// CONNECT
       handleCONNECT(request);
-    }
-    else {// shouldn't happen
-      std::cout<<"Hi"<<std::endl;
-      // send 501?
     }
   }
   catch(myException e){

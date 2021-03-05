@@ -16,23 +16,27 @@ protected:
     unordered_map<string, string> headerPair;
     unordered_map<string, string> cacheControlPair;
     string firstLine;
+    string body;
 public:
     Http() {}
     void parseEachLine(string & msg) {
         size_t start = 0;
         if (msg.find(':', start) == string::npos) {
-            throw myException("Invalid header");
+            cout <<"Invalid header1"<< endl;
+            //throw MyException("Invalid header");
         }
         while (start < msg.size()) {
             size_t colon = msg.find(':', start);
             size_t end = msg.find("\r\n", start);
             if (colon == string::npos) {
-                throw myException("Invalid header");
+                cout <<"Invalid header2"<< endl;
+                //throw MyException("Invalid header");
             }
             string key = msg.substr(start, colon - start);
             string value = msg.substr(colon + 2, end - colon - 2);
             if (key.empty() || value.empty()) {
-                throw myException("Invalid header");
+                cout <<"Invalid header3"<< endl;
+                //throw MyException("Invalid header");
             }
             headerPair[key] = value;
             start= end + 2;
@@ -49,10 +53,12 @@ public:
         size_t endOfFirst = msg.find("\r\n", 0);
         size_t endOfRemain = msg.find("\r\n\r\n", endOfFirst);
         if (endOfFirst == string::npos || endOfRemain == string::npos) {
-            throw myException("Invalid header");
+            cout <<"Invalid header4"<< endl;
+            //throw MyException("Invalid header");
         }
         this->firstLine = msg.substr(0, endOfFirst);
         string remainHeader = msg.substr(endOfFirst + 2, endOfRemain - endOfFirst);
+        body = msg.substr(endOfRemain + 4);
         parseEachLine(remainHeader);
         parseFirstLine();
         parseCacheControl();
@@ -131,7 +137,9 @@ public:
                 return second;
             }
         }
-        throw myException("The key does not exist.");
+        cout << "The key does not exist." << endl;
+        return "";
+        //throw myException("The key does not exist.");
     }
     
     void printPairs() {
@@ -147,9 +155,7 @@ public:
     void printFirstLine() {
         cout << firstLine << endl;
     }
-    std::string returnFirstLine() {
-        return firstLine;
-    }
+    
 };
 
 #endif /* Http_h */
