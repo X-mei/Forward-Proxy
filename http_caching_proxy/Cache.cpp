@@ -1,4 +1,5 @@
 #include "Cache.h"
+mutex mtx_cache;
 
 bool Cache::checkIfUrlExists(string url) {
     for (auto & [first, second] : urlPair) {
@@ -41,20 +42,26 @@ void Cache::LRUAdd(string url) {
 
 bool Cache::checkFreshness(int maxAge, int maxStale, string dateValue) {
     time_t expireTime = maxAge + maxStale + strToTime(dateValue);
-    double timeDiff = difftime(time(0), expireTime);
+    double timeDiff = difftime(expireTime, time(0));
     return timeDiff > 0;
 }
 
 bool Cache::checkFreshness(string expireValue) {
-    double timeDiff = difftime(time(0), strToTime(expireValue));
+    double timeDiff = difftime(strToTime(expireValue), time(0));
     return timeDiff > 0;
 }
 
 time_t Cache::strToTime(string str) {
+    // Delete " GMT" in str
+    size_t position = str.find(" GMT");
+    if (position != string::npos) {
+        str.erase(position, 4);
+    }
+    lock_guard<mutex> lck(mtx_cache);
     const char* c = str.c_str();
-    tm* tmStruct = nullptr;
-    strptime(c, "%a, %d %b %Y %H:%M:%S" , tmStruct);
-    return mktime(tmStruct);
+    tm tmStruct;
+    strptime(c, "%a, %d %b %Y %H:%M:%S" , &tmStruct);
+    return mktime(&tmStruct);
 }
 
 bool Cache::validate(Request &request, Response &response) {
@@ -191,3 +198,5 @@ void Cache::updateCache(string url, Response response) {
         LRUEvict();
     }
 }
+
+
