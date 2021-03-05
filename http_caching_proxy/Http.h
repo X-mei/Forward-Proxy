@@ -155,7 +155,9 @@ public:
     void printFirstLine() {
         cout << firstLine << endl;
     }
-    
+    std::string returnFirstLine() {
+        return firstLine;
+    }
 };
 
 #endif /* Http_h */
