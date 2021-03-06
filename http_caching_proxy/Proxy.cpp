@@ -1,4 +1,5 @@
 #include "Proxy.h"
+mutex mtx;
 
 // Server init and connection with client exception handled at this level
 void proxy::runServer(){
@@ -27,9 +28,10 @@ void proxy::runServer(){
     std::time_t seconds = std::time(nullptr);
     std::string request_time = std::string(std::asctime(std::gmtime(&seconds)));
     request_time = request_time.substr(0, request_time.find("\n"));
-    logFile << request_id << ": \"" << request->returnFirstLine() << "\"from " << ip_address << " @ " << request_time << std::endl;
+      mtx.lock();
     request_id++;
-    std::thread trd(&proxy::handler, this, request);// Branching a new thread, handle it
+      mtx.unlock();
+    std::thread trd(&proxy::handler, this, request, ip_address, request_time);// Branching a new thread, handle it
     trd.detach();// Detach the thread from the main thread
   }
   
@@ -37,7 +39,7 @@ void proxy::runServer(){
 
 // This functions handles the request based on its method
 // Request error is handled at this level
-void proxy::handler(Request * request){
+void proxy::handler(Request * request, string ip_address, string request_time){
   const int buf_size = 4096;
   char buf[buf_size];// buffer to store recieved message from client
   int byte_count = recv(request->getSocket(), buf, buf_size - 1, 0);
@@ -51,14 +53,25 @@ void proxy::handler(Request * request){
     buf[byte_count] = '\0';
     std::string requestFull = buf;
     request->parseHeader(requestFull);
+    string msg = "";
+    msg = to_string(request_id) + ": \"" + request->returnFirstLine() + "\"from " + ip_address + " @ " + request_time;
+    log->save(msg);
+    int server_fd = runClient(request->getHost(), request->getPort());
+    if (server_fd<0){
+      std::string ERROR_404("HTTP/1.1 404 Not Found\r\n\r\n");
+      if (send(request->getSocket(), ERROR_404.c_str(), ERROR_404.length(), 0) == -1) {
+        throw myException("send 404 Error failed");
+      }
+      return;
+    }
     if (request->getMethod() == "GET"){
-      handleGET(request,requestFull);
+      handleGET(request,requestFull, server_fd);
     }
     else if (request->getMethod() == "POST"){
-      handlePOST(request,requestFull);
+      handlePOST(request,requestFull, server_fd);
     }
     else {// CONNECT
-      handleCONNECT(request);
+      handleCONNECT(request, server_fd);
     }
   }
   catch(myException e){
@@ -67,8 +80,7 @@ void proxy::handler(Request * request){
   delete request;
 }
 
-void proxy::handleGET(Request * request, std::string requestFull){
-    int server_fd = runClient(request->getHost(), request->getPort());
+void proxy::handleGET(Request * request, std::string requestFull, int server_fd){
     Response response;
     if (cache->validate(*request, response)) {
       response = cache->getCache(request->getUrl());
@@ -87,8 +99,7 @@ void proxy::handleGET(Request * request, std::string requestFull){
 }
 
 // need major update #####
-void proxy::handlePOST(Request * request, std::string requestFull){
-  int server_fd = runClient(request->getHost(), request->getPort());
+void proxy::handlePOST(Request * request, std::string requestFull, int server_fd){
   std::cout<<"###################\n";
   if (send(server_fd, requestFull.c_str(), requestFull.size() + 1, 0) == -1){
     throw myException("Error send.");
@@ -104,8 +115,7 @@ void proxy::handlePOST(Request * request, std::string requestFull){
   close(request->getSocket());
 }
 
-void proxy::handleCONNECT(Request * request){
-  int server_fd = runClient(request->getHost(), request->getPort());
+void proxy::handleCONNECT(Request * request, int server_fd){
   std::cout<<"###################\n";
   //**** 200 OK reponse to client
   // need changes #####
@@ -168,7 +178,13 @@ void proxy::handleCONNECT(Request * request){
 // Not done
 int proxy::runClient(std::string host, std::string port){
   socketInfo serverSocket = socketInfo(host.c_str(), port.c_str());
-  serverSocket.clientSetup();
+  try{
+    serverSocket.clientSetup();
+  }
+  catch(myException e){
+    std::cout<<e.what();
+    return -1;
+  }
   serverSocket.socketConnect();
   return serverSocket.getFd();
 }
