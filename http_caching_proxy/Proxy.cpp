@@ -3,12 +3,13 @@ mutex mtx;
 
 // Server init and connection with client exception handled at this level
 void proxy::runServer(){
+  mtx.lock();
   try{
     proxySocket.serverSetup();
     proxySocket.socketWaitConnect();
   }
   catch(myException e){
-    std::cout<<e.what();
+    //std::cout<<e.what();
     return;
   }
   // Run forever, take request and handle it by branching a new thread
@@ -19,7 +20,7 @@ void proxy::runServer(){
       proxySocket.socketAccept(client_fd, ip_address);
     }
     catch(myException e){
-      std::cout<<e.what();
+      //std::cout<<e.what();
       continue;
     }
     Request * request = new Request(client_fd, request_id);
@@ -28,13 +29,13 @@ void proxy::runServer(){
     std::time_t seconds = std::time(nullptr);
     std::string request_time = std::string(std::asctime(std::gmtime(&seconds)));
     request_time = request_time.substr(0, request_time.find("\n"));
-      mtx.lock();
+    
     request_id++;
-      mtx.unlock();
+    
     std::thread trd(&proxy::handler, this, request, ip_address, request_time);// Branching a new thread, handle it
     trd.detach();// Detach the thread from the main thread
   }
-  
+  mtx.unlock();
 }
 
 // This functions handles the request based on its method
@@ -54,7 +55,7 @@ void proxy::handler(Request * request, string ip_address, string request_time){
     std::string requestFull = buf;
     request->parseHeader(requestFull);
     string msg = "";
-    msg = to_string(request_id) + ": \"" + request->returnFirstLine() + "\"from " + ip_address + " @ " + request_time;
+    msg = to_string(request->getUid()) + ": \"" + request->returnFirstLine() + "\"from " + ip_address + " @ " + request_time;
     log->save(msg);
     int server_fd = runClient(request->getHost(), request->getPort());
     if (server_fd<0){

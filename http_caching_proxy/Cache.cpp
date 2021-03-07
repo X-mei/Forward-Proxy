@@ -1,7 +1,8 @@
 #include "Cache.h"
-mutex mtx_cache;
+mutex mtx;
 
 bool Cache::checkIfUrlExists(string url) {
+    lock_guard<mutex> lck(mtx);
     for (auto & [first, second] : urlPair) {
         if (first == url) {
             return true;
@@ -11,6 +12,7 @@ bool Cache::checkIfUrlExists(string url) {
 }
 
 Response Cache::getCache(string url) {
+    lock_guard<mutex> lck(mtx);
     for (auto & [first, second] : urlPair) {
         if (first == url) {
             return second;
@@ -26,11 +28,15 @@ void Cache::LRUEvict() {
     if (LRU.empty()) {
         return;
     }
+    lock_guard<mutex> lck(mtx);
+    string msg = "(no-id): NOTE evicted " + LRU.back() + "from cache.";
+    log->save(msg);
     urlPair.erase(LRU.back());
     LRU.pop_back();
 }
 
 void Cache::LRUAdd(string url) {
+    lock_guard<mutex> lck(mtx);
     for (list<string>::iterator it = LRU.begin(); it != LRU.end(); ++it) {
         if (*it == url) {
             LRU.erase(it);
@@ -57,7 +63,7 @@ time_t Cache::strToTime(string str) {
     if (position != string::npos) {
         str.erase(position, 4);
     }
-    lock_guard<mutex> lck(mtx_cache);
+    lock_guard<mutex> lck(mtx);
     const char* c = str.c_str();
     tm tmStruct;
     strptime(c, "%a, %d %b %Y %H:%M:%S" , &tmStruct);
@@ -71,18 +77,24 @@ bool Cache::validate(Request &request, Response &response) {
         int maxStale = 0;
         if (request.checkNoCacheInPragma()) {
             addHeader(request, response);
-            cout << "Response will not be released from cache. Need revalidation." << endl;
+            string msg = to_string(request.getUid()) + ": NOTE Cached. Response will not be released from cache. Need revalidation.";
+            log->save(msg);
+            //cout << "Response will not be released from cache. Need revalidation." << endl;
             return false;
         }
         else {
             if (request.checkIfHeaderFieldExists("Cache-Control")) {
                 if (request.checkCacheControlKey("no-cache")) {
                     addHeader(request, response);
-                    cout << "Response will not be released from cache. Need revalidation." << endl;
+                    string msg = to_string(request.getUid()) + ": NOTE Cached. Response will not be released from cache. Need revalidation.";
+                    log->save(msg);
+                    //cout << "Response will not be released from cache. Need revalidation." << endl;
                     return false;
                 }
                 else if (request.checkCacheControlKey("no-store") || request.checkCacheControlKey("private")) {
-                    cout << "Response will not be stored in cache.(Request contains no-store/private)" << endl;
+                    string msg = to_string(request.getUid()) + ": NOTE Response will not be stored in cache.(Request contains no-store/private)";
+                    log->save(msg);
+                    //cout << "Response will not be stored in cache.(Request contains no-store/private)" << endl;
                     return false;
                 }
                 else {
@@ -90,7 +102,9 @@ bool Cache::validate(Request &request, Response &response) {
                         maxAge = stoi(request.getCacheControlValue("max-age"));
                         if (maxAge == 0) {
                             addHeader(request, response);
-                            cout << "request max-age is 0, validation is false." << endl;
+                            string msg = to_string(request.getUid()) + ": NOTE Cached. Stale, need re-validation.";
+                            log->save(msg);
+                            //cout << "request max-age is 0, validation is false." << endl;
                             return false;
                         }
                     }
@@ -102,11 +116,15 @@ bool Cache::validate(Request &request, Response &response) {
             if (response.checkIfHeaderFieldExists("Cache-Control")) {
                 if (response.checkCacheControlKey("no-cache")) {
                     addHeader(request, response);
-                    cout << "Response will not be released from cache. Need revalidation." << endl;
+                    string msg = to_string(request.getUid()) + ": NOTE Cached. Response will not be released from cache. Need revalidation.";
+                    log->save(msg);
+                    //cout << "Response will not be released from cache. Need revalidation." << endl;
                     return false;
                 }
                 else if (response.checkCacheControlKey("no-store") || response.checkCacheControlKey("private")) {
-                    cout << "Response will not be stored in cache.(Response contains no-store/private)" << endl;
+                    string msg = to_string(request.getUid()) + ": NOTE Response will not be stored in cache.(Request contains no-store/private)";
+                    log->save(msg);
+                    //cout << "Response will not be stored in cache.(Response contains no-store/private)" << endl;
                     return false;
                 }
                 else {
@@ -114,19 +132,25 @@ bool Cache::validate(Request &request, Response &response) {
                         maxAge = min(maxAge, stoi(response.getCacheControlValue("max-age")));
                         if (maxAge == 0) {
                             addHeader(request, response);
-                            cout << "response max-age is 0, validation is false." << endl;
+                            string msg = to_string(request.getUid()) + ": NOTE Cached. Stale, need re-validation.";
+                            log->save(msg);
+                            //cout << "response max-age is 0, validation is false." << endl;
                             return false;
                         }
                     }
                     if (checkFreshness(maxAge, maxStale, response.getHeaderValue("Date"))) {
-                        cout << "response is fresh, validation is true." << endl;
-                        cout << "Cache updated." << endl;
+                        string msg = to_string(request.getUid()) + ": In cache, valid.";
+                        log->save(msg);
+                        //cout << "response is fresh, validation is true." << endl;
+                        //cout << "Cache updated." << endl;
                         LRUAdd(request.getUrl());
                         return true;
                     }
                     else {
                         addHeader(request, response);
-                        cout << "Response is not fresh, validation is false." << endl;
+                        string msg = to_string(request.getUid()) + ": NOTE Cached. Stale, need re-validation.";
+                        log->save(msg);
+                        //cout << "Response is not fresh, validation is false." << endl;
                         return false;
                     }
                 }
@@ -134,37 +158,49 @@ bool Cache::validate(Request &request, Response &response) {
             else {
                 if (response.checkIfHeaderFieldExists("Expires")) {
                     if (checkFreshness(response.getHeaderValue("Expires"))) {
-                        cout << "Not pass expire time, validation is true." << endl;
-                        cout << "Cache updated." << endl;
+                        string msg = to_string(request.getUid()) + ": In cache, valid.";
+                        log->save(msg);
+                        //cout << "Not pass expire time, validation is true." << endl;
+                        //cout << "Cache updated." << endl;
                         LRUAdd(request.getUrl());
                         return true;
                     }
                     else {
                         addHeader(request, response);
-                        cout << "Pass expire time, validation is false." << endl;
+                        string msg = to_string(request.getUid()) + ": NOTE Cached. Stale, need re-validation.";
+                        log->save(msg);
+                        //cout << "Pass expire time, validation is false." << endl;
                         return false;
                     }
                 }
                 else {
-                    cout << "No cache control, no expire, response is in cache, validation is true." << endl;
-                    cout << "Cache updated." << endl;
+                    string msg = to_string(request.getUid()) + ": In cache, valid.";
+                    log->save(msg);
+                    //cout << "No cache control, no expire, response is in cache, validation is true." << endl;
+                    //cout << "Cache updated." << endl;
                     LRUAdd(request.getUrl());
                     return true;
                 }
             }
         }
     }
-    cout << "Url is not in the cache." << endl;
+    string msg = to_string(request.getUid()) + ": Not in cache.";
+    log->save(msg);
+    //cout << "Url is not in the cache." << endl;
     return false;
 }
 
 void Cache::addHeader(Request &request, Response &response) {
     if (response.checkIfHeaderFieldExists("Last-Modified")) {
         string LMVal = response.getHeaderValue("Last-Modified");
+        string msg = to_string(request.getUid()) + ": NOTE Last-Modified: " + LMVal;
+        log->save(msg);
         request.addHeaderPair("If-Modified-Since", LMVal);
     }
     if (response.checkIfHeaderFieldExists("ETag")) {
         string ETagVal = response.getHeaderValue("ETag");
+        string msg = to_string(request.getUid()) + ": NOTE ETag: " + ETagVal;
+        log->save(msg);
         request.addHeaderPair("If-None-Match", ETagVal);
     }
     cout << "Validation header added." << endl;
@@ -192,6 +228,7 @@ void Cache::handle(Request & request, Response & response) {
 }
 
 void Cache::updateCache(string url, Response response) {
+    lock_guard<mutex> lck(mtx);
     urlPair[url] = response;
     LRUAdd(url);
     if (LRU.size() > CACHESIZE) {

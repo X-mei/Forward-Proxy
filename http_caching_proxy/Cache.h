@@ -4,6 +4,7 @@
 #include "myException.h"
 #include "Response.h"
 #include "Request.h"
+#include "Log.h"
 
 #define CACHESIZE 100
 
@@ -14,6 +15,7 @@ class Cache {
 private:
     list<string> LRU;
     unordered_map<string, Response> urlPair;
+    Log* log;
     bool checkIfUrlExists(string url);
     void LRUEvict();
     void LRUAdd(string url);
@@ -29,6 +31,9 @@ private:
     }
     
 public:
+    Cache() {
+        log = new Log;
+    }
     bool validate(Request & request, Response & response);
     void handle(Request & request, Response & response);
     Response getCache(string url);

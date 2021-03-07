@@ -28,6 +28,7 @@ void Request::parseFirstLine(){
     throw myException("Error in first line syntax.");
   }
   temp = firstLine.substr(space1+1, space2-space1-1);
+  this->url = temp;
   if (http != string::npos){//absolute form
     size_t slash = firstLine.find('/');
     temp = firstLine.substr(slash+2, space2-slash-2);//-3?
@@ -59,4 +60,5 @@ void Request::parseFirstLine(){
     this->host = headerPair["Host"];
   }
   //get url pending
+
 }
