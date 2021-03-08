@@ -28,9 +28,7 @@ void proxy::runServer(){
     std::time_t seconds = std::time(nullptr);
     std::string request_time = std::string(std::asctime(std::gmtime(&seconds)));
     request_time = request_time.substr(0, request_time.find("\n"));
-    
     request_id++;
-    
     std::thread trd(&proxy::handler, this, request, ip_address, request_time);// Branching a new thread, handle it
     trd.detach();// Detach the thread from the main thread
   }
@@ -43,6 +41,7 @@ void proxy::handler(Request * request, string ip_address, string request_time){
   const int buf_size = 4096;
   char buf[buf_size];// buffer to store recieved message from client
   int byte_count = recv(request->getSocket(), buf, buf_size - 1, 0);
+  int server_fd;
   try{
     if (byte_count == -1) {
       throw myException("Error recv.");
@@ -56,7 +55,7 @@ void proxy::handler(Request * request, string ip_address, string request_time){
     string msg = "";
     msg = to_string(request->getUid()) + ": \"" + request->returnFirstLine() + "\" from " + ip_address + " @ " + request_time;
     log->save(msg);
-    int server_fd = runClient(request->getHost(), request->getPort());
+    server_fd = runClient(request->getHost(), request->getPort());
     if (server_fd<0){
       std::string ERROR_404("HTTP/1.1 404 Not Found\r\n\r\n");
       if (send(request->getSocket(), ERROR_404.c_str(), ERROR_404.length(), 0) == -1) {
@@ -78,8 +77,13 @@ void proxy::handler(Request * request, string ip_address, string request_time){
     }
   }
   catch(myException e){
-    e.what();
+    std::cout<<e.what();
   }
+  catch(...){
+    //do nothing
+  }
+  close(request->getSocket());
+  close(server_fd);
   delete request;
 }
 
@@ -99,12 +103,11 @@ void proxy::handleGET(Request * request, std::string requestFull, int server_fd)
         msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
         log->save(msg);
         cache->handle(*request, response);
-        close(server_fd);
+        
     }
     sendData(response.getContents(), request->getSocket());
     std::string msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();
     log->save(msg);
-    close(request->getSocket());
 }
 
 // need major update #####
@@ -116,18 +119,13 @@ void proxy::handlePOST(Request * request, std::string requestFull, int server_fd
   std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
   log->save(msg);
   std::string received_data = receiveData(BUFFER_SIZE, server_fd);
-  Response * response = new Response(server_fd, request_id);
-  response->parseHeader(received_data);
-  msg = to_string(request->getUid()) + ": Recieved \"" + response->returnFirstLine() + "\" from " + request->getHost();
+  Response response(server_fd, request_id);
+  response.parseHeader(received_data);
+  msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
   log->save(msg);
-  close(server_fd);
-  /*
-    Some logic to determine if response ok
-  */
   sendData(received_data, request->getSocket());
-  msg = to_string(request->getUid()) + ": Responding \"" + response->returnFirstLine();
+  msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();
   log->save(msg);
-  close(request->getSocket());
 }
 
 void proxy::handleCONNECT(Request * request, int server_fd){
@@ -187,8 +185,6 @@ void proxy::handleCONNECT(Request * request, int server_fd){
   }
   msg = to_string(request->getUid()) + ": " + "Tunnel closed";
   log->save(msg);
-  close(request->getSocket());
-  close(server_fd);
 }
 
 // Not done

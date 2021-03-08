@@ -59,6 +59,4 @@ void Request::parseFirstLine(){
   if (this->host.empty()){//if origin form
     this->host = headerPair["Host"];
   }
-  //get url pending
-
 }
