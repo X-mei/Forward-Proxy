@@ -1,184 +1,101 @@
-1: "CONNECT firefox.settings.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:23 2021
-1: Opening Tunnel
-2: "CONNECT firefox.settings.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:23 2021
+1: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:27 2021
+1: Not in cache.
+1: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+1: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+1: Responding "HTTP/1.1 200 OK
+2: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:28 2021
 2: Opening Tunnel
-3: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:24 2021
+3: "CONNECT snippets.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:29 2021
 3: Opening Tunnel
+4: "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:30 2021
+4: Not in cache.
+4: Requesting "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from people.duke.edu
+4: Recieved "HTTP/1.1 404 Not Found" from people.duke.edu
+4: Responding "HTTP/1.1 404 Not Found
 2: Tunnel closed
-1: Tunnel closed
+7: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:31 2021
+7: NOTE Cached. Response will not be released from cache. Need revalidation.
+7: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+7: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+7: Responding "HTTP/1.1 200 OK
 3: Tunnel closed
-4: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:26 2021
-4: Opening Tunnel
-7: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:26 2021
-7: Opening Tunnel
-10: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:26 2021
+8: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:34 2021
+8: NOTE Cached. Response will not be released from cache. Need revalidation.
+8: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+8: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+8: Responding "HTTP/1.1 200 OK
+9: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:37 2021
+9: NOTE Cached. Response will not be released from cache. Need revalidation.
+9: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+9: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+9: Responding "HTTP/1.1 200 OK
+10: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:40 2021
 10: Opening Tunnel
-11: "CONNECT googleads.g.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:27 2021
-11: Opening Tunnel
-12: "CONNECT ad.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:27 2021
-13: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:27 2021
-12: Opening Tunnel
-14: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:27 2021
-14: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:27 2021
-13: Opening Tunnel
-14: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-16: "CONNECT www.google.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:27 2021
-16: Opening Tunnel
-4: Tunnel closed
+11: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:41 2021
+11: NOTE Cached. Response will not be released from cache. Need revalidation.
+11: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+11: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+11: Responding "HTTP/1.1 200 OK
 10: Tunnel closed
-11: Tunnel closed
-9: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:26 2021
-9: Opening Tunnel
-12: Tunnel closed
+12: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:44 2021
+12: NOTE Cached. Response will not be released from cache. Need revalidation.
+12: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+12: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+12: Responding "HTTP/1.1 200 OK
+13: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:48 2021
+13: Opening Tunnel
+14: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:48 2021
+14: NOTE Cached. Response will not be released from cache. Need revalidation.
+14: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+14: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+14: Responding "HTTP/1.1 200 OK
 13: Tunnel closed
-18: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:29 2021
-18: Opening Tunnel
-16: Tunnel closed
-7: Tunnel closed
-19: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:30 2021
-19: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-20: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:30 2021
-21: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:30 2021
-20: Opening Tunnel
-21: Opening Tunnel
-20: Tunnel closed
-23: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-23: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-22: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-23: Opening Tunnel
+15: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:51 2021
+15: NOTE Cached. Response will not be released from cache. Need revalidation.
+15: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+15: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+15: Responding "HTTP/1.1 200 OK
+16: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:55 2021
+16: NOTE Cached. Response will not be released from cache. Need revalidation.
+16: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+16: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+16: Responding "HTTP/1.1 200 OK
+17: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:55 2021
+17: Opening Tunnel
+17: Tunnel closed
+18: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:58 2021
+18: NOTE Cached. Response will not be released from cache. Need revalidation.
+18: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+18: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+18: Responding "HTTP/1.1 200 OK
+5: "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:26:30 2021
+5: NOTE Cached. Stale, need re-validation.
+5: Requesting "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from people.duke.edu
+5: Recieved "HTTP/1.1 404 Not Found" from people.duke.edu
+5: Responding "HTTP/1.1 404 Not Found
+21: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:27:02 2021
+21: NOTE Cached. Response will not be released from cache. Need revalidation.
+21: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+21: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+21: Responding "HTTP/1.1 200 OK
+22: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:27:03 2021
 22: Opening Tunnel
-24: "CONNECT static.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-9: Tunnel closed
-24: Opening Tunnel
-25: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-25: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-26: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:31 2021
-25: Opening Tunnel
-26: Opening Tunnel
-18: Tunnel closed
-27: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:32 2021
-29: "CONNECT r3---sn-5uaeznk7.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:32 2021
-28: "CONNECT r3---sn-5uaeznk7.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:32 2021
-29: Opening Tunnel
-28: Opening Tunnel
-27: Opening Tunnel
-27: Tunnel closed
-21: Tunnel closed
-23: Tunnel closed
 22: Tunnel closed
-24: Tunnel closed
-26: Tunnel closed
+23: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:27:05 2021
+23: NOTE Cached. Response will not be released from cache. Need revalidation.
+23: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+23: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+23: Responding "HTTP/1.1 200 OK
+24: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:27:08 2021
+24: NOTE Cached. Response will not be released from cache. Need revalidation.
+24: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+24: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+24: Responding "HTTP/1.1 200 OK
+25: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:27:10 2021
+25: Opening Tunnel
+27: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:27:12 2021
+27: NOTE Cached. Response will not be released from cache. Need revalidation.
+27: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+27: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+27: Responding "HTTP/1.1 200 OK
 25: Tunnel closed
-30: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:34 2021
-30: Opening Tunnel
-28: Tunnel closed
-29: Tunnel closed
-31: "CONNECT r3---sn-5uaeznk7.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:35 2021
-31: Opening Tunnel
-32: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:36 2021
-30: Tunnel closed
-32: Opening Tunnel
-33: "CONNECT r3---sn-5uaeznk7.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:36 2021
-33: Opening Tunnel
-31: Tunnel closed
-34: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:38 2021
-34: Opening Tunnel
-32: Tunnel closed
-35: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:38 2021
-35: Opening Tunnel
-33: Tunnel closed
-35: Tunnel closed
-34: Tunnel closed
-36: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:41 2021
-36: Opening Tunnel
-36: Tunnel closed
-38: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:47 2021
-38: Opening Tunnel
-39: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:47 2021
-39: Opening Tunnel
-39: Tunnel closed
-42: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-42: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-41: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-41: Opening Tunnel
-42: Opening Tunnel
-38: Tunnel closed
-44: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-44: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-43: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-43: Opening Tunnel
-44: Opening Tunnel
-45: "CONNECT securepubads.g.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-46: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-46: Opening Tunnel
-45: Opening Tunnel
-48: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-48: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-47: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:49 2021
-48: Opening Tunnel
-47: Opening Tunnel
-42: Tunnel closed
-41: Tunnel closed
-49: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:51 2021
-50: "CONNECT r1---sn-5uaeznrz.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:51 2021
-49: Opening Tunnel
-50: Opening Tunnel
-46: Tunnel closed
-45: Tunnel closed
-51: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:51 2021
-51: Opening Tunnel
-43: Tunnel closed
-47: Tunnel closed
-44: Tunnel closed
-52: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:52 2021
-52: Opening Tunnel
-48: Tunnel closed
-51: Tunnel closed
-49: Tunnel closed
-53: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:54 2021
-53: Opening Tunnel
-52: Tunnel closed
-50: Tunnel closed
-54: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:55 2021
-54: Opening Tunnel
-55: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:56 2021
-55: Opening Tunnel
-53: Tunnel closed
-56: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:56 2021
-56: Opening Tunnel
-54: Tunnel closed
-57: "CONNECT r1---sn-5uaeznrz.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:05:58 2021
-57: Opening Tunnel
-55: Tunnel closed
-56: Tunnel closed
-58: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:01 2021
-58: Opening Tunnel
-57: Tunnel closed
-58: Tunnel closed
-60: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:04 2021
-60: Opening Tunnel
-61: "CONNECT r1---sn-5uaeznrz.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:05 2021
-61: Opening Tunnel
-62: "CONNECT suggestqueries-clients6.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:06 2021
-62: Opening Tunnel
-60: Tunnel closed
-62: Tunnel closed
-63: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:08 2021
-63: Opening Tunnel
-64: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:08 2021
-64: Opening Tunnel
-61: Tunnel closed
-65: "CONNECT r1---sn-5uaeznrz.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:10 2021
-65: Opening Tunnel
-63: Tunnel closed
-64: Tunnel closed
-66: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:13 2021
-66: Opening Tunnel
-65: Tunnel closed
-68: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:14 2021
-68: Opening Tunnel
-69: "CONNECT r1---sn-5uaeznrz.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 09:06:14 2021
-69: Opening Tunnel
-66: Tunnel closed
-68: Tunnel closed
-69: Tunnel closed
