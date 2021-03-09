@@ -2,7 +2,7 @@
 #define LOG_H
 #include <fstream>
 using namespace std;
-#define LOG_PATH "log.txt"
+#define LOG_PATH "/var/log/erss/proxy.log"
 
 class Log {
 private:

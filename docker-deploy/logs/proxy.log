@@ -1,0 +1,121 @@
+1: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:10 2021
+1: Not in cache.
+1: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+1: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+1: Responding "HTTP/1.1 200 OK
+2: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:11 2021
+2: Opening Tunnel
+3: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:11 2021
+3: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+8: "CONNECT safebrowsing.googleapis.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:14 2021
+7: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:14 2021
+8: Opening Tunnel
+7: NOTE Cached. Response will not be released from cache. Need revalidation.
+7: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+7: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+7: Responding "HTTP/1.1 200 OK
+9: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:14 2021
+9: NOTE Cached. Response will not be released from cache. Need revalidation.
+9: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+9: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+9: Responding "HTTP/1.1 200 OK
+8: Tunnel closed
+10: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:18 2021
+10: NOTE Cached. Response will not be released from cache. Need revalidation.
+10: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+10: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+10: Responding "HTTP/1.1 200 OK
+12: "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:19 2021
+12: Not in cache.
+12: Requesting "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from people.duke.edu
+12: Recieved "HTTP/1.1 404 Not Found" from people.duke.edu
+12: Responding "HTTP/1.1 404 Not Found
+11: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:18 2021
+11: NOTE Cached. Response will not be released from cache. Need revalidation.
+11: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+11: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+11: Responding "HTTP/1.1 200 OK
+2: Tunnel closed
+16: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:25 2021
+16: NOTE Cached. Response will not be released from cache. Need revalidation.
+16: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+16: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+16: Responding "HTTP/1.1 200 OK
+17: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:28 2021
+17: NOTE Cached. Response will not be released from cache. Need revalidation.
+17: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+17: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+17: Responding "HTTP/1.1 200 OK
+13: "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:20 2021
+13: NOTE Cached. Stale, need re-validation.
+13: Requesting "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from people.duke.edu
+13: Recieved "HTTP/1.1 404 Not Found" from people.duke.edu
+18: "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:29 2021
+18: NOTE Cached. Stale, need re-validation.
+18: Requesting "GET http://people.duke.edu/~bmr23/ece568/class.html HTTP/1.1" from people.duke.edu
+18: Recieved "HTTP/1.1 404 Not Found" from people.duke.edu
+18: Responding "HTTP/1.1 404 Not Found
+19: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:29 2021
+19: NOTE Cached. Response will not be released from cache. Need revalidation.
+19: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+19: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+19: Responding "HTTP/1.1 200 OK
+23: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:35 2021
+23: NOTE Cached. Response will not be released from cache. Need revalidation.
+24: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:35 2021
+24: NOTE Cached. Response will not be released from cache. Need revalidation.
+24: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+24: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+24: Responding "HTTP/1.1 200 OK
+25: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:39 2021
+25: NOTE Cached. Response will not be released from cache. Need revalidation.
+25: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+25: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+25: Responding "HTTP/1.1 200 OK
+26: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:42 2021
+26: NOTE Cached. Response will not be released from cache. Need revalidation.
+26: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+26: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+26: Responding "HTTP/1.1 200 OK
+27: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:43 2021
+27: NOTE Cached. Response will not be released from cache. Need revalidation.
+27: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+27: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+27: Responding "HTTP/1.1 200 OK
+28: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:49 2021
+28: NOTE Cached. Response will not be released from cache. Need revalidation.
+28: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+28: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+28: Responding "HTTP/1.1 200 OK
+29: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:53 2021
+29: NOTE Cached. Response will not be released from cache. Need revalidation.
+29: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+29: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+29: Responding "HTTP/1.1 200 OK
+30: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:53 2021
+30: NOTE Cached. Response will not be released from cache. Need revalidation.
+30: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+30: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+30: Responding "HTTP/1.1 200 OK
+31: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:38:00 2021
+31: NOTE Cached. Response will not be released from cache. Need revalidation.
+31: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+31: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+31: Responding "HTTP/1.1 200 OK
+32: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:38:00 2021
+32: NOTE Cached. Response will not be released from cache. Need revalidation.
+32: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+32: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+32: Responding "HTTP/1.1 200 OK
+33: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:38:06 2021
+33: NOTE Cached. Response will not be released from cache. Need revalidation.
+33: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+33: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+33: Responding "HTTP/1.1 200 OK
+34: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:38:10 2021
+34: NOTE Cached. Response will not be released from cache. Need revalidation.
+34: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+34: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+34: Responding "HTTP/1.1 200 OK
+4: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 14:37:12 2021
+4: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
