@@ -1,0 +1,11 @@
+We conducted test both by direct accessing through browser and by accessing through a request generator plugin called RESTClient.
+We did:
+http://people.duke.edu/~bmr23/ece568/class.html(HTTP protocol GET 404 Cache)
+http://httpbin.org/forms/post(POST)
+http://ptsv2.com/t/ece-568/post(POST)
+https://www.google.com(CONNECT)
+https://www.bilibili.com/(Video platform, mainly CONNECT, some GET, POST)
+https://www.youtube.com/(Video platform, mainly CONNECT, some GET, POST)
+http://www.abasadfwe.com/(Host does not exist)
+http://www.gov.cn/(no-store Max-age Expires)
+
