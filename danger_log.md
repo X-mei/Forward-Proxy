@@ -10,4 +10,27 @@ Our program provides a strong gaurantee. In any of the phase related to socket c
 ## 4. RAII design
 In order to exploit edge of RAII design, we tried to minimize the case we call new. The only time we allocate a heap memory is when we are creating a `Request` object. And we have make sure that it is deleted after the processing is done, no matter if exception occured.
 
-## 5. Cache
+## 5. Issues encountered
+### 02/27
+- We use a long string to store the received data from both client and server. However, one potential danger exists in string is that string will automatically end in the ‘\0’ character, and the data transmitted may contain ‘\0’ in the middle of its content and it could lead to lost of message. A possible solution is to use a char array instead of string.
+- The parsing of http url in request header in our proxy follows the basic pattern. However, the http header may use other special formats and it could lead to the failure of parsing http request.
+
+### 03/01
+- The parsing of header field only follows the common pattern. For example, we assume that the time value of Date is in GMT format, while the time could be not in GMT format and it could lead to failure of our cache validation.
+- Our proxy analyze the cache control only according to the “Cache Control” header. However in our test it is found that a few websites use other header field instead of “Cache Control”.
+- For now we only test the functionality of the cache system using self-made requests and responses (in string). It will not guarantee the success in real connection. So we will implement tests in real connections soon.  
+
+### 03/03
+- The http header fields in a few websites may be different from the normal ones. For example, some websites use all lower case characters.
+- Our cache size is set to 100, but it could be easily filled if we have many requests.
+- We simply evict the least recently used response if the cache is full. However, this response may still be fresh and another strategy would be to evict the out-dated responses first.
+
+### 03/04
+- For now, if our proxy encounters a situation that it cannot handle, it will simply print the error message and exit. We will add some error catching conditions to avoid the use of exit() and handle those situations.
+- Our client could send bad request like a host that does not exist. We should add more error control system to handle these bad request.
+- The efficiency of our proxy is low, we should implement multi-thread operations.
+
+### 03/06
+- Only one thread should be able to get access to, including reading and writing to our cache data, which is stored in a map. So we add mutex in the critical regions.
+- If the number of request is too large, our proxy may crush.
+- We may receive harmful request from client, and our proxy is fragile to attacks.

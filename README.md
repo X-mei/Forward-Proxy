@@ -1,6 +1,6 @@
 ## Authors
 Meihong Ge, mg476@duke.edu  
-Ruiqi Sun, 
+Ruiqi Sun, rs546@duke.edu
 ## To run the Proxy:
 
 ## Overall Proxy design:
