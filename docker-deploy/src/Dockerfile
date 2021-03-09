@@ -11,6 +11,6 @@ RUN apt-get update && apt-get install -y make && apt-get install -y g++
 
 # This command runs your application, comment out this line to compile only
 # CMD ["./myapp"]
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["/bin/sh","./run.sh"]
 
 LABEL Name=httpcachingproxy Version=0.0.1

@@ -1,257 +1,784 @@
-1: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:15 2021
+1: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:13 2021
 1: Not in cache.
 1: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
 1: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
 1: Responding "HTTP/1.1 200 OK
-3: "CONNECT snippets.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:16 2021
+2: "CONNECT content-signature-2.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:13 2021
+2: Opening Tunnel
+3: "CONNECT firefox.settings.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:13 2021
 3: Opening Tunnel
-4: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:16 2021
-7: "CONNECT shavar.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:16 2021
-8: "CONNECT snippets.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:16 2021
+4: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:13 2021
+5: "CONNECT firefox.settings.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:13 2021
+5: Opening Tunnel
+6: "CONNECT safebrowsing.googleapis.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:13 2021
 4: Opening Tunnel
+6: Opening Tunnel
+7: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:14 2021
+5: Tunnel closed
+7: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+8: "CONNECT snippets.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:14 2021
+9: "CONNECT snippets.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:14 2021
 8: Opening Tunnel
-7: Opening Tunnel
-9: "GET http://httpbin.org/forms/post HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:16 2021
-9: Not in cache.
-9: Requesting "GET http://httpbin.org/forms/post HTTP/1.1" from httpbin.org
-9: Recieved "HTTP/1.1 200 OK" from httpbin.org
-9: Responding "HTTP/1.1 200 OK
-10: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:17 2021
-10: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-11: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:17 2021
-11: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-12: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:17 2021
-12: Opening Tunnel
-13: "GET http://httpbin.org/favicon.ico HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:17 2021
-13: Not in cache.
-13: Requesting "GET http://httpbin.org/favicon.ico HTTP/1.1" from httpbin.org
-13: Recieved "HTTP/1.1 404 NOT FOUND" from httpbin.org
-13: Responding "HTTP/1.1 404 NOT FOUND
+9: Opening Tunnel
+6: Tunnel closed
+10: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:15 2021
+11: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:15 2021
+11: Opening Tunnel
+2: Tunnel closed
+10: Opening Tunnel
 3: Tunnel closed
 4: Tunnel closed
-8: Tunnel closed
-7: Tunnel closed
-15: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:18 2021
-15: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-16: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:19 2021
-16: NOTE Cached. Response will not be released from cache. Need revalidation.
-16: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-16: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-16: Responding "HTTP/1.1 200 OK
-12: Tunnel closed
-17: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:20 2021
+12: "CONNECT shavar.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:15 2021
+9: Tunnel closed
+12: Opening Tunnel
+16: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:15 2021
+17: "CONNECT snippets.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:15 2021
 17: Opening Tunnel
-17: Tunnel closed
-18: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:22 2021
-18: NOTE Cached. Response will not be released from cache. Need revalidation.
-18: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-18: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-18: Responding "HTTP/1.1 200 OK
-19: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:24 2021
-19: Opening Tunnel
-20: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:26 2021
-20: NOTE Cached. Response will not be released from cache. Need revalidation.
-20: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-20: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-20: Responding "HTTP/1.1 200 OK
-19: Tunnel closed
-21: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:29 2021
-21: NOTE Cached. Response will not be released from cache. Need revalidation.
-21: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-21: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-21: Responding "HTTP/1.1 200 OK
-22: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:31 2021
-22: Opening Tunnel
-23: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:33 2021
-23: NOTE Cached. Response will not be released from cache. Need revalidation.
-23: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-23: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-23: Responding "HTTP/1.1 200 OK
-22: Tunnel closed
-24: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:36 2021
-24: NOTE Cached. Response will not be released from cache. Need revalidation.
-24: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-24: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-24: Responding "HTTP/1.1 200 OK
-25: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:39 2021
+16: Opening Tunnel
+18: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:16 2021
+18: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+8: Tunnel closed
+19: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:16 2021
+19: NOTE Cached. Response will not be released from cache. Need revalidation.
+19: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+19: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+19: Responding "HTTP/1.1 200 OK
+20: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:16 2021
+20: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+21: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:16 2021
+21: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+22: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:17 2021
+23: "CONNECT fonts.googleapis.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:17 2021
+25: "CONNECT fonts.googleapis.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:17 2021
+23: Opening Tunnel
 25: Opening Tunnel
-26: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:39 2021
-26: NOTE Cached. Response will not be released from cache. Need revalidation.
-26: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-26: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-26: Responding "HTTP/1.1 200 OK
-25: Tunnel closed
-27: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:43 2021
-27: NOTE Cached. Response will not be released from cache. Need revalidation.
-27: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-27: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-27: Responding "HTTP/1.1 200 OK
-28: "CONNECT location.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:45 2021
+10: Tunnel closed
+22: Opening Tunnel
+12: Tunnel closed
+17: Tunnel closed
+16: Tunnel closed
+27: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:17 2021
+27: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+11: Tunnel closed
+28: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:18 2021
 28: Opening Tunnel
-29: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:46 2021
-29: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-31: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:46 2021
+23: Tunnel closed
+26: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:17 2021
+26: Opening Tunnel
+29: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:18 2021
+29: Opening Tunnel
+30: "CONNECT googleads.g.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:18 2021
+30: Opening Tunnel
+31: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
 31: Opening Tunnel
-32: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:46 2021
-32: NOTE Cached. Response will not be released from cache. Need revalidation.
-32: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-32: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-32: Responding "HTTP/1.1 200 OK
-28: Tunnel closed
-33: "CONNECT location.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:47 2021
-33: Opening Tunnel
-31: Tunnel closed
-33: Tunnel closed
-34: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:50 2021
-34: NOTE Cached. Response will not be released from cache. Need revalidation.
-34: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-34: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-34: Responding "HTTP/1.1 200 OK
-35: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:53 2021
-35: NOTE Cached. Response will not be released from cache. Need revalidation.
-35: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-35: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-35: Responding "HTTP/1.1 200 OK
-37: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:54 2021
-37: Opening Tunnel
-37: Tunnel closed
-36: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:28:54 2021
-36: NOTE Cached. Response will not be released from cache. Need revalidation.
-36: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-36: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-36: Responding "HTTP/1.1 200 OK
-38: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:00 2021
-38: NOTE Cached. Response will not be released from cache. Need revalidation.
-38: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-38: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-38: Responding "HTTP/1.1 200 OK
-40: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:01 2021
+34: "CONNECT www.google.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
+34: Opening Tunnel
+38: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
+40: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
+41: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
+39: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
+38: Opening Tunnel
 40: Opening Tunnel
-40: Tunnel closed
-39: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:01 2021
-39: NOTE Cached. Response will not be released from cache. Need revalidation.
-39: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-39: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-39: Responding "HTTP/1.1 200 OK
-41: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:07 2021
-41: NOTE Cached. Response will not be released from cache. Need revalidation.
-41: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-41: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-41: Responding "HTTP/1.1 200 OK
-42: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:09 2021
+41: Opening Tunnel
+39: Opening Tunnel
+25: Tunnel closed
+22: Tunnel closed
+42: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
+43: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
 42: Opening Tunnel
-43: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:10 2021
-43: NOTE Cached. Response will not be released from cache. Need revalidation.
-43: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-43: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-43: Responding "HTTP/1.1 200 OK
-42: Tunnel closed
-44: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:14 2021
+43: Opening Tunnel
+44: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:19 2021
 44: NOTE Cached. Response will not be released from cache. Need revalidation.
 44: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
 44: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
 44: Responding "HTTP/1.1 200 OK
-45: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:15 2021
-45: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:15 2021
-46: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:15 2021
+39: Tunnel closed
+40: Tunnel closed
+41: Tunnel closed
+28: Tunnel closed
+43: Tunnel closed
+42: Tunnel closed
+29: Tunnel closed
+30: Tunnel closed
+31: Tunnel closed
+26: Tunnel closed
+34: Tunnel closed
+45: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:21 2021
+38: Tunnel closed
 45: Opening Tunnel
+46: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:21 2021
 46: Opening Tunnel
-48: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:16 2021
-48: Opening Tunnel
-45: Tunnel closed
 46: Tunnel closed
-10: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
-10: Responding "HTTP/1.1 502 Bad Gateway
-49: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:17 2021
-49: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-50: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:17 2021
+47: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:22 2021
+47: Opening Tunnel
+45: Tunnel closed
+48: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:23 2021
+49: "CONNECT r3---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:23 2021
+50: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:23 2021
 50: NOTE Cached. Response will not be released from cache. Need revalidation.
 50: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+49: Opening Tunnel
+48: Opening Tunnel
 50: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
 50: Responding "HTTP/1.1 200 OK
-48: Tunnel closed
-15: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
-15: Responding "HTTP/1.1 502 Bad Gateway
-51: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:18 2021
-51: NOTE Cached. Response will not be released from cache. Need revalidation.
-51: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-51: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-51: Responding "HTTP/1.1 200 OK
-52: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:24 2021
+51: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:23 2021
+52: "CONNECT r1---sn-hjoj-poul.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:23 2021
+51: Opening Tunnel
 52: Opening Tunnel
-53: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:24 2021
-53: NOTE Cached. Response will not be released from cache. Need revalidation.
-53: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-53: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-53: Responding "HTTP/1.1 200 OK
-54: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:25 2021
-54: NOTE Cached. Response will not be released from cache. Need revalidation.
-54: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-54: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-54: Responding "HTTP/1.1 200 OK
-52: Tunnel closed
-55: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:25 2021
-55: NOTE Cached. Response will not be released from cache. Need revalidation.
-56: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:28 2021
-56: NOTE Cached. Response will not be released from cache. Need revalidation.
-56: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-56: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-56: Responding "HTTP/1.1 200 OK
-57: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:31 2021
+53: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:24 2021
+54: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:24 2021
+53: Opening Tunnel
+54: Opening Tunnel
+47: Tunnel closed
+56: "CONNECT static.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:24 2021
+55: "CONNECT www.google.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:24 2021
+56: Opening Tunnel
+55: Opening Tunnel
+49: Tunnel closed
+48: Tunnel closed
+57: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:25 2021
 57: Opening Tunnel
-58: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:32 2021
-58: NOTE Cached. Response will not be released from cache. Need revalidation.
-58: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-58: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-58: Responding "HTTP/1.1 200 OK
-57: Tunnel closed
-59: "POST http://httpbin.org/post HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:34 2021
-59: Requesting "POST http://httpbin.org/post HTTP/1.1" from httpbin.org
-59: Recieved "HTTP/1.1 200 OK" from httpbin.org
-59: Responding "HTTP/1.1 200 OK
-60: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:35 2021
+58: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:25 2021
+59: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:25 2021
+59: Opening Tunnel
+58: Opening Tunnel
+51: Tunnel closed
+52: Tunnel closed
+54: Tunnel closed
+56: Tunnel closed
+55: Tunnel closed
+53: Tunnel closed
+60: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:26 2021
 60: NOTE Cached. Response will not be released from cache. Need revalidation.
 60: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
 60: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
 60: Responding "HTTP/1.1 200 OK
-62: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:39 2021
-61: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:39 2021
-61: NOTE Cached. Response will not be released from cache. Need revalidation.
-61: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-61: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-61: Responding "HTTP/1.1 200 OK
+57: Tunnel closed
+58: Tunnel closed
+61: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:28 2021
+62: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:28 2021
+61: Opening Tunnel
 62: Opening Tunnel
-63: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:39 2021
-63: NOTE Cached. Response will not be released from cache. Need revalidation.
-63: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-63: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-63: Responding "HTTP/1.1 200 OK
-62: Tunnel closed
-64: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:43 2021
-64: NOTE Cached. Response will not be released from cache. Need revalidation.
-64: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-64: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-64: Responding "HTTP/1.1 200 OK
-65: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:46 2021
-65: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
-66: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:46 2021
-66: NOTE Cached. Response will not be released from cache. Need revalidation.
-66: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-66: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-66: Responding "HTTP/1.1 200 OK
-67: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:47 2021
+59: Tunnel closed
+63: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:28 2021
+65: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:28 2021
+63: Opening Tunnel
+65: Opening Tunnel
+66: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:29 2021
+66: Opening Tunnel
+67: "CONNECT googleads.g.doubleclick.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:29 2021
 67: Opening Tunnel
-67: Tunnel closed
-68: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:50 2021
+68: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:30 2021
 68: NOTE Cached. Response will not be released from cache. Need revalidation.
 68: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
 68: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
 68: Responding "HTTP/1.1 200 OK
-69: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:50 2021
-69: NOTE Cached. Response will not be released from cache. Need revalidation.
-69: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
-69: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
-69: Responding "HTTP/1.1 200 OK
-70: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Mon Mar  8 14:29:54 2021
+61: Tunnel closed
+62: Tunnel closed
+65: Tunnel closed
+69: "CONNECT www.google.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:30 2021
+69: Opening Tunnel
+63: Tunnel closed
+66: Tunnel closed
+67: Tunnel closed
+70: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:32 2021
 70: Opening Tunnel
+69: Tunnel closed
+71: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:33 2021
+71: NOTE Cached. Response will not be released from cache. Need revalidation.
+71: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+71: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+71: Responding "HTTP/1.1 200 OK
+72: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:33 2021
+72: Opening Tunnel
 70: Tunnel closed
+73: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:36 2021
+73: Opening Tunnel
+75: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:36 2021
+75: Opening Tunnel
+72: Tunnel closed
+76: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:37 2021
+76: NOTE Cached. Response will not be released from cache. Need revalidation.
+76: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+76: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+76: Responding "HTTP/1.1 200 OK
+73: Tunnel closed
+75: Tunnel closed
+77: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:40 2021
+77: NOTE Cached. Response will not be released from cache. Need revalidation.
+77: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+77: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+77: Responding "HTTP/1.1 200 OK
+79: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:43 2021
+79: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:43 2021
+78: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:43 2021
+80: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:43 2021
+80: Opening Tunnel
+79: Opening Tunnel
+78: Opening Tunnel
+81: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:44 2021
+81: NOTE Cached. Response will not be released from cache. Need revalidation.
+81: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+81: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+81: Responding "HTTP/1.1 200 OK
+80: Tunnel closed
+78: Tunnel closed
+79: Tunnel closed
+82: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:47 2021
+82: NOTE Cached. Response will not be released from cache. Need revalidation.
+82: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+82: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+82: Responding "HTTP/1.1 200 OK
+83: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:47 2021
+83: NOTE Cached. Response will not be released from cache. Need revalidation.
+83: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+83: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+83: Responding "HTTP/1.1 200 OK
+84: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:51 2021
+84: Opening Tunnel
+85: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:52 2021
+86: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:52 2021
+85: Opening Tunnel
+86: Opening Tunnel
+84: Tunnel closed
+87: "CONNECT yt3.ggpht.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:54 2021
+87: Opening Tunnel
+88: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:54 2021
+88: NOTE Cached. Response will not be released from cache. Need revalidation.
+88: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+88: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+88: Responding "HTTP/1.1 200 OK
+86: Tunnel closed
+85: Tunnel closed
+87: Tunnel closed
+89: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:57 2021
+89: NOTE Cached. Response will not be released from cache. Need revalidation.
+89: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+89: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+89: Responding "HTTP/1.1 200 OK
+91: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:58 2021
+91: Opening Tunnel
+93: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:59 2021
+93: Opening Tunnel
+91: Tunnel closed
+90: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:04:58 2021
+90: NOTE Cached. Response will not be released from cache. Need revalidation.
+90: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+90: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+90: Responding "HTTP/1.1 200 OK
+93: Tunnel closed
+94: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:03 2021
+94: Opening Tunnel
+95: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:03 2021
+95: Opening Tunnel
+97: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:04 2021
+97: NOTE Cached. Response will not be released from cache. Need revalidation.
+97: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+97: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+97: Responding "HTTP/1.1 200 OK
+95: Tunnel closed
+98: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:06 2021
+94: Tunnel closed
+98: Opening Tunnel
+96: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:04 2021
+96: Opening Tunnel
+99: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:08 2021
+99: NOTE Cached. Response will not be released from cache. Need revalidation.
+99: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+99: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+99: Responding "HTTP/1.1 200 OK
+98: Tunnel closed
+96: Tunnel closed
+100: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:11 2021
+100: NOTE Cached. Response will not be released from cache. Need revalidation.
+100: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+100: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+100: Responding "HTTP/1.1 200 OK
+101: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:13 2021
+102: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:13 2021
+102: Opening Tunnel
+101: Opening Tunnel
+103: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:14 2021
+103: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+104: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:15 2021
+104: NOTE Cached. Response will not be released from cache. Need revalidation.
+104: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+104: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+104: Responding "HTTP/1.1 200 OK
+101: Tunnel closed
+18: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
+18: Responding "HTTP/1.1 502 Bad Gateway
+20: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
+20: Responding "HTTP/1.1 502 Bad Gateway
+21: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
+21: Responding "HTTP/1.1 502 Bad Gateway
+102: Tunnel closed
+105: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:17 2021
+105: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+106: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:18 2021
+106: NOTE Cached. Response will not be released from cache. Need revalidation.
+106: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+106: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+106: Responding "HTTP/1.1 200 OK
+107: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:21 2021
+107: Opening Tunnel
+108: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:21 2021
+108: NOTE Cached. Response will not be released from cache. Need revalidation.
+108: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+108: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+108: Responding "HTTP/1.1 200 OK
+107: Tunnel closed
+109: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:23 2021
+109: Opening Tunnel
+111: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:24 2021
+111: Opening Tunnel
+112: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:25 2021
+112: NOTE Cached. Response will not be released from cache. Need revalidation.
+112: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+112: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+112: Responding "HTTP/1.1 200 OK
+111: Tunnel closed
+109: Tunnel closed
+113: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:28 2021
+113: NOTE Cached. Response will not be released from cache. Need revalidation.
+113: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+113: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+113: Responding "HTTP/1.1 200 OK
+114: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:29 2021
+114: Opening Tunnel
+115: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:29 2021
+115: Opening Tunnel
+114: Tunnel closed
+116: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:32 2021
+116: NOTE Cached. Response will not be released from cache. Need revalidation.
+116: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+116: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+116: Responding "HTTP/1.1 200 OK
+115: Tunnel closed
+117: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:33 2021
+117: Opening Tunnel
+119: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:35 2021
+119: NOTE Cached. Response will not be released from cache. Need revalidation.
+119: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+119: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+119: Responding "HTTP/1.1 200 OK
+117: Tunnel closed
+121: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:36 2021
+121: Opening Tunnel
+121: Tunnel closed
+120: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:35 2021
+120: NOTE Cached. Response will not be released from cache. Need revalidation.
+120: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+120: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+120: Responding "HTTP/1.1 200 OK
+122: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:42 2021
+122: NOTE Cached. Response will not be released from cache. Need revalidation.
+122: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+122: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+122: Responding "HTTP/1.1 200 OK
+123: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:43 2021
+123: Opening Tunnel
+124: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:44 2021
+124: Opening Tunnel
+125: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:45 2021
+125: NOTE Cached. Response will not be released from cache. Need revalidation.
+125: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+125: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+125: Responding "HTTP/1.1 200 OK
+124: Tunnel closed
+123: Tunnel closed
+126: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:47 2021
+126: Opening Tunnel
+127: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:49 2021
+127: NOTE Cached. Response will not be released from cache. Need revalidation.
+127: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+127: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+127: Responding "HTTP/1.1 200 OK
+126: Tunnel closed
+128: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:51 2021
+128: Opening Tunnel
+129: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:52 2021
+129: NOTE Cached. Response will not be released from cache. Need revalidation.
+129: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+129: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+129: Responding "HTTP/1.1 200 OK
+128: Tunnel closed
+130: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:56 2021
+130: NOTE Cached. Response will not be released from cache. Need revalidation.
+130: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+130: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+130: Responding "HTTP/1.1 200 OK
+131: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:58 2021
+131: Opening Tunnel
+132: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:59 2021
+132: Opening Tunnel
+133: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:59 2021
+133: Opening Tunnel
+134: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:05:59 2021
+134: NOTE Cached. Response will not be released from cache. Need revalidation.
+134: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+134: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+134: Responding "HTTP/1.1 200 OK
+131: Tunnel closed
+133: Tunnel closed
+132: Tunnel closed
+135: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:03 2021
+135: NOTE Cached. Response will not be released from cache. Need revalidation.
+135: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+135: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+135: Responding "HTTP/1.1 200 OK
+136: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:03 2021
+136: Opening Tunnel
+136: Tunnel closed
+137: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:06 2021
+137: NOTE Cached. Response will not be released from cache. Need revalidation.
+137: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+137: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+137: Responding "HTTP/1.1 200 OK
+138: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:06 2021
+138: Opening Tunnel
+138: Tunnel closed
+139: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:10 2021
+139: NOTE Cached. Response will not be released from cache. Need revalidation.
+139: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+139: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+139: Responding "HTTP/1.1 200 OK
+140: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:13 2021
+140: NOTE Cached. Response will not be released from cache. Need revalidation.
+140: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+140: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+140: Responding "HTTP/1.1 200 OK
+103: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
+103: Responding "HTTP/1.1 502 Bad Gateway
+141: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:14 2021
+141: Opening Tunnel
+141: Tunnel closed
+142: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:16 2021
+142: NOTE Cached. Response will not be released from cache. Need revalidation.
+142: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+142: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+142: Responding "HTTP/1.1 200 OK
+105: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
+105: Responding "HTTP/1.1 502 Bad Gateway
+143: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:18 2021
+144: "CONNECT safebrowsing.googleapis.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:18 2021
+143: Opening Tunnel
+144: Opening Tunnel
+144: Tunnel closed
+145: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:20 2021
+145: NOTE Cached. Response will not be released from cache. Need revalidation.
+145: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+145: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+145: Responding "HTTP/1.1 200 OK
+146: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:20 2021
+146: Opening Tunnel
+143: Tunnel closed
+147: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:21 2021
+147: Opening Tunnel
+146: Tunnel closed
+147: Tunnel closed
+148: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:23 2021
+148: NOTE Cached. Response will not be released from cache. Need revalidation.
+148: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+148: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+148: Responding "HTTP/1.1 200 OK
+149: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:26 2021
+149: Opening Tunnel
+150: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:27 2021
+150: NOTE Cached. Response will not be released from cache. Need revalidation.
+150: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+150: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+150: Responding "HTTP/1.1 200 OK
+151: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:29 2021
+151: Opening Tunnel
+149: Tunnel closed
+153: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:30 2021
+153: NOTE Cached. Response will not be released from cache. Need revalidation.
+153: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+153: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+153: Responding "HTTP/1.1 200 OK
+151: Tunnel closed
+154: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:33 2021
+154: Opening Tunnel
+155: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:34 2021
+155: NOTE Cached. Response will not be released from cache. Need revalidation.
+155: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+155: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+155: Responding "HTTP/1.1 200 OK
+154: Tunnel closed
+156: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:36 2021
+156: Opening Tunnel
+157: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:37 2021
+157: NOTE Cached. Response will not be released from cache. Need revalidation.
+157: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+157: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+157: Responding "HTTP/1.1 200 OK
+156: Tunnel closed
+158: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:41 2021
+158: NOTE Cached. Response will not be released from cache. Need revalidation.
+158: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+158: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+158: Responding "HTTP/1.1 200 OK
+159: "CONNECT normandy.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:42 2021
+159: Opening Tunnel
+160: "CONNECT classify-client.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:43 2021
+160: Opening Tunnel
+161: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:44 2021
+159: Tunnel closed
+161: Opening Tunnel
+162: "POST http://ocsp.digicert.com/ HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:44 2021
+162: Requesting "POST http://ocsp.digicert.com/ HTTP/1.1" from ocsp.digicert.com
+163: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:44 2021
+163: NOTE Cached. Response will not be released from cache. Need revalidation.
+163: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+163: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+163: Responding "HTTP/1.1 200 OK
+160: Tunnel closed
+164: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:45 2021
+164: Opening Tunnel
+161: Tunnel closed
+165: "CONNECT content-signature-2.cdn.mozilla.net:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:46 2021
+165: Opening Tunnel
+164: Tunnel closed
+166: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:48 2021
+166: NOTE Cached. Response will not be released from cache. Need revalidation.
+166: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+166: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+166: Responding "HTTP/1.1 200 OK
+165: Tunnel closed
+168: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:49 2021
+168: Opening Tunnel
+167: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:48 2021
+167: NOTE Cached. Response will not be released from cache. Need revalidation.
+167: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+167: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+167: Responding "HTTP/1.1 200 OK
+170: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:51 2021
+170: Opening Tunnel
+168: Tunnel closed
+170: Tunnel closed
+171: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:54 2021
+171: NOTE Cached. Response will not be released from cache. Need revalidation.
+171: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+171: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+171: Responding "HTTP/1.1 200 OK
+172: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:57 2021
+172: Opening Tunnel
+172: Tunnel closed
+173: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:58 2021
+173: NOTE Cached. Response will not be released from cache. Need revalidation.
+173: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+173: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+173: Responding "HTTP/1.1 200 OK
+174: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:06:59 2021
+174: Opening Tunnel
+174: Tunnel closed
+175: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:01 2021
+175: NOTE Cached. Response will not be released from cache. Need revalidation.
+175: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+175: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+175: Responding "HTTP/1.1 200 OK
+176: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:03 2021
+176: Opening Tunnel
+177: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:05 2021
+177: NOTE Cached. Response will not be released from cache. Need revalidation.
+177: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+177: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+177: Responding "HTTP/1.1 200 OK
+176: Tunnel closed
+178: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:06 2021
+178: Opening Tunnel
+179: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:08 2021
+179: NOTE Cached. Response will not be released from cache. Need revalidation.
+179: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+179: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+179: Responding "HTTP/1.1 200 OK
+178: Tunnel closed
+180: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:11 2021
+180: NOTE Cached. Response will not be released from cache. Need revalidation.
+180: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+180: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+180: Responding "HTTP/1.1 200 OK
+181: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:14 2021
+181: Opening Tunnel
+182: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:15 2021
+182: NOTE Cached. Response will not be released from cache. Need revalidation.
+182: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+182: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+182: Responding "HTTP/1.1 200 OK
+181: Tunnel closed
+183: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:16 2021
+183: Opening Tunnel
+184: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:16 2021
+184: Opening Tunnel
+185: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:18 2021
+185: NOTE Cached. Response will not be released from cache. Need revalidation.
+185: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+185: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+185: Responding "HTTP/1.1 200 OK
+184: Tunnel closed
+186: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:18 2021
+186: Opening Tunnel
+183: Tunnel closed
+187: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:20 2021
+187: Opening Tunnel
+188: "CONNECT i.ytimg.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:21 2021
+188: Opening Tunnel
+186: Tunnel closed
+189: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:21 2021
+189: Opening Tunnel
+188: Tunnel closed
+190: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:22 2021
+190: NOTE Cached. Response will not be released from cache. Need revalidation.
+190: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+190: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+190: Responding "HTTP/1.1 200 OK
+187: Tunnel closed
+189: Tunnel closed
+191: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:25 2021
+191: Opening Tunnel
+192: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:25 2021
+192: NOTE Cached. Response will not be released from cache. Need revalidation.
+192: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+192: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+192: Responding "HTTP/1.1 200 OK
+193: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:26 2021
+193: NOTE Cached. Response will not be released from cache. Need revalidation.
+193: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+193: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+193: Responding "HTTP/1.1 200 OK
+191: Tunnel closed
+194: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:29 2021
+194: Opening Tunnel
+195: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:29 2021
+195: NOTE Cached. Response will not be released from cache. Need revalidation.
+195: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+195: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+195: Responding "HTTP/1.1 200 OK
+194: Tunnel closed
+196: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:32 2021
+196: Opening Tunnel
+197: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:33 2021
+197: NOTE Cached. Response will not be released from cache. Need revalidation.
+197: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+197: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+197: Responding "HTTP/1.1 200 OK
+196: Tunnel closed
+198: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:36 2021
+198: NOTE Cached. Response will not be released from cache. Need revalidation.
+198: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+198: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+198: Responding "HTTP/1.1 200 OK
+199: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:36 2021
+199: Opening Tunnel
+199: Tunnel closed
+200: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:40 2021
+200: NOTE Cached. Response will not be released from cache. Need revalidation.
+200: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+200: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+200: Responding "HTTP/1.1 200 OK
+201: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:40 2021
+201: NOTE Cached. Response will not be released from cache. Need revalidation.
+201: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+201: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+201: Responding "HTTP/1.1 200 OK
+162: Recieved "HTTP/1.1 502 Bad Gateway" from ocsp.digicert.com
+162: Responding "HTTP/1.1 502 Bad Gateway
+202: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:44 2021
+202: Opening Tunnel
+203: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:44 2021
+203: Opening Tunnel
+202: Tunnel closed
+204: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:46 2021
+204: NOTE Cached. Response will not be released from cache. Need revalidation.
+204: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+204: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+204: Responding "HTTP/1.1 200 OK
+203: Tunnel closed
+205: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:48 2021
+205: Opening Tunnel
+206: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:50 2021
+206: NOTE Cached. Response will not be released from cache. Need revalidation.
+206: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+206: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+206: Responding "HTTP/1.1 200 OK
+205: Tunnel closed
+207: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:51 2021
+207: Opening Tunnel
+208: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:53 2021
+208: NOTE Cached. Response will not be released from cache. Need revalidation.
+208: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+208: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+208: Responding "HTTP/1.1 200 OK
+207: Tunnel closed
+209: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:53 2021
+209: NOTE Cached. Response will not be released from cache. Need revalidation.
+209: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+209: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+209: Responding "HTTP/1.1 200 OK
+210: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:07:59 2021
+210: Opening Tunnel
+211: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:00 2021
+211: NOTE Cached. Response will not be released from cache. Need revalidation.
+211: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+211: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+211: Responding "HTTP/1.1 200 OK
+210: Tunnel closed
+212: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:03 2021
+212: Opening Tunnel
+213: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:03 2021
+213: NOTE Cached. Response will not be released from cache. Need revalidation.
+213: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+213: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+213: Responding "HTTP/1.1 200 OK
+212: Tunnel closed
+215: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:07 2021
+215: Opening Tunnel
+214: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:04 2021
+214: NOTE Cached. Response will not be released from cache. Need revalidation.
+214: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+214: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+214: Responding "HTTP/1.1 200 OK
+215: Tunnel closed
+217: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:10 2021
+217: NOTE Cached. Response will not be released from cache. Need revalidation.
+217: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+217: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+217: Responding "HTTP/1.1 200 OK
+218: "CONNECT www.youtube.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:12 2021
+218: Opening Tunnel
+219: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:14 2021
+219: NOTE Cached. Response will not be released from cache. Need revalidation.
+219: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+219: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+219: Responding "HTTP/1.1 200 OK
+221: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:14 2021
+221: Opening Tunnel
+218: Tunnel closed
+221: Tunnel closed
+220: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:14 2021
+220: NOTE Cached. Response will not be released from cache. Need revalidation.
+222: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:17 2021
+222: NOTE Cached. Response will not be released from cache. Need revalidation.
+222: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+222: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+222: Responding "HTTP/1.1 200 OK
+223: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:19 2021
+223: Opening Tunnel
+224: "CONNECT r4---sn-5ualdnee.googlevideo.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:20 2021
+224: Opening Tunnel
+225: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:21 2021
+225: NOTE Cached. Response will not be released from cache. Need revalidation.
+225: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+225: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+225: Responding "HTTP/1.1 200 OK
+226: "CONNECT push.services.mozilla.com:443 HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:22 2021
+226: Opening Tunnel
+223: Tunnel closed
+224: Tunnel closed
+226: Tunnel closed
+227: "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from 10.200.76.180 @ Tue Mar  9 03:08:24 2021
+227: NOTE Cached. Response will not be released from cache. Need revalidation.
+227: Requesting "GET http://detectportal.firefox.com/success.txt HTTP/1.1" from detectportal.firefox.com
+227: Recieved "HTTP/1.1 200 OK" from detectportal.firefox.com
+227: Responding "HTTP/1.1 200 OK
