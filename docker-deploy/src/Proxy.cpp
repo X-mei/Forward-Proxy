@@ -150,7 +150,6 @@ void proxy::handleCONNECT(Request * request, int server_fd){
       break;
     }
     else if (FD_ISSET(request->getSocket(), &readfds)) {
-      //std::cout<<"Receiving data from client.\n";
       len = recv(request->getSocket(), &buf, BUFFER_SIZE, 0);
       if (len < 0) {
         std::cout<<"Failed to recv from client in tunnel:\n";
@@ -159,14 +158,12 @@ void proxy::handleCONNECT(Request * request, int server_fd){
       else if (len == 0) {
         break;
       }
-      //std::cout<<"Sending data to server.\n";
       if (send(server_fd, buf, len, 0) < 0){
         std::cout<<"Failed to send to server in tunnel:\n";
         break;
       }
     }
     else if (FD_ISSET(server_fd, &readfds)){
-      //std::cout<<"Receiving data from server.\n";
       len = recv(server_fd, &buf, BUFFER_SIZE, 0);
       if (len < 0) {
         std::cout<<"Failed to recv from server in tunnel:\n";
@@ -175,7 +172,6 @@ void proxy::handleCONNECT(Request * request, int server_fd){
       else if (len == 0) {
         break;
       }
-      //std::cout<<"Sending data to client.\n";
       if (send(request->getSocket(), buf, len, 0) < 0) {
         std::cout<<"Failed to send to client in tunnel:\n";
         break;
@@ -187,7 +183,7 @@ void proxy::handleCONNECT(Request * request, int server_fd){
   log->save(msg);
 }
 
-// Not done
+// connect with original server
 int proxy::runClient(std::string host, std::string port){
   socketInfo serverSocket = socketInfo(host.c_str(), port.c_str());
   try{
@@ -201,6 +197,7 @@ int proxy::runClient(std::string host, std::string port){
   return serverSocket.getFd();
 }
 
+// send big chunk of data
 void proxy::sendData(std::string data, int dest_fd){
   int bytes_total = data.size();
   int bytes_left = bytes_total;
@@ -208,7 +205,6 @@ void proxy::sendData(std::string data, int dest_fd){
   int bytes_count;
   char *buf = new char[bytes_left];
   memcpy(buf, data.data(), bytes_left);
-
   while (bytes_sent < bytes_total) {
     if ((bytes_count = send(dest_fd, buf + bytes_sent, bytes_left, 0)) == -1) {
       throw myException("Error send");
@@ -219,23 +215,20 @@ void proxy::sendData(std::string data, int dest_fd){
   delete [] buf;
 }
 
-
+// receive big chunk of data
 std::string proxy::receiveData(int buf_size, int source_fd){
   std::string data = "";
-  //int data_size = 0;
   while (1) {
     char buf[buf_size];
     int byte_count;
     if ((byte_count = recv(source_fd, buf, buf_size, 0)) == -1) {
       throw myException("Error recv");
     }
-    // The server closed the connection
     if (byte_count == 0) {
       break;
     }  
-    // Append the part of the response that was just received 
-    data.append(buf, byte_count);
-    //data_size += byte_count;
+    // Append part of received string 
+    data.append(buf);
   }
   return data;
 }
