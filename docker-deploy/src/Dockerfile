@@ -3,7 +3,7 @@ FROM gcc:latest
 # These commands copy your files into the specified directory in the image
 # and set that as the working location
 COPY . /src/
-RUN mkdir /var/src/erss
+RUN mkdir -p /var/src/erss
 WORKDIR /src
 
 # This command compiles your app using GCC, adjust for your source code
