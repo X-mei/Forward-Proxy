@@ -55,4 +55,43 @@ inline ThreadPool::ThreadPool(size_t size):stop(false){
     });
 }
 
+// Templated to handle different function and arguments
+template <class F, class... Args>
+auto ThreadPool::enqueue(F&& f, Args...&& args) -> std::future<typename std::result_of<F(Args...)>::type>{
+    // use return_type instead of typing that all the time
+    using return_type = typename std::result_of<F(Args...)>::type;
+    // create a smart pointer of a packaged task to better track the execution of task
+    // ##### details of execution not clear though #####
+    auto task = std::make_shared<std::packaged_task<return_type()>>(
+        std::bind(std::forward<F>(f), std::forward<Args>(args)...)
+    );
+    // define res as the result acquired asynchronously
+    std::future<return_type> res = task->get_future();
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        if (stop){
+            throw std::runtime_error("enqueue on stopped ThreadPool");
+        }
+        tasks.emplace([task](){ (*task)(); });
+    }
+    // call up one thread to handle the task
+    condition.notify_one();
+    // return the result immediately, but the actual completion is asynchronous(std::future)
+    return res;
+}
+
+inline ThreadPool::~ThreadPool() {
+    // set the stop indicator to true, protect it (singleton)
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        stop = true;
+    }
+    // wake up all the worker thread
+    condition.notify_all();
+    // we can join them directly since worker thread won't terminate before all task in queue is finished
+    for (std::thread &worker: workers){
+        worker.join();
+    }
+}
+
 #endif
