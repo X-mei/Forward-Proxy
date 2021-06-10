@@ -35,7 +35,10 @@ inline ThreadPool::ThreadPool(size_t size):stop(false){
     workers.emplace_back([this]{
         for (;;) {// ##### similar to while(1), diff not sure #####
             std::function<void()> task;
-            // ##### all enclosed is critical section? I assume #####
+            // by enclosing the section in a {}, the section acts like a function, that is, local
+            // variables destruct themselves when going out of scope. Unique_lock is a templated 
+            // class that offer RAII trait so when } is reached, the lock is automatically unlocked.
+            // See more reference here: https://changkun.de/modern-cpp/zh-cn/07-thread/index.html
             {
                 std::unique_lock<std::mutex> lock(this->queue_mutex);
                 // if stoped or no task to fetch, block.
