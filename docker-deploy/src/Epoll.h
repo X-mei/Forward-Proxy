@@ -16,7 +16,7 @@ private:
     std::vector<struct epoll_event> events;
 
 public:
-    Epoller(int maxEvent = 1024);
+    Epoller(size_t maxEvent);
 
     ~Epoller();
 
