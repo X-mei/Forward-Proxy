@@ -26,30 +26,33 @@ void ProxyServer::RunServer(){
         for(int i = 0; i < eventCnt; i++) {
             /* handle event */
             int fd = epoll_obj->GetEventFd(i);
-            uint32_t events = epoll_obj->GetEventStatus(i);
-            if (events & (EPOLLERR | EPOLLHUP | EPOLLRDHUP)) {
+            uint32_t event = epoll_obj->GetEventStatus(i);
+            if (event & (EPOLLERR | EPOLLHUP | EPOLLRDHUP)) {
                 /* when there is error or hang up */
                 fprintf (stderr, "epoll error\n");
                 close (fd);
                 continue;
             }
-            if (events & EPOLLIN){
+            if (event & EPOLLIN){
                 if (fd == listen_fd){
                     /* handle new connection */
                     this.HandleListen();
                 }
                 else {
                     /* handle read from socket */
+                    this.HandleRead(fd, event);
                     //assert(users_.count(fd) > 0);
                     //this.HandleRead(&users_[fd]);
                 }
             }
-            else if ((events & EPOLLOUT) && fd != listen_fd){
+            else if ((event & EPOLLOUT) && fd != listen_fd){
                 /* handle write to socket */
+                this.HandleWrite(fd, event);
                 //assert(users_.count(fd) > 0);
                 //this.HandleWrite(&users_[fd]);
             }
             } else {
+                fprintf (stderr, "unexpected error\n");
                 //LOG_ERROR("Unexpected event");
             }
             // else if(events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR)) {
@@ -125,7 +128,7 @@ bool ProxyServer::InitSocket(){
     return true;
 }
 
-void WebServer::InitEventMode(int trigger_mode){
+void ProxyServer::InitEventMode(int trigger_mode){
     listen_event = EPOLLRDHUP;
     connection_event = EPOLLONESHOT | EPOLLRDHUP;
     switch (trigMode)
@@ -150,7 +153,67 @@ void WebServer::InitEventMode(int trigger_mode){
     //HttpConn::isET = (connEvent_ & EPOLLET);
 }
 
-int WebServer::setFdNonBlock(int fd){
+void ProxyServer::HandleListen(){
+    do {
+        struct sockaddr_in addr;
+        socklen_t len = sizeof(addr);
+        char hbuf[INET_ADDRSTRLEN];
+        
+        int fd = accept(listen_fd, (struct sockaddr *)&addr, &len);
+        if(fd <= 0) {
+            if ((errno == EAGAIN) || (errno == EWOULDBLOCK)){
+                // do nothing
+            }
+            else {
+                perror("accept");
+            }
+            break;
+        }
+        inet_ntop(AF_INET, &addr.sin_addr, hbuf, sizeof(hbuf));
+        printf("Accepted connection on descriptor %d (host=%s, port=%d)\n", fd, hbuf, addr.sin_port);
+        this.SetFdNonBlock(fd);
+        if (!epoll_obj.AddFd(fd, EPOLLIN | connection_event)){
+            fprintf (stderr, "add fd error\n");
+        }
+    }while(listen_event & EPOLLET);
+}
+
+void ProxyServer::HandleRead(int fd, uint32_t& event){
+    while (1) {
+        ssize_t count;
+        char buf[512];
+        count = read(fd, buf, sizeof(buf));
+        if (count == -1) {
+            if (errno != EAGAIN) {
+                perror ("read");
+                close(fd);
+            }
+            break;
+        } else if (count == 0) {
+            /* 数据读取完毕，结束 */
+            close(fd);
+            printf ("Closed connection on descriptor %d\n", fd);
+            break;
+        }
+        /* 输出到stdout */
+        s = write (1, buf, count);
+        if (s == -1) {
+            perror ("write");
+            abort ();
+        }
+        event = EPOLLOUT | EPOLLET;
+        epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event);
+    }
+}
+
+void HandleWrite(int fd, uint32_t& event){
+    write(fd, "Welcome to nowhere.\n", 20);
+    event = EPOLLET | EPOLLIN;
+    epoll_ctl(efd, EPOLL_CTL_MOD, fd, &event);
+}
+
+
+int ProxyServer::SetFdNonBlock(int fd){
     assert(fd > 0);
     return fcntl(fd, F_SETFL, fcntl(fd, F_GETFD, 0) | O_NONBLOCK);
 }

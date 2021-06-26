@@ -31,13 +31,11 @@ private:
 
     void HandleListen();
 
-    void HandleRead();
+    void HandleRead(int fd, uint32_t& event);
 
-    void HandleWrite();
+    void HandleWrite(int fd, uint32_t& event);
 
     void CloseConnection();
-
-    void 
 
 public:
     ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode);
