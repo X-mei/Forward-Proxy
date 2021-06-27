@@ -40,7 +40,7 @@ int Epoller::GetEventFd(size_t i) const {
     return events[i].data.fd;
 }
 
-uint32_t Epoller::GetEventsStatus(size_t i) const {
+uint32_t Epoller::GetEventStatus(size_t i) const {
     assert(i < events.size() && i >= 0);
     return events[i].events;
 }

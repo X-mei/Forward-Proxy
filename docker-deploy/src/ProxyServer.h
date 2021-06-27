@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "Epoller.h"
+#include "Epoll.h"
 #include "ThreadPool.h"
 
 class ProxyServer{
@@ -17,11 +17,11 @@ private:
     int is_close;
     int listen_port;
     bool open_linger;
-    Epoller epoll_obj;
-    ThreadPool threadpool_obj;
+    Epoller* epoll_obj;
+    ThreadPool* threadpool_obj;
 
     uint32_t listen_event;
-    uint32_t connection_event
+    uint32_t connection_event;
 
     static int SetFdNonBlock(int fd);
     
@@ -38,12 +38,11 @@ private:
     void CloseConnection();
 
 public:
-    ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode);
+    ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode, int port);
 
     ~ProxyServer();
 
     void RunServer();
-
     
 };
 
