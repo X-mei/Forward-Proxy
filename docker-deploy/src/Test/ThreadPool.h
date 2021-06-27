@@ -4,11 +4,11 @@
 #include <mutex>
 #include <thread>
 #include <queue>
-#include <vector>
 // Not sure how these's library function yet
 #include <future>
 #include <functional>
 #include <stdexcept>
+#include <vector>
 #include <memory>
 
 class ThreadPool {
@@ -27,7 +27,7 @@ public:
     ThreadPool(size_t size);
     template <class F, class... Args>
     // the function to add new task to the task queue (core)
-    auto enqueue(F && f, Args &&... args) -> std::future<typename std::result_of<F(Args...)>::type>;
+    auto enqueue(F && f, Args && args) -> std::future<typename std::result_of<F(Args...)>::type>;
     ~ThreadPool();
 };
 
@@ -43,7 +43,7 @@ inline ThreadPool::ThreadPool(size_t size):stop(false){
                 std::unique_lock<std::mutex> lock(this->queue_mutex);
                 // if stoped or no task to fetch, block.
                 // ##### not understanding the syxtax here #####
-                this->condition.wait(lock, [this]{return this->stop || !this->tasks.empty();});
+                this->condition.wait(lock, [this]{return this->stop() || !this->tasks.empty();})
                 // after waked, only terminate worker thread when all tasks are done.
                 if (this->stop && this->tasks.empty()){
                     return;
@@ -60,7 +60,7 @@ inline ThreadPool::ThreadPool(size_t size):stop(false){
 
 // Templated to handle different function and arguments
 template <class F, class... Args>
-auto ThreadPool::enqueue(F&& f, Args&&... args) -> std::future<typename std::result_of<F(Args...)>::type>{
+auto ThreadPool::enqueue(F&& f, Args...&& args) -> std::future<typename std::result_of<F(Args...)>::type>{
     // use return_type instead of typing that all the time
     using return_type = typename std::result_of<F(Args...)>::type;
     // create a smart pointer of a packaged task to better track the execution of task

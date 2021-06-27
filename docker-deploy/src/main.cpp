@@ -14,7 +14,6 @@
 #include "Cache.h"
 #include "myException.h"
 #include "socket.h"
-
 std::ofstream logFile;
 
 void testRequestParser(){
@@ -45,8 +44,9 @@ void testProxy(const char * port){
 int main(int argc, const char * argv[]) {
     logFile.open(LOG_PATH);
     const char * port = "12345";
-    //testRequestParser();
+    testRequestParser();
     testProxy(port);
     logFile.close();
+
     return 0;
 }
