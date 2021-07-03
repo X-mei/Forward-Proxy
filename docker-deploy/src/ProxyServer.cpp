@@ -28,6 +28,7 @@ void ProxyServer::RunServer(){
         //     timeMS = timer_->GetNextTick();
         // }
         int eventCnt = epoll_obj->Wait(-1);
+        //std::cout << "Should only appear once." << std::endl;
         for(int i = 0; i < eventCnt; i++) {
             /* handle event */
             int fd = epoll_obj->GetEventFd(i);
@@ -41,10 +42,12 @@ void ProxyServer::RunServer(){
             if (event & EPOLLIN){
                 if (fd == listen_fd){
                     /* handle new connection */
+                    std::cout << "Handling new connection." << std::endl;
                     this->HandleListen();
                 }
                 else {
                     /* handle read from socket */
+                    std::cout << "Handling read from socket." << std::endl;
                     this->HandleRead(fd, event);
                     //assert(users_.count(fd) > 0);
                     //this.HandleRead(&users_[fd]);
@@ -52,6 +55,7 @@ void ProxyServer::RunServer(){
             }
             else if ((event & EPOLLOUT) && fd != listen_fd){
                 /* handle write to socket */
+                std::cout << "Handling write to socket." << std::endl;
                 this->HandleWrite(fd, event);
                 //assert(users_.count(fd) > 0);
                 //this.HandleWrite(&users_[fd]);
@@ -64,8 +68,7 @@ void ProxyServer::RunServer(){
             //     assert(users_.count(fd) > 0);
             //     CloseConnection(&users_[fd]);
             // }
-                
-            
+
         }
     }
 }
@@ -123,13 +126,14 @@ bool ProxyServer::InitSocket(){
         close(listen_fd);
         return false;
     }
+    this->SetFdNonBlock(listen_fd);
     ret = epoll_obj->AddFd(listen_fd, EPOLLIN | listen_event);
     if(ret == 0) {
         //LOG_ERROR("Add listen error!");
         close(listen_fd);
         return false;
     }
-    this->SetFdNonBlock(listen_fd);
+    std::cout << "Server init complete, start listening for request." << std::endl;
     return true;
 }
 
@@ -155,6 +159,7 @@ void ProxyServer::InitEventMode(int trigger_mode){
         connection_event |= EPOLLET;
         break;
     }
+    std::cout << "Event mode setting done." << std::endl;
     //HttpConn::isET = (connEvent_ & EPOLLET);
 }
 
@@ -163,7 +168,6 @@ void ProxyServer::HandleListen(){
         struct sockaddr_in addr;
         socklen_t len = sizeof(addr);
         char hbuf[INET_ADDRSTRLEN];
-        
         int fd = accept(listen_fd, (struct sockaddr *)&addr, &len);
         if(fd <= 0) {
             if ((errno == EAGAIN) || (errno == EWOULDBLOCK)){
