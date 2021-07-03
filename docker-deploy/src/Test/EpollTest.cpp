@@ -1,5 +1,5 @@
-#include "../ProxyServer.h"
-#include "../Epoll.h"
+#include "../Version2/ProxyServer.h"
+#include "../Version2/Epoll.h"
 #include <iostream>
 #include <time.h>
 #include <thread>
