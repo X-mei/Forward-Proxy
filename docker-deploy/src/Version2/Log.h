@@ -21,12 +21,12 @@ private:
     bool is_open;
     int level;
     int line_count;
-    int to_day;
+    int this_day;
     int is_async;
 
     FILE* fp;
     // RAII here
-    std::unique_ptr<BlockDeque<std::string>> deque;
+    std::unique_ptr<BlockDeque<std::string>> my_deque;
     std::unique_ptr<std::thread> write_thread;
     std::mutex mtx;
 
@@ -45,8 +45,8 @@ public:
     static Log* GetInstance();//Instance()
     static void FlushLogThread();
 
-    void write(int level, const char* format, ...);
-    void flush();
+    void Write(int level, const char* format, ...);
+    void Flush();
 
     int GetLevel();
     void SetLevel(int level);
