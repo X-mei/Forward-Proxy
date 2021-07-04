@@ -87,7 +87,7 @@ void Log::Write(int level, const char *format, ...) {
     struct tm t = *sysTime;
     va_list vaList;
 
-    /* 日志日期 日志行数 */
+    // if reached next day or the line count is maxed out/new page, need to make a new file
     if (this_day != t.tm_mday || (line_count && (line_count  %  MAX_LINES == 0)))
     {
         unique_lock<mutex> locker(mtx);
@@ -95,18 +95,17 @@ void Log::Write(int level, const char *format, ...) {
         
         char newFile[LOG_NAME_LEN];
         char tail[36] = {0};
+        // create tail
         snprintf(tail, 36, "%04d_%02d_%02d", t.tm_year + 1900, t.tm_mon + 1, t.tm_mday);
 
-        if (this_day != t.tm_mday)
-        {
+        if (this_day != t.tm_mday) { // if a new day
             snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s%s", this->path, tail, this->suffix);
             this_day = t.tm_mday;
             line_count = 0;
         }
-        else {
-            snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s-%d%s", this->path, tail, (line_count  / MAX_LINES), this->suffix);
+        else { // if not a new day but the line count has reached maximum line count, need extra page for this day
+            snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s-%d%s", this->path, tail, (line_count / MAX_LINES), this->suffix);
         }
-        
         locker.lock();
         this->Flush();
         fclose(fp);
@@ -114,6 +113,7 @@ void Log::Write(int level, const char *format, ...) {
         assert(fp != nullptr);
     }
 
+    // write content into the file(old or new)
     {
         unique_lock<mutex> locker(mtx);
         ++line_count;
@@ -124,6 +124,8 @@ void Log::Write(int level, const char *format, ...) {
         buff.HasWritten(n);
         this->AppendLogLevelTitle(level);
 
+        // va_start & va_end & va_list are used with the varadic variables ...
+        // vsnprintf funtion similar to snprintf, but it takes in va_list as the variable argument list
         va_start(vaList, format);
         int m = vsnprintf(buff.BeginWrite(), buff.WritableBytes(), format, vaList);
         va_end(vaList);
@@ -131,6 +133,7 @@ void Log::Write(int level, const char *format, ...) {
         buff.HasWritten(m);
         buff.Append("\n\0", 2);
 
+        // depending on the mode of writing, use asyncronous mode/direct write
         if(is_async && my_deque && !my_deque->full()) {
             my_deque->push_back(buff.RetrieveAllToStr());
         } else {
