@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(){
-    ProxyServer svr(10,10,4,32323);//use default trigger mode
+    ProxyServer svr(10,10,4,32323,true,-1,10);//use default trigger mode and log level
     svr.RunServer();
     return 0;
 }

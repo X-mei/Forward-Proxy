@@ -1,4 +1,4 @@
-#include "log.h"
+#include "Log.h"
 
 Log::Log() {
     line_count = 0;
@@ -17,7 +17,7 @@ Log::~Log() {
         my_deque->Close();
         write_thread->join();
     }
-    if(fp_) {
+    if(fp) {
         lock_guard<mutex> locker(mtx);
         Flush();
         fclose(fp);
@@ -42,7 +42,6 @@ void Log::Init(int level = 1, const char* path, const char* suffix, int maxQueue
         if(!my_deque) {
             unique_ptr<BlockDeque<std::string>> newDeque(new BlockDeque<std::string>);
             this->my_deque = move(newDeque);
-            
             std::unique_ptr<std::thread> NewThread(new thread(FlushLogThread));
             this->write_thread = move(NewThread);
         }
@@ -66,7 +65,7 @@ void Log::Init(int level = 1, const char* path, const char* suffix, int maxQueue
         lock_guard<mutex> locker(mtx);
         buff.RetrieveAll();
         if(fp) { 
-            flush();
+            Flush();
             fclose(fp); 
         }
 
@@ -112,7 +111,7 @@ void Log::Write(int level, const char *format, ...) {
         fp = fopen(newFile, "a");
         assert(fp != nullptr);
     }
-
+    
     // write content into the file(old or new)
     {
         unique_lock<mutex> locker(mtx);
@@ -135,7 +134,8 @@ void Log::Write(int level, const char *format, ...) {
 
         // depending on the mode of writing, use asyncronous mode/direct write
         if(is_async && my_deque && !my_deque->full()) {
-            my_deque->push_back(buff.RetrieveAllToStr());
+            string temp = buff.RetrieveAllToStr();
+            my_deque->push_back(temp);
         } else {
             fputs(buff.Peek(), fp);
         }

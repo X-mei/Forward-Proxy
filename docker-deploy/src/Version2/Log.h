@@ -9,6 +9,11 @@
 #include <assert.h>
 #include <sys/stat.h>         //mkdir
 
+#include "Buffer.h"
+#include "BlockQueue.h"
+
+using namespace std;
+
 class Log{
 private:
     static const int LOG_PATH_LEN = 256;
@@ -30,7 +35,7 @@ private:
     std::unique_ptr<std::thread> write_thread;
     std::mutex mtx;
 
-    // Buffer buff;
+    Buffer buff;
     // int MAX_LINES; // ????
     
     // singleton, need cons/dest as private/protected
@@ -58,9 +63,9 @@ public:
 #define LOG_BASE(level, format, ...) \
     do { \
         Log* log = Log::GetInstance(); \
-        if (log->IsOpen() && log->getLevel() <= level){ \
-            log->write(level, format, ##__VA_ARGS__); \
-            log->flush(); \
+        if (log->IsOpen() && log->GetLevel() <= level){ \
+            log->Write(level, format, ##__VA_ARGS__); \
+            log->Flush(); \
         } \
     } while(0);
 

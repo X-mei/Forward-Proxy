@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <iostream>
 
+#include "Log.h"
 #include "Epoll.h"
 #include "ThreadPool.h"
 
@@ -39,7 +40,8 @@ private:
     void CloseConnection();
 
 public:
-    ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode, int port);
+    ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode, int port, bool enable_log,
+                int log_level, int log_queue_size);
 
     ~ProxyServer();
 

@@ -1,14 +1,31 @@
 #include "ProxyServer.h"
 
-ProxyServer::ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode, int port):
-                        is_close(false), listen_port(port)
+ProxyServer::ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode, int port, bool enable_log, 
+                        int log_level, int log_queue_size):is_close(false), listen_port(port)
 {
+
     epoll_obj = new Epoller(epoller_max_event);
     threadpool_obj = new ThreadPool(thread_pool_size);
     if (!InitSocket()){
         is_close = true;    
     }
     InitEventMode(trigger_mode);
+
+    if (enable_log){
+        Log::GetInstance()->Init(log_level, "./log", ".log", log_queue_size);
+        if (is_close){
+            LOG_ERROR("========== Server init error!==========");
+        }
+        else {
+            LOG_INFO("========== Server init ==========");
+            LOG_INFO("Port:%d", listen_port);
+            LOG_INFO("Listen Mode: %s, OpenConn Mode: %s",
+                            (listen_event & EPOLLET ? "ET": "LT"),
+                            (connection_event & EPOLLET ? "ET": "LT"));
+            LOG_INFO("Log level: %d", log_level);
+            LOG_INFO("ThreadPool num: %d", thread_pool_size);
+        }
+    }
 }
 
 ProxyServer::~ProxyServer(){
@@ -21,7 +38,7 @@ ProxyServer::~ProxyServer(){
 void ProxyServer::RunServer(){
     if(!is_close) 
     { 
-        //LOG_INFO("========== Server start ==========");
+        LOG_INFO("========== Server start ==========");
     }
     while(!is_close) {
         // if(timeoutMS_ > 0) {
