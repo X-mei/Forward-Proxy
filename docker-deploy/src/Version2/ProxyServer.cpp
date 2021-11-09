@@ -12,7 +12,7 @@ ProxyServer::ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int 
     InitEventMode(trigger_mode);
 
     if (enable_log){
-        Log::GetInstance()->Init(log_level, "./log", ".log", log_queue_size);
+        Log::Instance()->init(log_level, "./log", ".log", log_queue_size);
         if (is_close){
             LOG_ERROR("========== Server init error!==========");
         }

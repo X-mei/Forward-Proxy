@@ -1,5 +1,6 @@
 #ifndef LOG_H
 #define LOG_H
+
 #include <mutex>
 #include <string>
 #include <thread>
@@ -8,65 +9,66 @@
 #include <stdarg.h>           // vastart va_end
 #include <assert.h>
 #include <sys/stat.h>         //mkdir
-
-#include "Buffer.h"
 #include "BlockQueue.h"
+#include "Buffer.h"
 
-using namespace std;
+class Log {
+public:
+    void init(int level, const char* path = "./log", 
+                const char* suffix =".log",
+                int maxQueueCapacity = 1024);
 
-class Log{
+    static Log* Instance();
+    static void FlushLogThread();
+
+    void write(int level, const char *format,...);
+    void flush();
+
+    int GetLevel();
+    void SetLevel(int level);
+    bool IsOpen() { return isOpen_; }
+    
+private:
+    // singleton, need cons/dest as private/protected
+    Log();
+    void AppendLogLevelTitle_(int level);
+    virtual ~Log();
+    void AsyncWrite_();
+
 private:
     static const int LOG_PATH_LEN = 256;
     static const int LOG_NAME_LEN = 256;
     static const int MAX_LINES = 50000;
 
-    const char* path;
-    const char* suffix;
+    const char* path_;
+    const char* suffix_;
 
-    bool is_open;
-    int level;
-    int line_count;
-    int this_day;
-    int is_async;
+    int MAX_LINES_;
 
-    FILE* fp;
+    int lineCount_;
+    int toDay_;
+
+    bool isOpen_;
+ 
+    Buffer buff_;
+    int level_;
+    bool isAsync_;
+
+    FILE* fp_;
     // RAII here
-    std::unique_ptr<BlockDeque<std::string>> my_deque;
-    std::unique_ptr<std::thread> write_thread;
-    std::mutex mtx;
-
-    Buffer buff;
-    // int MAX_LINES; // ????
-    
-    // singleton, need cons/dest as private/protected
-    Log();
-    virtual ~Log();
-    void AppendLogLevelTitle(int level);
-    void AsyncWrite();
-
-public:
-    void Init(int level, const char* path = "./log", const char* suffix = ".log", int maxQueueCapacity = 1024);
-    
-    static Log* GetInstance();//Instance()
-    static void FlushLogThread();
-
-    void Write(int level, const char* format, ...);
-    void Flush();
-
-    int GetLevel();
-    void SetLevel(int level);
-    bool IsOpen() { return is_open; }
-
+    std::unique_ptr<BlockDeque<std::string>> deque_; 
+    std::unique_ptr<std::thread> writeThread_;
+    std::mutex mtx_;
 };
 
 // the ... and ##__VA_ARGS__here is used to define a variadic macros to conform to different type and number of parameters
 #define LOG_BASE(level, format, ...) \
-    do { \
-        Log* log = Log::GetInstance(); \
-        if (log->IsOpen() && log->GetLevel() <= level){ \
-            log->Write(level, format, ##__VA_ARGS__); \
-            log->Flush(); \
-        } \
+    do {\
+        Log* log = Log::Instance();\
+        if (log->IsOpen() && log->GetLevel() <= level) {\
+            log->write(level, format, ##__VA_ARGS__); \
+            log->flush();\
+        }\
     } while(0);
 
 // define some type of logs
@@ -78,4 +80,4 @@ public:
 #define LOG_WARN(format, ...) do {LOG_BASE(2, format, ##__VA_ARGS__)} while(0);
 #define LOG_ERROR(format, ...) do {LOG_BASE(3, format, ##__VA_ARGS__)} while(0);
 
-#endif
+#endif //LOG_H

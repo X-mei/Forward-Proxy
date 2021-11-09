@@ -1,84 +1,87 @@
 #include "Log.h"
 
 Log::Log() {
-    line_count = 0;
-    is_async = false;
-    write_thread = nullptr;
-    my_deque = nullptr;
-    this_day = 0;
-    fp = nullptr;
+    lineCount_ = 0;
+    isAsync_ = false;
+    writeThread_ = nullptr;
+    deque_ = nullptr;
+    toDay_ = 0;
+    fp_ = nullptr;
 }
 
 Log::~Log() {
-    if(write_thread && write_thread->joinable()) {
-        while(!my_deque->empty()) {
-            my_deque->flush();
+    if(writeThread_ && writeThread_->joinable()) {
+        while(!deque_->empty()) {
+            deque_->flush();
         };
-        my_deque->Close();
-        write_thread->join();
+        deque_->Close();
+        writeThread_->join();
     }
-    if(fp) {
-        lock_guard<mutex> locker(mtx);
-        Flush();
-        fclose(fp);
+    if(fp_) {
+        std::lock_guard<std::mutex> locker(mtx_);
+        this->flush();
+        fclose(fp_);
     }
 }
 
 int Log::GetLevel() {
-    lock_guard<mutex> locker(mtx);
-    return level;
+    std::lock_guard<std::mutex> locker(mtx_);
+    return level_;
 }
 
 void Log::SetLevel(int level) {
-    lock_guard<mutex> locker(mtx);
-    this->level = level;
+    std::lock_guard<std::mutex> locker(mtx_);
+    level_ = level;
 }
 
-void Log::Init(int level = 1, const char* path, const char* suffix, int maxQueueCapacity){
-    this->is_open = true;
-    this->level = level;
-    if(maxQueueCapacity > 0) {
-        this->is_async = true;
-        if(!my_deque) {
-            unique_ptr<BlockDeque<std::string>> newDeque(new BlockDeque<std::string>);
-            this->my_deque = move(newDeque);
-            std::unique_ptr<std::thread> NewThread(new thread(FlushLogThread));
-            this->write_thread = move(NewThread);
+void Log::init(int level = 1, const char* path, const char* suffix,
+    int maxQueueSize) {
+    isOpen_ = true;
+    level_ = level;
+    if(maxQueueSize > 0) {
+        isAsync_ = true;
+        if(!deque_) {
+            std::unique_ptr<BlockDeque<std::string>> newDeque(new BlockDeque<std::string>);
+            deque_ = move(newDeque);
+            
+            std::unique_ptr<std::thread> NewThread(new std::thread(FlushLogThread));
+            writeThread_ = move(NewThread);
         }
-    } 
-    else {
-        this->is_async = false;
+    } else {
+        isAsync_ = false;
     }
 
-    line_count = 0;
+    lineCount_ = 0;
 
     time_t timer = time(nullptr);
     struct tm *sysTime = localtime(&timer);
     struct tm t = *sysTime;
-    this->path = path;
-    this->suffix = suffix;
+    path_ = path;
+    suffix_ = suffix;
     char fileName[LOG_NAME_LEN] = {0};
     snprintf(fileName, LOG_NAME_LEN - 1, "%s/%04d_%02d_%02d%s", 
-            this->path, t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, this->suffix);
-    this_day = t.tm_mday;
+            path_, t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, suffix_);
+    toDay_ = t.tm_mday;
+
     {
-        lock_guard<mutex> locker(mtx);
-        buff.RetrieveAll();
-        if(fp) { 
-            Flush();
-            fclose(fp); 
+        std::lock_guard<std::mutex> locker(mtx_);
+        buff_.RetrieveAll();
+        if(fp_) { 
+            this->flush();
+            fclose(fp_); 
         }
 
-        fp = fopen(fileName, "a");
-        if(fp == nullptr) {
-            mkdir(this->path, 0777);
-            fp = fopen(fileName, "a");
+        fp_ = fopen(fileName, "a");
+        if(fp_ == nullptr) {
+            mkdir(path_, 0777);
+            fp_ = fopen(fileName, "a");
         } 
-        assert(fp != nullptr);
+        //cout << fileName << endl;
+        assert(fp_ != nullptr);
     }
 }
 
-void Log::Write(int level, const char *format, ...) {
+void Log::write(int level, const char *format, ...) {
     struct timeval now = {0, 0};
     gettimeofday(&now, nullptr);
     time_t tSec = now.tv_sec;
@@ -87,9 +90,9 @@ void Log::Write(int level, const char *format, ...) {
     va_list vaList;
 
     // if reached next day or the line count is maxed out/new page, need to make a new file
-    if (this_day != t.tm_mday || (line_count && (line_count  %  MAX_LINES == 0)))
+    if (toDay_ != t.tm_mday || (lineCount_ && (lineCount_  %  MAX_LINES == 0)))
     {
-        unique_lock<mutex> locker(mtx);
+        std::unique_lock<std::mutex> locker(mtx_);
         locker.unlock();
         
         char newFile[LOG_NAME_LEN];
@@ -97,93 +100,97 @@ void Log::Write(int level, const char *format, ...) {
         // create tail
         snprintf(tail, 36, "%04d_%02d_%02d", t.tm_year + 1900, t.tm_mon + 1, t.tm_mday);
 
-        if (this_day != t.tm_mday) { // if a new day
-            snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s%s", this->path, tail, this->suffix);
-            this_day = t.tm_mday;
-            line_count = 0;
+        if (toDay_ != t.tm_mday) {// if a new day
+            snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s%s", path_, tail, suffix_);
+            toDay_ = t.tm_mday;
+            lineCount_ = 0;
         }
         else { // if not a new day but the line count has reached maximum line count, need extra page for this day
-            snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s-%d%s", this->path, tail, (line_count / MAX_LINES), this->suffix);
+            snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s-%d%s", path_, tail, (lineCount_  / MAX_LINES), suffix_);
         }
+        
         locker.lock();
-        this->Flush();
-        fclose(fp);
-        fp = fopen(newFile, "a");
-        assert(fp != nullptr);
+        this->flush();
+        fclose(fp_);
+        fp_ = fopen(newFile, "a");
+        assert(fp_ != nullptr);
     }
-    
+
     // write content into the file(old or new)
     {
-        unique_lock<mutex> locker(mtx);
-        ++line_count;
-        int n = snprintf(buff.BeginWrite(), 128, "%d-%02d-%02d %02d:%02d:%02d.%06ld ",
+        std::unique_lock<std::mutex> locker(mtx_);
+        lineCount_++;
+        int n = snprintf(buff_.BeginWrite(), 128, "%d-%02d-%02d %02d:%02d:%02d.%06ld ",
                     t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
                     t.tm_hour, t.tm_min, t.tm_sec, now.tv_usec);
                     
-        buff.HasWritten(n);
-        this->AppendLogLevelTitle(level);
+        buff_.HasWritten(n);
+        AppendLogLevelTitle_(level);
 
         // va_start & va_end & va_list are used with the varadic variables ...
         // vsnprintf funtion similar to snprintf, but it takes in va_list as the variable argument list
         va_start(vaList, format);
-        int m = vsnprintf(buff.BeginWrite(), buff.WritableBytes(), format, vaList);
+        int m = vsnprintf(buff_.BeginWrite(), buff_.WritableBytes(), format, vaList);
         va_end(vaList);
 
-        buff.HasWritten(m);
-        buff.Append("\n\0", 2);
+        buff_.HasWritten(m);
+        buff_.Append("\n\0", 2);
 
         // depending on the mode of writing, use asyncronous mode/direct write
-        if(is_async && my_deque && !my_deque->full()) {
-            string temp = buff.RetrieveAllToStr();
-            my_deque->push_back(temp);
+        if(isAsync_ && deque_ && !deque_->full()) {
+            deque_->push_back(buff_.RetrieveAllToStr());
         } else {
-            fputs(buff.Peek(), fp);
+            fputs(buff_.Peek(), fp_);
         }
-        buff.RetrieveAll();
+        buff_.RetrieveAll();
     }
 }
 
-void Log::AppendLogLevelTitle(int level) {
+void Log::AppendLogLevelTitle_(int level) {
     switch(level) {
-        case 0:
-            buff.Append("[debug]: ", 9);
-            break;
-        case 1:
-            buff.Append("[info]: ", 9);
-            break;
-        case 2:
-            buff.Append("[warning]: ", 9);
-            break;
-        case 3:
-            buff.Append("[error]: ", 9);
-            break;
-        default:
-            buff.Append("[info]: ", 9);
-            break;
+    case 0:
+        buff_.Append("[debug]: ", 9);
+        break;
+    case 1:
+        buff_.Append("[info] : ", 9);
+        break;
+    case 2:
+        buff_.Append("[warn] : ", 9);
+        break;
+    case 3:
+        buff_.Append("[error]: ", 9);
+        break;
+    default:
+        buff_.Append("[info] : ", 9);
+        break;
     }
 }
 
-void Log::Flush() {
-    if (is_async){
-        my_deque->flush();
+void Log::flush() {
+    if(isAsync_) { 
+        //std::cout << "HI" << std::endl;
+        deque_->flush();
     }
-    fflush(fp);
+    fflush(fp_); // something wrong here
+    // std::string str = "Hi there";
+    // fputs(str.c_str(), fp_);
 }
 
-void Log::AsyncWrite() {
-    string str = "";
-    while (my_deque->pop(str)) {
-        lock_guard<mutex> locker(mtx);
-        fputs(str.c_str(), fp);
+void Log::AsyncWrite_() {
+    std::string str = "";
+    while(deque_->pop(str)) {
+        std::lock_guard<std::mutex> locker(mtx_);
+        assert(fp_ != nullptr);
+        fputs(str.c_str(), fp_);
     }
 }
 
 // using idea called local static to realize singleton
-Log* Log::GetInstance() {
-    static Log instance;
-    return &instance;
+Log* Log::Instance() {
+    static Log inst;
+    return &inst;
 }
 
 void Log::FlushLogThread() {
-    Log::GetInstance()->AsyncWrite();
+    Log::Instance()->AsyncWrite_();
 }

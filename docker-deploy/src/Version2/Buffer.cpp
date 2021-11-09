@@ -61,6 +61,7 @@ void Buffer::Append(const void* data, size_t len) {
 }
 
 void Buffer::Append(const char* str, size_t len) {
+    //std::cout << str << std::endl;
     assert(str);
     EnsureWriteable(len);
     std::copy(str, str + len, BeginWrite());
