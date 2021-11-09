@@ -12,11 +12,11 @@ class Epoller {
 private:
     // fd of the epoller core object
     int epollfd;
-    // 
+    // all the epoll event obejct added
     std::vector<struct epoll_event> events;
 
 public:
-    Epoller(size_t maxEvent);
+    explicit Epoller(size_t maxEvent = 1024);
 
     ~Epoller();
 

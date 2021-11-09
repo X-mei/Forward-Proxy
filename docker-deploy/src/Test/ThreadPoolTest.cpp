@@ -6,7 +6,7 @@
 using namespace std;
 
 void printAnswer(int answer){
-    if (answer%1000==0){
+    if (answer%10==0){
         cout << answer << endl;
     }
 }

@@ -19,8 +19,11 @@ private:
     int is_close;
     int listen_port;
     bool open_linger;
-    Epoller* epoll_obj;
-    ThreadPool* threadpool_obj;
+    // RAII management of self-defined object
+    std::unique_ptr<Epoller> epoll_obj;
+    std::unique_ptr<ThreadPool> threadpool_obj;
+    // Epoller* epoll_obj;
+    // ThreadPool* threadpool_obj;
 
     uint32_t listen_event;
     uint32_t connection_event;
@@ -37,10 +40,10 @@ private:
 
     void HandleWrite(int fd, uint32_t& event);
 
-    void CloseConnection();
+    void CloseConnection(int fd, uint32_t& event);
 
 public:
-    ProxyServer(size_t thread_pool_size, size_t epoller_max_event, int trigger_mode, int port, bool enable_log,
+    ProxyServer(size_t thread_pool_size, int trigger_mode, int port, bool enable_log,
                 int log_level, int log_queue_size);
 
     ~ProxyServer();
