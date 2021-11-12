@@ -208,6 +208,7 @@ void ProxyServer::InitEventMode(int trigger_mode){
 void ProxyServer::CloseConnection(int fd, uint32_t& event){
     LOG_INFO("Client[%d] quit!", fd);
     epoll_obj->DelFd(fd);
+    close(fd);
 }
 
 void ProxyServer::HandleListen(){
@@ -263,7 +264,10 @@ void ProxyServer::HandleRead(int fd, uint32_t& event){
 }
 
 void ProxyServer::HandleWrite(int fd, uint32_t& event){
-    write(fd, "Welcome to nowhere.\n", 20);
+    // const std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.");
+    // size_t n = OK_200.size();
+    // write(fd, OK_200, n);
+    write(fd, "HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.", 58);
     event = EPOLLET | EPOLLIN;
     epoll_obj->ModFd(fd, event);
 }
