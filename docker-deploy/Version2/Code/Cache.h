@@ -15,7 +15,7 @@ class Cache {
 private:
     list<string> LRU;
     unordered_map<string, Response> urlPair;
-    Log* log;
+    // Log* log;
     bool checkIfUrlExists(string url);
     void LRUEvict();
     void LRUAdd(string url);
@@ -32,7 +32,7 @@ private:
     
 public:
     Cache() {
-        log = new Log;
+        // log = new Log;
     }
     bool validate(Request & request, Response & response);
     void handle(Request & request, Response & response);

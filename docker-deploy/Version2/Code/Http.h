@@ -17,6 +17,7 @@ protected:
     unordered_map<string, string> cacheControlPair;
     string firstLine;
     string body;
+    string complete;
 public:
     Http() {}
     void parseEachLine(string & msg) {
@@ -46,15 +47,16 @@ public:
         return firstLine;
     }
     
-    void parseHeader(string & msg) {
-        size_t endOfFirst = msg.find("\r\n", 0);
-        size_t endOfRemain = msg.find("\r\n\r\n", endOfFirst);
+    void parseHeader(string complete) {
+        this->complete = complete;
+        size_t endOfFirst = complete.find("\r\n", 0);
+        size_t endOfRemain = complete.find("\r\n\r\n", endOfFirst);
         if (endOfFirst == string::npos || endOfRemain == string::npos) {
             throw myException("Invalid header");
         }
-        this->firstLine = msg.substr(0, endOfFirst);
-        string remainHeader = msg.substr(endOfFirst + 2, endOfRemain - endOfFirst);
-        body = msg.substr(endOfRemain + 4);
+        this->firstLine = complete.substr(0, endOfFirst);
+        string remainHeader = complete.substr(endOfFirst + 2, endOfRemain - endOfFirst);
+        body = complete.substr(endOfRemain + 4);
         parseEachLine(remainHeader);
         parseFirstLine();
         parseCacheControl();
@@ -148,8 +150,13 @@ public:
     void printFirstLine() {
         cout << firstLine << endl;
     }
-    std::string returnFirstLine() {
+    
+    string returnFirstLine() {
         return firstLine;
+    }
+
+    string getCompleteMessage(){
+        return complete;
     }
 };
 
