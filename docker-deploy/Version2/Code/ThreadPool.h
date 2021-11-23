@@ -32,30 +32,33 @@ public:
 };
 
 inline ThreadPool::ThreadPool(size_t size):stop(false){
-    workers.emplace_back([this]{
-        for (;;) {// ##### similar to while(1), diff not sure #####
-            std::function<void()> task;
-            // by enclosing the section in a {}, the section acts like a function, that is, local
-            // variables destruct themselves when going out of scope. Unique_lock is a templated 
-            // class that offer RAII trait so when } is reached, the lock is automatically unlocked.
-            // See more reference here: https://changkun.de/modern-cpp/zh-cn/07-thread/index.html
-            {
-                std::unique_lock<std::mutex> lock(this->queue_mutex);
-                // if stoped or no task to fetch, block.
-                // ##### not understanding the syxtax here #####
-                this->condition.wait(lock, [this]{return this->stop || !this->tasks.empty();});
-                // after waked, only terminate worker thread when all tasks are done.
-                if (this->stop && this->tasks.empty()){
-                    return;
+    for(size_t i = 0; i < size ; ++i){
+        workers.emplace_back([this]{
+            for (;;) {// ##### similar to while(1), diff not sure #####
+                std::function<void()> task;
+                // by enclosing the section in a {}, the section acts like a function, that is, local
+                // variables destruct themselves when going out of scope. Unique_lock is a templated 
+                // class that offer RAII trait so when } is reached, the lock is automatically unlocked.
+                // See more reference here: https://changkun.de/modern-cpp/zh-cn/07-thread/index.html
+                {
+                    std::unique_lock<std::mutex> lock(this->queue_mutex);
+                    // if stoped or no task to fetch, block.
+                    // ##### not understanding the syxtax here #####
+                    this->condition.wait(lock, [this]{return this->stop || !this->tasks.empty();});
+                    // after waked, only terminate worker thread when all tasks are done.
+                    if (this->stop && this->tasks.empty()){
+                        return;
+                    }
+                    // use move semantic to gaurantee rvalue?
+                    // ##### why? #####
+                    task = std::move(this->tasks.front());
+                    this->tasks.pop();
                 }
-                // use move semantic to gaurantee rvalue?
-                // ##### why? #####
-                task = std::move(this->tasks.front());
-                this->tasks.pop();
+                task();
             }
-            task();
-        }
-    });
+        });
+    }
+    
 }
 
 // Templated to handle different function and arguments
