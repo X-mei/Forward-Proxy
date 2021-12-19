@@ -71,42 +71,6 @@ void ProxyServer::RunServer(){
             else {
                 LOG_ERROR("Unexpected event");
             }
-            // if (event & (EPOLLERR | EPOLLHUP | EPOLLRDHUP)) {
-            //     /* when there is error or hang up */
-            //     fprintf (stderr, "epoll error\n");
-            //     close (fd);
-            //     continue;
-            // }
-            // if (event & EPOLLIN){
-            //     if (fd == listen_fd){
-            //         /* handle new connection */
-            //         std::cout << "Handling new connection." << std::endl;
-            //         this->HandleListen();
-            //     }
-            //     else {
-            //         /* handle read from socket */
-            //         std::cout << "Handling read from socket." << std::endl;
-            //         this->HandleRead(fd, event);
-            //         //assert(users_.count(fd) > 0);
-            //         //this.HandleRead(&users_[fd]);
-            //     }
-            // }
-            // else if ((event & EPOLLOUT) && fd != listen_fd){
-            //     /* handle write to socket */
-            //     std::cout << "Handling write to socket." << std::endl;
-            //     this->HandleWrite(fd, event);
-            //     //assert(users_.count(fd) > 0);
-            //     //this.HandleWrite(&users_[fd]);
-            // }
-            // else {
-            //     fprintf (stderr, "unexpected error\n");
-            //     //LOG_ERROR("Unexpected event");
-            // }
-            // // else if(events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR)) {
-            // //     assert(users_.count(fd) > 0);
-            // //     CloseConnection(&users_[fd]);
-            // // }
-
         }
     }
 }
@@ -272,9 +236,16 @@ void ProxyServer::HandleWrite(int fd, uint32_t& event){
     // const std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.");
     // size_t n = OK_200.size();
     // write(fd, OK_200, n);
-    SendData(pending_response[fd].getCompleteMessage(), fd);
-    // write(fd, "HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.", 58);
+    try{
+        SendData(pending_response[fd].getCompleteMessage(), fd);
+        pending_response.erase(fd);
+        
+    }
+    catch(myException e){
+        std::cout<<e.what();
+    }
     epoll_obj->ModFd(fd, connection_event | EPOLLIN);
+    // write(fd, "HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.", 58);
 }
 
 void ProxyServer::ProcessRequest(std::string requestFull, int client_fd, int request_id){
@@ -302,7 +273,7 @@ void ProxyServer::ProcessRequest(std::string requestFull, int client_fd, int req
         }
     }
     catch(myException e){
-        std::cout<<e.what();
+        std::cout<<e.what()<<std::endl;
     }
     catch(...){
         //do nothing
@@ -450,8 +421,8 @@ void ProxyServer::SendData(std::string data, int dest_fd){
     memcpy(buf, data.data(), bytes_left);
     while (bytes_sent < bytes_total) {
         if ((bytes_count = send(dest_fd, buf + bytes_sent, bytes_left, 0)) == -1) {
-        throw myException("Error send");
-        }    
+            throw myException("Error send");
+        }
         bytes_sent += bytes_count;
         bytes_left -= bytes_count;
     }
