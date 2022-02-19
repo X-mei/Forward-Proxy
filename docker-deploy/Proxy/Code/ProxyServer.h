@@ -18,7 +18,7 @@
 #include "Request.h"
 #include "Response.h"
 #include "Cache.h"
-#define BUFFER_SIZE 20000
+#define BUFFER_SIZE 4096
 
 class ProxyServer{
 private:
@@ -60,7 +60,7 @@ private:
 
     void HandleCONNECT(Request * request, int server_fd);
 
-    std::string ReceiveData(int buf_size, int source_fd);
+    std::string ReceiveData(int source_fd);
 
     void SendData(std::string data, int dest_fd);
 

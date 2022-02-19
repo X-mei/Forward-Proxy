@@ -61,11 +61,11 @@ void ProxyServer::RunServer(){
                 this->CloseConnection(fd, event);
             }
             else if (event & EPOLLIN){
-                std::cout << "Handling read from socket." << std::endl;
+                std::cout << "Handling read from socket " << fd << std::endl;
                 this->HandleRead(fd, event);
             }
             else if (event & EPOLLOUT){
-                std::cout << "Handling write to socket." << std::endl;
+                std::cout << "Handling write to socket " << fd << std::endl;
                 this->HandleWrite(fd, event);
             }
             else {
@@ -203,33 +203,42 @@ void ProxyServer::HandleListen(){
 }
 
 void ProxyServer::HandleRead(int fd, uint32_t& event){
-    std::stringstream ss;
-    while (1) {
-        ssize_t count;
-        char buf[4096];
-        count = read(fd, buf, sizeof(buf));
-        if (count == -1) {
-            if (errno != EAGAIN) {
-                perror ("read");
-                close(fd);
-            }
-            break;
-        } else if (count == 0) {
-            /* 数据读取完毕，结束 */
-            close(fd);
-            printf ("Closed connection on descriptor %d\n", fd);
-            break;
-        }
-        ss << buf;
-        /* 输出到stdout */
-        // if (write(1, buf, count) == -1) {
-        //     perror ("write");
-        //     abort ();
-        // }
+    // std::stringstream ss;
+    // while (1) {
+    //     ssize_t count;
+    //     char buf[4096];
+    //     count = read(fd, buf, sizeof(buf));
+    //     if (count == -1) {
+    //         if (errno != EAGAIN) {
+    //             perror ("read");
+    //             close(fd);
+    //         }
+    //         break;
+    //     } else if (count == 0) {
+    //         /* 数据读取完毕，结束 */
+    //         close(fd);
+    //         printf ("Closed connection on descriptor %d\n", fd);
+    //         break;
+    //     }
+    //     ss << buf;
+    //     /* 输出到stdout */
+    //     // if (write(1, buf, count) == -1) {
+    //     //     perror ("write");
+    //     //     abort ();
+    //     // }
+    // }
+    // ss << '\0';
+    // std::cout << ss.str() << std::endl;
+    // threadpool_obj->enqueue(bind(&ProxyServer::ProcessRequest, this, ss.str(), fd, request_cnt));
+    std::string str;
+    try{
+        str = ReceiveData(fd);
     }
-    ss << '\0';
-    // std::string requestFull = buf;
-    threadpool_obj->enqueue(bind(&ProxyServer::ProcessRequest, this, ss.str(), fd, request_cnt));
+    catch(myException exp){
+        std::cout << exp.what() << std::endl;
+    }
+    std::cout << str << std::endl;
+    threadpool_obj->enqueue(bind(&ProxyServer::ProcessRequest, this, str, fd, request_cnt));
 }
 
 void ProxyServer::HandleWrite(int fd, uint32_t& event){
@@ -308,7 +317,7 @@ void ProxyServer::HandleGET(Request * request, int server_fd){
         }
         // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
         // log->save(msg);
-        std::string received_data = ReceiveData(BUFFER_SIZE, server_fd);
+        std::string received_data = ReceiveData(server_fd);
         response.parseHeader(received_data);
         // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
         // log->save(msg);
@@ -328,7 +337,7 @@ void ProxyServer::HandlePOST(Request * request, int server_fd){
     }
     // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
-    std::string received_data = ReceiveData(BUFFER_SIZE, server_fd);
+    std::string received_data = ReceiveData(server_fd);
     Response response(server_fd, 0);
     response.parseHeader(received_data);
     // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
@@ -395,38 +404,72 @@ void ProxyServer::HandleCONNECT(Request * request, int server_fd){
     // log->save(msg);
 }
 
-std::string ProxyServer::ReceiveData(int buf_size, int source_fd){
-    std::string data = "";
+// Receive data given file descriptor to read from
+std::string ProxyServer::ReceiveData(int source_fd){
+    std::stringstream ss;
     while (1) {
-        char buf[buf_size];
-        int byte_count;
-        if ((byte_count = recv(source_fd, buf, buf_size, 0)) == -1) {
-            throw myException("Error recv");
+        char buf[BUFFER_SIZE];
+        ssize_t byte_count;
+        if ((byte_count = recv(source_fd, buf, sizeof(buf), 0)) == -1) {
+            if (errno != EAGAIN){ // EAGAIN is the indicator of non-blocking return, not a bug
+                throw myException("Error recv");
+            }
+            break;
         }
         if (byte_count == 0) {
             break;
-        }  
-        // Append part of received string 
-        data.append(buf);
+        }
+        ss << buf;
     }
-    return data;
+    ss << '\0';
+    return ss.str();
+
+    // vector<char> data(buf_size);
+    // int start = 0;
+    // while (1) {
+    //     std::cout << start << std::endl;
+    //     int byte_count;
+    //     if ((byte_count = recv(source_fd, &data.data()[start], buf_size, 0)) == -1) {
+    //         throw myException("Error recv");
+    //     }
+    //     if (byte_count == 0) {
+    //         break;
+    //     }
+    //     data.resize(data.size()+buf_size);
+    //     start+=byte_count;
+    // }
+    // std::string result(data.begin(), data.end());
+    // return result; //data
 }
 
-void ProxyServer::SendData(std::string data, int dest_fd){
-    int bytes_total = data.size();
+void ProxyServer::SendData(std::string str, int dest_fd){
+    // int bytes_total = str.size();
+    // int bytes_left = bytes_total;
+    // int bytes_sent = 0;
+    // int bytes_count;
+    // char *buf = new char[bytes_left];
+    // memcpy(buf, str.data(), bytes_left);
+    // while (bytes_sent < bytes_total) {
+    //     if ((bytes_count = send(dest_fd, buf + bytes_sent, bytes_left, 0)) == -1) {
+    //         throw myException("Error send");
+    //     }
+    //     bytes_sent += bytes_count;
+    //     bytes_left -= bytes_count;
+    // }
+    // delete [] buf;
+
+    vector<char> data(str.begin(), str.end());
+    int bytes_total = str.size();
     int bytes_left = bytes_total;
     int bytes_sent = 0;
     int bytes_count;
-    char *buf = new char[bytes_left];
-    memcpy(buf, data.data(), bytes_left);
     while (bytes_sent < bytes_total) {
-        if ((bytes_count = send(dest_fd, buf + bytes_sent, bytes_left, 0)) == -1) {
+        if ((bytes_count = send(dest_fd, &data.data()[bytes_sent], bytes_left, 0)) == -1) {
             throw myException("Error send");
         }
         bytes_sent += bytes_count;
         bytes_left -= bytes_count;
     }
-    delete [] buf;
 }
 
 int ProxyServer::SetFdNonBlock(int fd){

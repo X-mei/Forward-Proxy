@@ -1,4 +1,4 @@
-all: test1 proxy
+all: proxy
 test1:ThreadPoolTest.cpp
 	g++ -o test1 ThreadPoolTest.cpp ../Code/ThreadPool.h -std=c++1z -lpthread -ggdb3
 proxy:Main.cpp
@@ -7,4 +7,4 @@ proxy:Main.cpp
 .PHONY:
 	clean
 clean:
-	rm -rf *~ test1 proxy *.o *.txt
+	rm -rf *~ test1 proxy *.o
