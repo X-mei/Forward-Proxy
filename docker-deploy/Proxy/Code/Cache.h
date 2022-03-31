@@ -15,7 +15,7 @@ class Cache {
 private:
     list<string> LRU;
     unordered_map<string, Response> urlPair;
-    // Log* log;
+    Log* log;
     bool checkIfUrlExists(string url);
     void LRUEvict();
     void LRUAdd(string url);

@@ -16,8 +16,8 @@ protected:
     unordered_map<string, string> headerPair;
     unordered_map<string, string> cacheControlPair;
     string firstLine;
+    string headers;
     string body;
-    string complete;
 public:
     Http() {}
     void parseEachLine(string & msg) {
@@ -37,7 +37,7 @@ public:
                 throw myException("Invalid header");
             }
             headerPair[key] = value;
-            start= end + 2;
+            start = end + 2;
         }
     }
     
@@ -48,33 +48,53 @@ public:
     }
     
     void parseHeader(string complete) {
-        this->complete = complete;
         size_t endOfFirst = complete.find("\r\n", 0);
         size_t endOfRemain = complete.find("\r\n\r\n", endOfFirst);
         if (endOfFirst == string::npos || endOfRemain == string::npos) {
             throw myException("Invalid header");
         }
-        this->firstLine = complete.substr(0, endOfFirst);
-        string remainHeader = complete.substr(endOfFirst + 2, endOfRemain - endOfFirst);
-        body = complete.substr(endOfRemain + 4);
-        parseEachLine(remainHeader);
+        this->firstLine = complete.substr(0, endOfFirst + 2);
+        this->headers = complete.substr(endOfFirst + 2, endOfRemain - endOfFirst);
+        parseEachLine(headers);
         parseFirstLine();
         parseCacheControl();
+        int n;
+        if ((n = getContentLenght()) != -1){
+            this->body = complete.substr(endOfRemain + 4, n);
+        }
+        else {
+            this->body = complete.substr(endOfRemain + 4);
+        }
     }
     
     string getHeaderValue(string key) {
-        for (auto& [first, second] : headerPair) {
-            if (first == key) {
-                return second;
-            }
+        string res = "";
+        if (headerPair.find(key) != headerPair.end()){
+            res = headerPair[key];
         }
-        throw myException("No such a key in pairs.");
+        return res;
     }
     
     void addHeaderPair(string key, string value) {
         headerPair[key] = value;
     }
     
+    int getContentLenght(){
+        string n = getHeaderValue("Content-Length");
+        if (n == ""){
+            return -1;
+        }
+        return stoi(n);
+    }
+
+    bool checkIfChunked(){
+        string encoding = getHeaderValue("Transfer-Encoding");
+        if (encoding == "chunked"){
+            return true;
+        }
+        return false;
+    }
+
     void parseCacheControl() {
         string cacheControl;
         for (auto & [first, second] : headerPair) {
@@ -156,7 +176,7 @@ public:
     }
 
     string getCompleteMessage(){
-        return complete;
+        return firstLine + headers + "\r\n" + body;
     }
 };
 
