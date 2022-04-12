@@ -16,25 +16,27 @@ protected:
     unordered_map<string, string> headerPair;
     unordered_map<string, string> cacheControlPair;
     string firstLine;
-    string headers;
-    string body;
+    string pairs;
+    int missing_body_length = -1;
+    vector<char> headers;
+    vector<char> body;
 public:
     Http() {}
-    void parseEachLine(string & msg) {
+    void parsePairs(string & msg) {
         size_t start = 0;
         if (msg.find(':', start) == string::npos) {
-            throw myException("Invalid header");
+            throw myException("Invalid header2");
         }
         while (start < msg.size()) {
             size_t colon = msg.find(':', start);
             size_t end = msg.find("\r\n", start);
             if (colon == string::npos) {
-                throw myException("Invalid header");
+                throw myException("Invalid header3");
             }
             string key = msg.substr(start, colon - start);
             string value = msg.substr(colon + 2, end - colon - 2);
             if (key.empty() || value.empty()) {
-                throw myException("Invalid header");
+                throw myException("Invalid header4");
             }
             headerPair[key] = value;
             start = end + 2;
@@ -47,23 +49,40 @@ public:
         return firstLine;
     }
     
-    void parseHeader(string complete) {
-        size_t endOfFirst = complete.find("\r\n", 0);
-        size_t endOfRemain = complete.find("\r\n\r\n", endOfFirst);
+    /*
+        Only partially using vector of char to parse the HTTP message due to
+        concern of re-use of old code. Could change the whole thing to parse 
+        with vector of char.
+    */
+    void parseHeader(vector<char>& complete) {
+        vector<char> endOfHeaderIndicator{'\r','\n','\r','\n'};
+        auto startOfBody = std::search(complete.begin(), complete.end(), endOfHeaderIndicator.begin(), endOfHeaderIndicator.end())+4;
+        this->headers = vector<char>(complete.begin(), startOfBody);
+        string pairs_str(complete.begin(), startOfBody);
+        size_t endOfFirst = pairs_str.find("\r\n", 0);
+        size_t endOfRemain = pairs_str.find("\r\n\r\n", 0);
         if (endOfFirst == string::npos || endOfRemain == string::npos) {
-            throw myException("Invalid header");
+            throw myException("Invalid header1");
         }
-        this->firstLine = complete.substr(0, endOfFirst + 2);
-        this->headers = complete.substr(endOfFirst + 2, endOfRemain - endOfFirst);
-        parseEachLine(headers);
+        this->firstLine = pairs_str.substr(0, endOfFirst + 2);
+        this->pairs = pairs_str.substr(endOfFirst + 2, endOfRemain - endOfFirst);
+        parsePairs(pairs);
         parseFirstLine();
         parseCacheControl();
-        int n;
-        if ((n = getContentLenght()) != -1){
-            this->body = complete.substr(endOfRemain + 4, n);
+        this->missing_body_length = getContentLenght();
+        if (missing_body_length != -1){
+            if (missing_body_length > complete.end()-startOfBody){ // haven't received full body
+                this->body = vector<char>(startOfBody, complete.end());
+                this->missing_body_length -= (complete.end()-startOfBody);
+            }
+            else {
+                this->body = vector<char>(startOfBody, startOfBody+missing_body_length);
+                this->missing_body_length = 0;
+            }
         }
         else {
-            this->body = complete.substr(endOfRemain + 4);
+            vector<char> temp(startOfBody, complete.end());
+            this->body = temp;
         }
     }
     
@@ -93,6 +112,21 @@ public:
             return true;
         }
         return false;
+    }
+
+    int getBodySizeLeft(){
+        return missing_body_length;
+    }
+
+    void addMissingBody(vector<char>& missing_body){
+        if (missing_body.size()<missing_body_length){
+            this->body.insert(this->body.end(), missing_body.begin(), missing_body.end());
+            missing_body_length -= (missing_body.end()-missing_body.begin());
+        }
+        else {
+            this->body.insert(this->body.end(), missing_body.begin(), missing_body.begin()+missing_body_length);
+            missing_body_length = 0;
+        }
     }
 
     void parseCacheControl() {
@@ -157,12 +191,12 @@ public:
         throw myException("The key does not exist.");
     }
     
-    void printPairs() {
+    void printHeaders() {
         for (auto & [first, second] : headerPair) {
             cout << first << ": " << second << endl;
         }
     }
-    void printCachePairs() {
+    void printCacheHeaders() {
         for (auto & [first, second] : cacheControlPair) {
             cout << first << ": " << second << endl;
         }
@@ -170,14 +204,22 @@ public:
     void printFirstLine() {
         cout << firstLine << endl;
     }
-    
-    string returnFirstLine() {
-        return firstLine;
+
+    vector<char> getCompleteMessage(){
+        vector<char> complete;
+        complete.reserve(headers.size()+body.size());
+        complete.insert(complete.end(), headers.begin(), headers.end());
+        complete.insert(complete.end(), body.begin(), body.end());
+        return complete;
     }
 
-    string getCompleteMessage(){
-        return firstLine + headers + "\r\n" + body;
+    void printCompleteMessage(){
+        for (char& c: getCompleteMessage()){
+            cout << c;
+        }
     }
+
+
 };
 
 #endif /* Http_h */

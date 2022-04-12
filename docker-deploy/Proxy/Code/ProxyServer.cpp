@@ -203,64 +203,47 @@ void ProxyServer::HandleListen(){
 }
 
 void ProxyServer::HandleRead(int fd, uint32_t& event){
-    // std::stringstream ss;
-    // while (1) {
-    //     ssize_t count;
-    //     char buf[4096];
-    //     count = read(fd, buf, sizeof(buf));
-    //     if (count == -1) {
-    //         if (errno != EAGAIN) {
-    //             perror ("read");
-    //             close(fd);
-    //         }
-    //         break;
-    //     } else if (count == 0) {
-    //         /* 数据读取完毕，结束 */
-    //         close(fd);
-    //         printf ("Closed connection on descriptor %d\n", fd);
-    //         break;
-    //     }
-    //     ss << buf;
-    //     /* 输出到stdout */
-    //     // if (write(1, buf, count) == -1) {
-    //     //     perror ("write");
-    //     //     abort ();
-    //     // }
-    // }
-    // ss << '\0';
-    // std::cout << ss.str() << std::endl;
-    // threadpool_obj->enqueue(bind(&ProxyServer::ProcessRequest, this, ss.str(), fd, request_cnt));
-    std::string str;
+    vector<char> headers;
     try{
-        str = ReceiveData(fd);
+        ReceiveData(fd, headers);
     }
     catch(myException exp){
         std::cout << exp.what() << std::endl;
+        close(fd);
+        return;
     }
     // std::cout << str << std::endl;
-    threadpool_obj->enqueue(bind(&ProxyServer::ProcessRequest, this, str, fd, request_cnt));
+    threadpool_obj->enqueue(bind(&ProxyServer::ProcessRequest, this, headers, fd, request_cnt));
 }
 
 void ProxyServer::HandleWrite(int fd, uint32_t& event){
     // const std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.");
     // size_t n = OK_200.size();
     // write(fd, OK_200, n);
-    try{
-        SendData(pending_response[fd].getCompleteMessage(), fd);
-        std::cout << "## Get response: " << std::endl;
-        std::cout << pending_response[fd].getCompleteMessage();
-        pending_response.erase(fd);
-    }
-    catch(myException e){
-        std::cout<<e.what();
-    }
-    epoll_obj->ModFd(fd, connection_event | EPOLLIN);
+
+    // try{
+    //     SendData(pending_response[fd].getCompleteMessage(), fd);
+    //     std::cout << "## Get response: " << std::endl;
+    //     std::cout << pending_response[fd].getCompleteMessage();
+    //     pending_response.erase(fd);
+    // }
+    // catch(myException e){
+    //     std::cout<<e.what();
+    // }
+    // epoll_obj->ModFd(fd, connection_event | EPOLLIN);
+
     // write(fd, "HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.", 58);
 }
 
-void ProxyServer::ProcessRequest(std::string requestFull, int client_fd, int request_id){
-    Request * request = new Request(client_fd, request_id);
-    request->parseHeader(requestFull);
+void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int request_id){
+    Request* request = new Request(client_fd, request_id);
+    try{
+        request->parseHeader(requestFull);
+    }
+    catch(myException e){
+        std::cout<<e.what()<<std::endl;
+        return;
+    }
     int server_fd = RunClient(request->getHost(), request->getPort());
     try{
         if (server_fd<0){
@@ -307,52 +290,88 @@ int ProxyServer::RunClient(std::string host, std::string port){
     return serverSocket.getFd();
 }
 
-void ProxyServer::HandleGET(Request * request, int server_fd){
+void ProxyServer::HandleGET(Request* request, int server_fd){
     Response response;
     if (cache_obj->validate(*request, response)) {
         response = cache_obj->getCache(request->getUrl());
+        SendData(response.getCompleteMessage(), request->getSocket());
     }
     else {
         std::cout << "## Requesting: " << std::endl;
-        std::cout << request->getCompleteMessage();
-        
-        if (send(server_fd, request->getCompleteMessage().c_str(), request->getCompleteMessage().size(), 0) == -1){
-            throw myException("Error send.");
-        }
+        request->printCompleteMessage();
+        SendData(request->getCompleteMessage(), server_fd);
         // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
         // log->save(msg);
-        std::string received_data = ReceiveData(server_fd);
-        response.parseHeader(received_data);
+        vector<char> headers(BUFFER_SIZE);
+        ReceiveOneChunk(server_fd, headers);
+        cout << "Get the initial response." << endl;
+        try{
+            response.parseHeader(headers);
+        }
+        catch(myException e){
+            std::cout<<e.what()<<std::endl;
+            return;
+        }
+        cout << "Get response: " << endl;
+        response.printCompleteMessage();
+        // if the response is chunked, send back the initial chunk, then send back every chunk until chunk size is zero
+        if (response.checkIfChunked()){
+            cout << "In chunked encoding.Sending back initial response" << endl;
+            SendData(response.getCompleteMessage(), request->getSocket());
+            vector<char> target{'0','\r','\n','\r','\n'};
+            vector<char> temp(BUFFER_SIZE);
+            while (true){
+                cout << "Fetching next chunk." << endl;
+                vector<char> temp(BUFFER_SIZE);
+                ReceiveOneChunk(server_fd, temp);
+                SendData(temp, request->getSocket());
+                auto it = std::search(temp.begin(), temp.end(), target.begin(), target.end());
+                if (it != temp.end()){
+                    cout << "Should end." << endl;
+                    break;
+                }
+            }
+        }
+        else {
+            // if not chunked, acquire all the missing bodies and send back the response
+            while (response.getBodySizeLeft()>0){
+                vector<char> temp(BUFFER_SIZE);
+                ReceiveOneChunk(server_fd, temp);
+                cout << std::string(temp.begin(), temp.end());
+                response.addMissingBody(temp);
+            }
+            SendData(response.getCompleteMessage(), request->getSocket());
+        }
         // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
         // log->save(msg);
-        cache_obj->handle(*request, response);
+        // cache_obj->handle(*request, response);
     }
-    pending_response[request->getSocket()] = response;
-    SendData(response.getCompleteMessage(), request->getSocket());
+    // pending_response[request->getSocket()] = response;
+    // SendData(response.getCompleteMessage(), request->getSocket());
     // std::string msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();
     // log->save(msg);
 }
 
 // need major update
-void ProxyServer::HandlePOST(Request * request, int server_fd){
+void ProxyServer::HandlePOST(Request* request, int server_fd){
     // std::cout<<"###################\n";
-    if (send(server_fd, request->getCompleteMessage().c_str(), request->getCompleteMessage().size() + 1, 0) == -1){
+    if (send(server_fd, &request->getCompleteMessage().data()[0], request->getCompleteMessage().size() + 1, 0) == -1){
         throw myException("Error send.");
     }
     // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
-    std::string received_data = ReceiveData(server_fd);
-    Response response(server_fd, 0);
-    response.parseHeader(received_data);
+    // std::string received_data = ReceiveData(server_fd);
+    // Response response(server_fd, 0);
+    // response.parseHeader(received_data);
     // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
-    pending_response[request->getSocket()] = response;
+    // pending_response[request->getSocket()] = response;
     // msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();
     // log->save(msg);
-    SendData(received_data, request->getSocket());
+    // SendData(received_data, request->getSocket());
 }
 
-void ProxyServer::HandleCONNECT(Request * request, int server_fd){
+void ProxyServer::HandleCONNECT(Request* request, int server_fd){
     // std::cout<<"###################\n";
     std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\n");
     std::cout<<"Notify success CONNECT with server.\n";
@@ -407,61 +426,42 @@ void ProxyServer::HandleCONNECT(Request * request, int server_fd){
     // log->save(msg);
 }
 
-// Receive data given file descriptor to read from
-std::string ProxyServer::ReceiveData(int source_fd){
-    std::stringstream ss;
+// Receive the maximum possible amount of data
+void ProxyServer::ReceiveData(int source_fd, vector<char>& data){
+    int start = 0;
+    int byte_count = 0;
     while (1) {
-        char buf[BUFFER_SIZE];
-        ssize_t byte_count;
-        if ((byte_count = recv(source_fd, buf, sizeof(buf), 0)) == -1) {
-            if (errno != EAGAIN){ // EAGAIN is the indicator of non-blocking return, not a bug
-                throw myException("Error recv");
-            }
-            break;
-        }
+        vector<char> temp(BUFFER_SIZE);
+        byte_count = recv(source_fd, &temp.data()[0], BUFFER_SIZE, 0);
         if (byte_count == 0) {
             break;
         }
-        ss << buf;
+        if (byte_count == -1) {
+            if (errno != EAGAIN){
+                throw myException("Error recv");
+            }
+            else {
+                break;
+            }
+        }
+        temp.resize(byte_count);
+        data.insert(data.end(), temp.begin(), temp.end());
     }
-    ss << '\0';
-    return ss.str();
-
-    // vector<char> data(buf_size);
-    // int start = 0;
-    // while (1) {
-    //     std::cout << start << std::endl;
-    //     int byte_count;
-    //     if ((byte_count = recv(source_fd, &data.data()[start], buf_size, 0)) == -1) {
-    //         throw myException("Error recv");
-    //     }
-    //     if (byte_count == 0) {
-    //         break;
-    //     }
-    //     data.resize(data.size()+buf_size);
-    //     start+=byte_count;
-    // }
-    // std::string result(data.begin(), data.end());
-    // return result; //data
 }
 
-// receive the first chunk, which should contain the header
-vector<char> ProxyServer::ReceiveHeader(int source_fd){
-    vector<char> server_buf(buf_size)
-    ssize_t recv_size = recv(source_fd, &server_buf.data()[0], buf_size, 0);
+// Receive the first chunk, which should contain the header
+void ProxyServer::ReceiveOneChunk(int source_fd, vector<char>& headers){
+    ssize_t recv_size = recv(source_fd, &headers.data()[0], BUFFER_SIZE, 0);
+    cout << recv_size << endl;
     if (recv_size < 0 && errno != EAGAIN) {
         throw myException("Error recv");
     }
-    return server_buf;
+    headers.resize(recv_size);
+    return;
 }
 
-// void ProxyServer::ReceiveAndSendChunked(int source_fd){
-
-// }
-
-void ProxyServer::SendData(std::string str, int dest_fd){
-    vector<char> data(str.begin(), str.end());
-    int bytes_total = str.size();
+void ProxyServer::SendData(vector<char> data, int dest_fd){
+    int bytes_total = data.size();
     int bytes_left = bytes_total;
     int bytes_sent = 0;
     int bytes_count;

@@ -19,12 +19,3 @@ void Response::parseFirstLine(){
     this->status_code = temp;
     this->status_phrase = firstLine.substr(space2+1);
 }
-
-string Response::getContents() {
-    string header = firstLine + "\r\n";
-    // header + body
-    for (auto & [first, second] : headerPair) {
-        header += first + ": " + second + "\r\n";
-    }
-    return header + "\r\n\r\n" + body;
-}

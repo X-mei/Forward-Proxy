@@ -50,19 +50,21 @@ private:
 
     void HandleWrite(int fd, uint32_t& event);
 
-    void ProcessRequest(std::string requestFull, int fd, int request_cnt);
+    void ProcessRequest(vector<char>& requestFull, int fd, int request_cnt);
 
     int RunClient(std::string host, std::string port);
 
-    void HandleGET(Request * request, int server_fd);
+    void HandleGET(Request* request, int server_fd);
 
-    void HandlePOST(Request * request, int server_fd);
+    void HandlePOST(Request* request, int server_fd);
 
-    void HandleCONNECT(Request * request, int server_fd);
+    void HandleCONNECT(Request* request, int server_fd);
 
-    std::string ReceiveData(int source_fd);
+    void ReceiveData(int source_fd, vector<char>& data);
 
-    void SendData(std::string data, int dest_fd);
+    void ReceiveOneChunk(int source_fd, vector<char>& headers);
+
+    void SendData(vector<char> data, int dest_fd);
 
     void CloseConnection(int fd, uint32_t& event);
 

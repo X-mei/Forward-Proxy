@@ -1,0 +1,72 @@
+2022-03-31 14:45:31.743882 [info] : ========== Server init ==========
+2022-03-31 14:45:31.743915 [info] : Port:12345
+2022-03-31 14:45:31.743928 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 14:45:31.743941 [info] : Log level: -1
+2022-03-31 14:45:31.743955 [info] : ThreadPool num: 10
+2022-03-31 14:45:31.744039 [info] : ========== Server start ==========
+2022-03-31 14:51:46.785992 [info] : ========== Server init ==========
+2022-03-31 14:51:46.786011 [info] : Port:12345
+2022-03-31 14:51:46.786016 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 14:51:46.786058 [info] : Log level: -1
+2022-03-31 14:51:46.786078 [info] : ThreadPool num: 10
+2022-03-31 21:00:24.931979 [info] : ========== Server init ==========
+2022-03-31 21:00:24.932004 [info] : Port:12345
+2022-03-31 21:00:24.932059 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:00:24.932192 [info] : Log level: -1
+2022-03-31 21:00:24.932255 [info] : ThreadPool num: 10
+2022-03-31 21:08:40.040388 [info] : ========== Server init ==========
+2022-03-31 21:08:40.040396 [info] : Port:12345
+2022-03-31 21:08:40.040400 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:08:40.040403 [info] : Log level: -1
+2022-03-31 21:08:40.040407 [info] : ThreadPool num: 10
+2022-03-31 21:08:40.040411 [info] : ========== Server start ==========
+2022-03-31 21:17:48.066279 [info] : ========== Server init ==========
+2022-03-31 21:17:48.066293 [info] : Port:12345
+2022-03-31 21:17:48.066297 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:17:48.066345 [info] : Log level: -1
+2022-03-31 21:17:48.066364 [info] : ThreadPool num: 10
+2022-03-31 21:22:21.519947 [info] : ========== Server init ==========
+2022-03-31 21:22:21.519993 [info] : Port:12345
+2022-03-31 21:22:21.520050 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:22:21.520194 [info] : Log level: -1
+2022-03-31 21:22:21.520275 [info] : ThreadPool num: 10
+2022-03-31 21:36:23.951878 [info] : ========== Server init ==========
+2022-03-31 21:36:23.952014 [info] : Port:12345
+2022-03-31 21:36:23.952059 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:36:23.952068 [info] : Log level: -1
+2022-03-31 21:36:23.952076 [info] : ThreadPool num: 10
+2022-03-31 21:40:28.404366 [info] : ========== Server init ==========
+2022-03-31 21:40:28.404383 [info] : Port:12345
+2022-03-31 21:40:28.404428 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:40:28.404538 [info] : Log level: -1
+2022-03-31 21:40:28.404596 [info] : ThreadPool num: 10
+2022-03-31 21:42:19.130764 [info] : ========== Server init ==========
+2022-03-31 21:42:19.130831 [info] : Port:12345
+2022-03-31 21:42:19.130898 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:42:19.131053 [info] : Log level: -1
+2022-03-31 21:42:19.131135 [info] : ThreadPool num: 10
+2022-03-31 21:52:53.154081 [info] : ========== Server init ==========
+2022-03-31 21:52:53.154125 [info] : Port:12345
+2022-03-31 21:52:53.154238 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 21:52:53.154260 [info] : Log level: -1
+2022-03-31 22:04:40.508797 [info] : ========== Server init ==========
+2022-03-31 22:04:40.508844 [info] : Port:12345
+2022-03-31 22:04:40.508914 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 22:04:40.509091 [info] : Log level: -1
+2022-03-31 22:04:40.509217 [info] : ThreadPool num: 10
+2022-03-31 22:17:09.354788 [info] : ========== Server init ==========
+2022-03-31 22:17:09.354850 [info] : Port:12345
+2022-03-31 22:17:09.354920 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 22:17:09.355098 [info] : Log level: -1
+2022-03-31 22:17:09.355204 [info] : ThreadPool num: 10
+2022-03-31 23:02:25.746899 [info] : ========== Server init ==========
+2022-03-31 23:02:25.746910 [info] : Port:12345
+2022-03-31 23:02:25.746914 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 23:02:25.746918 [info] : Log level: -1
+2022-03-31 23:02:25.747120 [info] : ThreadPool num: 10
+2022-03-31 23:19:33.804950 [info] : ========== Server init ==========
+2022-03-31 23:19:33.804969 [info] : Port:12345
+2022-03-31 23:19:33.804974 [info] : Listen Mode: ET, OpenConn Mode: ET
+2022-03-31 23:19:33.804978 [info] : Log level: -1
+2022-03-31 23:19:33.805038 [info] : ThreadPool num: 10
+2022-03-31 23:19:33.805042 [info] : ========== Server start ==========
