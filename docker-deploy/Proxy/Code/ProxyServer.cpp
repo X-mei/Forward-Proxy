@@ -297,37 +297,23 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
         SendData(response.getCompleteMessage(), request->getSocket());
     }
     else {
-        std::cout << "## Requesting: " << std::endl;
-        request->printCompleteMessage();
         SendData(request->getCompleteMessage(), server_fd);
         // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
         // log->save(msg);
         vector<char> headers(BUFFER_SIZE);
         ReceiveOneChunk(server_fd, headers);
-        cout << "Get the initial response." << endl;
-        try{
-            response.parseHeader(headers);
-        }
-        catch(myException e){
-            std::cout<<e.what()<<std::endl;
-            return;
-        }
-        cout << "Get response: " << endl;
-        response.printCompleteMessage();
+        response.parseHeader(headers);
         // if the response is chunked, send back the initial chunk, then send back every chunk until chunk size is zero
         if (response.checkIfChunked()){
-            cout << "In chunked encoding.Sending back initial response" << endl;
             SendData(response.getCompleteMessage(), request->getSocket());
             vector<char> target{'0','\r','\n','\r','\n'};
             vector<char> temp(BUFFER_SIZE);
             while (true){
-                cout << "Fetching next chunk." << endl;
                 vector<char> temp(BUFFER_SIZE);
                 ReceiveOneChunk(server_fd, temp);
                 SendData(temp, request->getSocket());
                 auto it = std::search(temp.begin(), temp.end(), target.begin(), target.end());
                 if (it != temp.end()){
-                    cout << "Should end." << endl;
                     break;
                 }
             }
@@ -337,7 +323,6 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
             while (response.getBodySizeLeft()>0){
                 vector<char> temp(BUFFER_SIZE);
                 ReceiveOneChunk(server_fd, temp);
-                cout << std::string(temp.begin(), temp.end());
                 response.addMissingBody(temp);
             }
             SendData(response.getCompleteMessage(), request->getSocket());
@@ -352,23 +337,24 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
     // log->save(msg);
 }
 
-// need major update
 void ProxyServer::HandlePOST(Request* request, int server_fd){
-    // std::cout<<"###################\n";
-    if (send(server_fd, &request->getCompleteMessage().data()[0], request->getCompleteMessage().size() + 1, 0) == -1){
-        throw myException("Error send.");
-    }
+    SendData(request->getCompleteMessage(), server_fd);
     // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
-    // std::string received_data = ReceiveData(server_fd);
-    // Response response(server_fd, 0);
-    // response.parseHeader(received_data);
+    Response response;
+    vector<char> headers(BUFFER_SIZE);
+    ReceiveOneChunk(server_fd, headers);
+    response.parseHeader(headers);
+    while (response.getBodySizeLeft()>0){
+        vector<char> temp(BUFFER_SIZE);
+        ReceiveOneChunk(server_fd, temp);
+        response.addMissingBody(temp);
+    }
+    SendData(response.getCompleteMessage(), request->getSocket());
     // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
-    // pending_response[request->getSocket()] = response;
     // msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();
     // log->save(msg);
-    // SendData(received_data, request->getSocket());
 }
 
 void ProxyServer::HandleCONNECT(Request* request, int server_fd){
@@ -452,7 +438,6 @@ void ProxyServer::ReceiveData(int source_fd, vector<char>& data){
 // Receive the first chunk, which should contain the header
 void ProxyServer::ReceiveOneChunk(int source_fd, vector<char>& headers){
     ssize_t recv_size = recv(source_fd, &headers.data()[0], BUFFER_SIZE, 0);
-    cout << recv_size << endl;
     if (recv_size < 0 && errno != EAGAIN) {
         throw myException("Error recv");
     }
