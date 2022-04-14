@@ -34,3 +34,8 @@ In order to exploit edge of RAII design, we tried to minimize the case we call n
 - Only one thread should be able to get access to, including reading and writing to our cache data, which is stored in a map. So we add mutex in the critical regions.
 - If the number of request is too large, our proxy may crush.
 - We may receive harmful request from client, and our proxy is fragile to attacks.
+
+### 04/13/2022
+- CONNECT method requires a lot of thread resources, a website with lots of resources typically needs multiple CONNECT requests for it to load properly.
+- Non-blocking IO would interfare with select, maybe because non-blocking fd returns immediately, which breaks the polling process while blocking IO wait until disconnection or timeout.
+

@@ -18,6 +18,7 @@
 #include "Request.h"
 #include "Response.h"
 #include "Cache.h"
+
 #define BUFFER_SIZE 4096
 
 class ProxyServer{
@@ -39,6 +40,8 @@ private:
     std::unordered_map<int, Response> pending_response;
 
     static int SetFdNonBlock(int fd);
+
+    static int SetFdBlock(int fd);
     
     bool InitSocket();
 

@@ -262,6 +262,8 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
             HandlePOST(request, server_fd);
         }
         else {// CONNECT
+            cout << "Host: " << request->getHost() << "; Port: " << request->getPort() << endl;
+            request->printCompleteMessage();
             HandleCONNECT(request, server_fd);
         }
     }
@@ -271,7 +273,7 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
     catch(...){
         //do nothing
     }
-    epoll_obj->ModFd(client_fd, EPOLLOUT | EPOLLET);
+    // epoll_obj->ModFd(client_fd, EPOLLOUT | EPOLLET);
     // close(request->getSocket());
     close(server_fd);
     delete request;
@@ -358,56 +360,68 @@ void ProxyServer::HandlePOST(Request* request, int server_fd){
 }
 
 void ProxyServer::HandleCONNECT(Request* request, int server_fd){
-    // std::cout<<"###################\n";
-    std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\n");
-    std::cout<<"Notify success CONNECT with server.\n";
-    if (send(request->getSocket(), OK_200.c_str(), OK_200.length(), 0) == -1) {
-        throw myException("send 200 OK back failed");
+    int client_fd = request->getSocket();
+    // for some reason have to set fd to blocking, haven't found a circumvent yet
+    this->SetFdBlock(client_fd);
+    send(client_fd, "HTTP/1.1 200 OK\r\n\r\n", 19, 0);
+    fd_set readable;
+    int nfds;
+    if(client_fd < server_fd) {
+        nfds = 1 + server_fd;
+    } else {
+        nfds = 1 + client_fd;
     }
-    // std::string msg = to_string(request->getUid()) + ": " + "Opening Tunnel";
-    // log->save(msg);
-    fd_set readfds;
-    struct timeval tv;
-    tv.tv_sec = 2;
-    while (true){
-        char buf[BUFFER_SIZE];
-        int len;
-        FD_ZERO(&readfds);
-        FD_SET(request->getSocket(), &readfds);
-        FD_SET(server_fd, &readfds);
-        if (select(FD_SETSIZE, &readfds, NULL, NULL, &tv) == 0){
-            break;
-        }
-        else if (FD_ISSET(request->getSocket(), &readfds)) {
-            len = recv(request->getSocket(), &buf, BUFFER_SIZE, 0);
-            if (len < 0) {
-                std::cout<<"Failed to recv from client in tunnel:\n";
-                break;
-            } 
-            else if (len == 0) {
+
+    //continuously listen to the client request
+    while (1) {
+        FD_ZERO(&readable);
+
+        FD_SET(server_fd, &readable);
+        FD_SET(client_fd, &readable);
+
+        select(nfds, &readable, NULL, NULL, NULL);
+
+        char message[65536];
+        //step1: receive request message from client
+        memset(message, 0, sizeof(message));
+        if(FD_ISSET(server_fd, &readable)) {
+            int len_recv = recv(server_fd, message, sizeof(message), 0);
+            if(len_recv == 0) {
                 break;
             }
-            if (send(server_fd, buf, len, 0) < 0){
-                std::cout<<"Failed to send to server in tunnel:\n";
+            else if (len_recv == -1 && errno != EAGAIN){
                 break;
             }
-            }
-            else if (FD_ISSET(server_fd, &readfds)){
-            len = recv(server_fd, &buf, BUFFER_SIZE, 0);
-            if (len < 0) {
-                std::cout<<"Failed to recv from server in tunnel:\n";
-                break;
-            } 
-            else if (len == 0) {
-                break;
-            }
-            if (send(request->getSocket(), buf, len, 0) < 0) {
-                std::cout<<"Failed to send to client in tunnel:\n";
-                break;
+            else {
+                //if the request message is valid, then send the message to server
+                int len_send = send(client_fd, message, len_recv, 0);
+                if(len_send <= 0) {
+                    break;
+                }
             }
         }
-        memset(&buf, 0, sizeof(buf));
+
+        //step 2: receive response message from server
+        memset(message, 0, sizeof(message));
+        if(FD_ISSET(client_fd, &readable)) {
+            int len_recv = recv(client_fd, message, sizeof(message), 0);
+            if(len_recv == 0) {
+                break;
+            }
+            else if (len_recv == -1 && errno != EAGAIN){
+                break;
+            }
+            else {
+                //if the response message is valid, then return the message to client
+                int len_send = send(server_fd, message, len_recv, 0);
+                if(len_send <= 0) {
+                    return;
+                }
+            }
+        }
     }
+    // set it back to non-blocking
+    this->SetFdNonBlock(client_fd);
     // msg = to_string(request->getUid()) + ": " + "Tunnel closed";
     // log->save(msg);
 }
@@ -462,4 +476,9 @@ void ProxyServer::SendData(vector<char> data, int dest_fd){
 int ProxyServer::SetFdNonBlock(int fd){
     assert(fd > 0);
     return fcntl(fd, F_SETFL, fcntl(fd, F_GETFD, 0) | O_NONBLOCK);
+}
+
+int ProxyServer::SetFdBlock(int fd){
+    assert(fd > 0);
+    return fcntl(fd, F_SETFL, fcntl(fd, F_GETFD, 0) & ~O_NONBLOCK);
 }
