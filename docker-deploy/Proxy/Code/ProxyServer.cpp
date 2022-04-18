@@ -12,7 +12,6 @@ ProxyServer::ProxyServer(size_t thread_pool_size, int trigger_mode, int port, bo
     if (!InitSocket()){
         is_close = true;    
     }
-
     if (enable_log){
         Log::Instance()->init(log_level, "./log", ".log", log_queue_size);
         if (is_close){
@@ -57,7 +56,7 @@ void ProxyServer::RunServer(){
                 this->HandleListen();
             }
             else if (event & (EPOLLERR | EPOLLHUP | EPOLLRDHUP)){
-                // std::cout << "Communication done." << std::endl;
+                std::cout << "Closing connection on fd No." << fd <<  std::endl;
                 this->CloseConnection(fd, event);
             }
             else if (event & EPOLLIN){
@@ -96,6 +95,7 @@ bool ProxyServer::InitSocket(){
     listen_fd = socket(AF_INET, SOCK_STREAM, 0);
     if(listen_fd < 0) {
         LOG_ERROR("Create socket error!", listen_port);
+        std::cout << "Create socket error!" << std::endl;
         return false;
     }
 
@@ -103,6 +103,7 @@ bool ProxyServer::InitSocket(){
     if(ret < 0) {
         close(listen_fd);
         LOG_ERROR("Init linger error!", listen_port);
+        std::cout << "Init linger error!" << std::endl;
         return false;
     }
 
@@ -112,6 +113,7 @@ bool ProxyServer::InitSocket(){
     ret = setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, (const void*)&optval, sizeof(int));
     if(ret == -1) {
         LOG_ERROR("set socket setsockopt error !");
+        std::cout << "set socket setsockopt error !" << std::endl;
         close(listen_fd);
         return false;
     }
@@ -119,6 +121,7 @@ bool ProxyServer::InitSocket(){
     ret = bind(listen_fd, (struct sockaddr *)&addr, sizeof(addr));
     if(ret < 0) {
         LOG_ERROR("Bind Port:%d error!", listen_port);
+        std::cout << "Bind Port: error!" << std::endl;
         close(listen_fd);
         return false;
     }
@@ -126,6 +129,7 @@ bool ProxyServer::InitSocket(){
     ret = listen(listen_fd, 6);
     if(ret < 0) {
         LOG_ERROR("Listen port:%d error!", listen_port);
+        std::cout << "Listen port: error!" << std::endl;
         close(listen_fd);
         return false;
     }
@@ -133,6 +137,7 @@ bool ProxyServer::InitSocket(){
     ret = epoll_obj->AddFd(listen_fd, EPOLLIN | listen_event);
     if(ret == 0) {
         LOG_ERROR("Add listen error!");
+        std::cout << "Add listen error!" << std::endl;
         close(listen_fd);
         return false;
     }
@@ -220,19 +225,15 @@ void ProxyServer::HandleWrite(int fd, uint32_t& event){
     // const std::string OK_200("HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.");
     // size_t n = OK_200.size();
     // write(fd, OK_200, n);
-
-    // try{
-    //     SendData(pending_response[fd].getCompleteMessage(), fd);
-    //     std::cout << "## Get response: " << std::endl;
-    //     std::cout << pending_response[fd].getCompleteMessage();
-    //     pending_response.erase(fd);
-    // }
-    // catch(myException e){
-    //     std::cout<<e.what();
-    // }
+    try{
+        SendData(pending_response[fd].getCompleteMessage(), fd);
+        pending_response.erase(fd);
+    }
+    catch(myException e){
+        std::cout<<e.what();
+    }
+    close(fd);
     // epoll_obj->ModFd(fd, connection_event | EPOLLIN);
-
-    // write(fd, "HTTP/1.1 200 Connection Established\r\n\r\nWelcome to nowhere.", 58);
 }
 
 void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int request_id){
@@ -273,8 +274,6 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
     catch(...){
         //do nothing
     }
-    // epoll_obj->ModFd(client_fd, EPOLLOUT | EPOLLET);
-    // close(request->getSocket());
     close(server_fd);
     delete request;
 }
@@ -294,9 +293,12 @@ int ProxyServer::RunClient(std::string host, std::string port){
 
 void ProxyServer::HandleGET(Request* request, int server_fd){
     Response response;
+    int client_fd = request->getSocket();
     if (cache_obj->validate(*request, response)) {
         response = cache_obj->getCache(request->getUrl());
-        SendData(response.getCompleteMessage(), request->getSocket());
+        pending_response[client_fd] = response;
+        epoll_obj->ModFd(client_fd, EPOLLOUT | EPOLLET);
+        // SendData(response.getCompleteMessage(), request->getSocket());
     }
     else {
         SendData(request->getCompleteMessage(), server_fd);
@@ -307,13 +309,13 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
         response.parseHeader(headers);
         // if the response is chunked, send back the initial chunk, then send back every chunk until chunk size is zero
         if (response.checkIfChunked()){
-            SendData(response.getCompleteMessage(), request->getSocket());
+            SendData(response.getCompleteMessage(), client_fd);
             vector<char> target{'0','\r','\n','\r','\n'};
             vector<char> temp(BUFFER_SIZE);
             while (true){
                 vector<char> temp(BUFFER_SIZE);
                 ReceiveOneChunk(server_fd, temp);
-                SendData(temp, request->getSocket());
+                SendData(temp, client_fd);
                 auto it = std::search(temp.begin(), temp.end(), target.begin(), target.end());
                 if (it != temp.end()){
                     break;
@@ -327,14 +329,15 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
                 ReceiveOneChunk(server_fd, temp);
                 response.addMissingBody(temp);
             }
-            SendData(response.getCompleteMessage(), request->getSocket());
+            pending_response[client_fd] = response;
+            epoll_obj->ModFd(client_fd, EPOLLOUT | EPOLLET);
+            // SendData(response.getCompleteMessage(), request->getSocket());
         }
         // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
         // log->save(msg);
         // cache_obj->handle(*request, response);
     }
     // pending_response[request->getSocket()] = response;
-    // SendData(response.getCompleteMessage(), request->getSocket());
     // std::string msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();
     // log->save(msg);
 }
@@ -344,6 +347,7 @@ void ProxyServer::HandlePOST(Request* request, int server_fd){
     // std::string msg = to_string(request->getUid()) + ": Requesting \"" + request->returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
     Response response;
+    int client_fd = request->getSocket();
     vector<char> headers(BUFFER_SIZE);
     ReceiveOneChunk(server_fd, headers);
     response.parseHeader(headers);
@@ -352,7 +356,9 @@ void ProxyServer::HandlePOST(Request* request, int server_fd){
         ReceiveOneChunk(server_fd, temp);
         response.addMissingBody(temp);
     }
-    SendData(response.getCompleteMessage(), request->getSocket());
+    pending_response[client_fd] = response;
+    epoll_obj->ModFd(client_fd, EPOLLOUT | EPOLLET);
+    // SendData(response.getCompleteMessage(), request->getSocket());
     // msg = to_string(request->getUid()) + ": Recieved \"" + response.returnFirstLine() + "\" from " + request->getHost();
     // log->save(msg);
     // msg = to_string(request->getUid()) + ": Responding \"" + response.returnFirstLine();

@@ -17,7 +17,7 @@ private:
 public:
     Request(){}
     Request(int fd, int id):socket_fd(fd), u_id(id){}
-    ~Request(){close(socket_fd);}
+    ~Request(){}
     Request(const Request & rhs);
     Request &operator=(const Request & rhs);
     string getMethod() {return method;}
