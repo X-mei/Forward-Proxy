@@ -56,7 +56,7 @@ void ProxyServer::RunServer(){
                 this->HandleListen();
             }
             else if (event & (EPOLLERR | EPOLLHUP | EPOLLRDHUP)){
-                std::cout << "Closing connection on fd No." << fd <<  std::endl;
+                // std::cout << "Closing connection on fd No." << fd <<  std::endl;
                 this->CloseConnection(fd, event);
             }
             else if (event & EPOLLIN){
@@ -198,7 +198,7 @@ void ProxyServer::HandleListen(){
             // break;
         }
         inet_ntop(AF_INET, &addr.sin_addr, hbuf, sizeof(hbuf));
-        printf("Accepted connection on descriptor %d (host=%s, port=%d)\n", fd, hbuf, addr.sin_port);
+        // printf("Accepted connection on descriptor %d (host=%s, port=%d)\n", fd, hbuf, addr.sin_port);
         request_cnt++;
         if (!epoll_obj->AddFd(fd, EPOLLIN | connection_event)){
             fprintf (stderr, "add fd error\n");
@@ -262,9 +262,7 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
         else if (request->getMethod() == "POST"){
             HandlePOST(request, server_fd);
         }
-        else {// CONNECT
-            cout << "Host: " << request->getHost() << "; Port: " << request->getPort() << endl;
-            request->printCompleteMessage();
+        else {
             HandleCONNECT(request, server_fd);
         }
     }

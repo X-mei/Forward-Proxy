@@ -39,3 +39,8 @@ In order to exploit edge of RAII design, we tried to minimize the case we call n
 - CONNECT method requires a lot of thread resources, a website with lots of resources typically needs multiple CONNECT requests for it to load properly.
 - Non-blocking IO would interfare with select, maybe because non-blocking fd returns immediately, which breaks the polling process while blocking IO wait until disconnection or timeout.
 
+### 04/17/2022
+- The reason why epoll didn't work on write is that the associated file descriptor is already close. Hence made update to the life cycle control of file descriptors.
+
+### 04/19/20222
+- Did basic load testing on the server, could achieve roughly 1000 QPS. Running on a ubuntu 20 server with 2 core and 2G of memory.
