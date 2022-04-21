@@ -10,13 +10,15 @@
 #include <assert.h>
 #include <sys/stat.h>         //mkdir
 #include "BlockQueue.h"
-#include "Buffer.h"
+#include <iostream>
+#include <unistd.h>
 
 class Log {
 public:
     void init(int level, const char* path = "./log", 
                 const char* suffix =".log",
-                int maxQueueCapacity = 1024);
+                int maxQueueCapacity = 1024,
+                int logBufferSize = 1024);
 
     static Log* Instance();
     static void FlushLogThread();
@@ -29,11 +31,11 @@ public:
     bool IsOpen() { return isOpen_; }
     
 private:
-    // singleton, need cons/dest as private/protected
+    // singleton, need constructor/destructor as private/protected
     Log();
-    void AppendLogLevelTitle_(int level);
+    std::string GetLogLevelTitle(int level);
     virtual ~Log();
-    void AsyncWrite_();
+    void AsyncWrite();
 
 private:
     static const int LOG_PATH_LEN = 256;
@@ -49,8 +51,10 @@ private:
     int toDay_;
 
     bool isOpen_;
- 
-    Buffer buff_;
+    
+    char* buff_;
+    int bufferSize_;
+
     int level_;
     bool isAsync_;
 

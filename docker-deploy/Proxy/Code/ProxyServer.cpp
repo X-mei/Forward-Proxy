@@ -13,7 +13,7 @@ ProxyServer::ProxyServer(size_t thread_pool_size, int trigger_mode, int port, bo
         is_close = true;    
     }
     if (enable_log){
-        Log::Instance()->init(log_level, "./log", ".log", log_queue_size);
+        Log::Instance()->init(log_level, "./log", ".log", log_queue_size, 1024);
         if (is_close){
             LOG_ERROR("========== Server init error!==========");
         }
@@ -32,8 +32,6 @@ ProxyServer::ProxyServer(size_t thread_pool_size, int trigger_mode, int port, bo
 ProxyServer::~ProxyServer(){
     close(listen_fd);
     is_close = true;
-    // delete epoll_obj;
-    // ddelete threadpool_obj;
 }
 
 void ProxyServer::RunServer(){

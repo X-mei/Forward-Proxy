@@ -19,6 +19,7 @@ Log::~Log() {
     }
     if(fp_) {
         std::lock_guard<std::mutex> locker(mtx_);
+        sleep(5);
         this->flush();
         fclose(fp_);
     }
@@ -34,12 +35,12 @@ void Log::SetLevel(int level) {
     level_ = level;
 }
 
-void Log::init(int level = 1, const char* path, const char* suffix,
-    int maxQueueSize) {
+void Log::init(int level = 1, const char* path, const char* suffix, int maxQueueSize, int logBufferSize) {
     isOpen_ = true;
     level_ = level;
     if(maxQueueSize > 0) {
         isAsync_ = true;
+        // Log init happens at the server setup stage which is a single thread instance
         if(!deque_) {
             std::unique_ptr<BlockDeque<std::string>> newDeque(new BlockDeque<std::string>);
             deque_ = move(newDeque);
@@ -47,11 +48,15 @@ void Log::init(int level = 1, const char* path, const char* suffix,
             std::unique_ptr<std::thread> NewThread(new std::thread(FlushLogThread));
             writeThread_ = move(NewThread);
         }
-    } else {
+    } 
+    else {
         isAsync_ = false;
     }
 
     lineCount_ = 0;
+    bufferSize_ = logBufferSize;
+    buff_ = new char[bufferSize_];
+    memset(buff_, '\0', bufferSize_);
 
     time_t timer = time(nullptr);
     struct tm *sysTime = localtime(&timer);
@@ -62,14 +67,14 @@ void Log::init(int level = 1, const char* path, const char* suffix,
     snprintf(fileName, LOG_NAME_LEN - 1, "%s/%04d_%02d_%02d%s", 
             path_, t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, suffix_);
     toDay_ = t.tm_mday;
-
     {
+        // lock_guard is a wrapper that provides RAII over owning a mutex for the
+        // duration of a scoped block
         std::lock_guard<std::mutex> locker(mtx_);
-        buff_.RetrieveAll();
-        if(fp_) { 
-            this->flush();
-            fclose(fp_); 
-        }
+        // if(fp_) { 
+        //     this->flush();
+        //     fclose(fp_); 
+        // }
 
         fp_ = fopen(fileName, "a");
         if(fp_ == nullptr) {
@@ -78,10 +83,12 @@ void Log::init(int level = 1, const char* path, const char* suffix,
         } 
         //cout << fileName << endl;
         assert(fp_ != nullptr);
+        // locker goes out of scope here, hence releaseing the lock.
     }
+    
 }
 
-void Log::write(int level, const char *format, ...) {
+void Log::write(int level, const char *format...) { // Variadic functions, const char* format, ... is also a valid way
     struct timeval now = {0, 0};
     gettimeofday(&now, nullptr);
     time_t tSec = now.tv_sec;
@@ -92,8 +99,8 @@ void Log::write(int level, const char *format, ...) {
     // if reached next day or the line count is maxed out/new page, need to make a new file
     if (toDay_ != t.tm_mday || (lineCount_ && (lineCount_  %  MAX_LINES == 0)))
     {
-        std::unique_lock<std::mutex> locker(mtx_);
-        locker.unlock();
+        std::unique_lock<std::mutex> locker(mtx_); // initializing a unique lock acquires the lock, not sure if this has to be the first line in the scope
+        locker.unlock(); // unlock it since only operation on file or queue needs syncronization
         
         char newFile[LOG_NAME_LEN];
         char tail[36] = {0};
@@ -109,7 +116,7 @@ void Log::write(int level, const char *format, ...) {
             snprintf(newFile, LOG_NAME_LEN - 72, "%s/%s-%d%s", path_, tail, (lineCount_  / MAX_LINES), suffix_);
         }
         
-        locker.lock();
+        locker.lock(); // lock to close the old file and open a new one
         this->flush();
         fclose(fp_);
         fp_ = fopen(newFile, "a");
@@ -120,68 +127,72 @@ void Log::write(int level, const char *format, ...) {
     {
         std::unique_lock<std::mutex> locker(mtx_);
         lineCount_++;
-        int n = snprintf(buff_.BeginWrite(), 128, "%d-%02d-%02d %02d:%02d:%02d.%06ld ",
+        std::string level_str = GetLogLevelTitle(level);
+        int n = snprintf(buff_, 128, "%d-%02d-%02d %02d:%02d:%02d.%06ld %s ",
                     t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
-                    t.tm_hour, t.tm_min, t.tm_sec, now.tv_usec);
-                    
-        buff_.HasWritten(n);
-        AppendLogLevelTitle_(level);
+                    t.tm_hour, t.tm_min, t.tm_sec, now.tv_usec, const_cast<char*>(level_str.c_str()));
 
         // va_start & va_end & va_list are used with the varadic variables ...
         // vsnprintf funtion similar to snprintf, but it takes in va_list as the variable argument list
         va_start(vaList, format);
-        int m = vsnprintf(buff_.BeginWrite(), buff_.WritableBytes(), format, vaList);
+        int m = vsnprintf(buff_ + n, bufferSize_ - 1, format, vaList);
         va_end(vaList);
 
-        buff_.HasWritten(m);
-        buff_.Append("\n\0", 2);
-
+        buff_[n+m] = '\n';
+        buff_[n+m+1] = '\0';
+        std::string log_str = buff_;
         // depending on the mode of writing, use asyncronous mode/direct write
         if(isAsync_ && deque_ && !deque_->full()) {
-            deque_->push_back(buff_.RetrieveAllToStr());
+            deque_->push_back(log_str);
         } else {
-            fputs(buff_.Peek(), fp_);
+            fputs(log_str.c_str(), fp_);
         }
-        buff_.RetrieveAll();
     }
 }
 
-void Log::AppendLogLevelTitle_(int level) {
+std::string Log::GetLogLevelTitle(int level) {
     switch(level) {
     case 0:
-        buff_.Append("[debug]: ", 9);
+        return "[debug]: ";
         break;
     case 1:
-        buff_.Append("[info] : ", 9);
+        return "[info] : ";
         break;
     case 2:
-        buff_.Append("[warn] : ", 9);
+        return "[warn] : ";
         break;
     case 3:
-        buff_.Append("[error]: ", 9);
+        return "[error]: ";
         break;
     default:
-        buff_.Append("[info] : ", 9);
+        return "[info] : ";
         break;
     }
 }
 
 void Log::flush() {
     if(isAsync_) { 
-        //std::cout << "HI" << std::endl;
         deque_->flush();
+    
     }
-    fflush(fp_); // something wrong here
+    // This fflush could occur before the AsyncWrite() (which is unblocked by the deque_->flush())
+    // which causes the fputs content not to be pushed to disk immediately.
+    else {
+        fflush(fp_);
+    }
+    
     // std::string str = "Hi there";
     // fputs(str.c_str(), fp_);
 }
 
-void Log::AsyncWrite_() {
+void Log::AsyncWrite() {
     std::string str = "";
     while(deque_->pop(str)) {
         std::lock_guard<std::mutex> locker(mtx_);
         assert(fp_ != nullptr);
+        std::cout << "writing to file: " << str << std::endl;
         fputs(str.c_str(), fp_);
+        fflush(fp_);
     }
 }
 
@@ -192,5 +203,5 @@ Log* Log::Instance() {
 }
 
 void Log::FlushLogThread() {
-    Log::Instance()->AsyncWrite_();
+    Log::Instance()->AsyncWrite();
 }
