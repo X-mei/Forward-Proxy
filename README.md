@@ -12,11 +12,11 @@ Cache Size is set to 100. LRU policy is implemented to update caches. Once the c
 
 ## To Do:
 - [x] Log overhaul needed.
-    - [] Better utilization of buffer, performance mode & debugg mode
-- [] Compile speed too slow.
-- [] Containerization change on the new project layout.
-- [] Better IO performance by polling both client side and server side.
-- [] Stability, segmentation sometimes occurs.
+    - [ ] Better utilization of buffer, performance mode & debugg mode
+- [ ] Compile speed too slow.
+- [ ] Containerization change on the new project layout.
+- [ ] Better IO performance by polling both client side and server side.
+- [ ] Stability, segmentation sometimes occurs.
 
 
 ## Referencce:
