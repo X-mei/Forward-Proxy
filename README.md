@@ -11,11 +11,13 @@ We followed a good OO design principle when designing the code structure. The `p
 Cache Size is set to 100. LRU policy is implemented to update caches. Once the capacity of cache is reached, clean the least recently used expired response. Cache control headers are analyzed in cache validation process and updation process.
 
 ## To Do:
-- 1. Stability, segmentation sometimes occurs.
-- 2. Log overhaul needed.
-- 3. Better IO performance by polling both client side and server side.
-- 4. Containerization change on the new project layout.
-- 5. Compile speed too slow.
+- [x] Log overhaul needed.
+    - [] Better utilization of buffer, performance mode & debugg mode
+- [] Compile speed too slow.
+- [] Containerization change on the new project layout.
+- [] Better IO performance by polling both client side and server side.
+- [] Stability, segmentation sometimes occurs.
+
 
 ## Referencce:
 The socket connection is written following code provided in Beej's Guide: https://beej.us/guide/bgnet/html/  
