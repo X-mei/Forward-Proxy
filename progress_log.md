@@ -42,5 +42,10 @@ In order to exploit edge of RAII design, we tried to minimize the case we call n
 ### 04/17/2022
 - The reason why epoll didn't work on write is that the associated file descriptor is already close. Hence made update to the life cycle control of file descriptors.
 
-### 04/19/20222
+### 04/19/2022
 - Did basic load testing on the server, could achieve roughly 1000 QPS. Running on a ubuntu 20 server with 2 core and 2G of memory.
+
+### 04/21/2022
+- Added testing for log & fixed issue of log not flushed to file.
+- Depending on the file stream mode (full buff, line buff, no buff, default full buff), stream is flushed to disk at different time in the execution.
+- `fclose()` and `fflush()` are two ways to make sure stream is flushed to the file. The bug has to do with two thread not syncronized, that is, `fflush()` is called in one thread before the `fputs()` in the other thread is executed.
