@@ -71,7 +71,7 @@ void socketInfo::socketAccept(int & client_fd, std::string & ip_address){
     throw myException("Error accept.");
   }
   inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
-  printf("server: got connection from %s\n", s);
+  // printf("server: got connection from %s\n", s);
   ip_address = s;
   /*
   if (recv(client_fd, buffer, sizeof(buffer), 0) == -1) {
@@ -87,7 +87,7 @@ void socketInfo::socketConnect(){
   // std::cout<<"Initiating connection with socket..."<<std::endl;
   if (connect(socket_fd, host_info_list->ai_addr, host_info_list->ai_addrlen) == -1){
     close(socket_fd);
-    std::cout<<"Error connect.";
+    // std::cout<<"Error connect.";
     throw myException("Error connect.");
   }
   /*

@@ -38,6 +38,7 @@ private:
     uint32_t connection_event;
     int request_cnt;
     std::unordered_map<int, Response> pending_response;
+    std::unordered_map<int, int> fd_to_id;
 
     static int SetFdNonBlock(int fd);
 
@@ -55,7 +56,7 @@ private:
 
     void ProcessRequest(vector<char>& requestFull, int fd, int request_cnt);
 
-    int RunClient(std::string host, std::string port);
+    int RunClient(std::string host, std::string port, int client_fd);
 
     void HandleGET(Request* request, int server_fd);
 

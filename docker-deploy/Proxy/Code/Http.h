@@ -196,11 +196,13 @@ public:
             cout << first << ": " << second << endl;
         }
     }
+    
     void printCacheHeaders() {
         for (auto & [first, second] : cacheControlPair) {
             cout << first << ": " << second << endl;
         }
     }
+
     void printFirstLine() {
         cout << firstLine << endl;
     }

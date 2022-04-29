@@ -1,4 +1,4 @@
-all: testLog
+all: proxy
 proxy:Main.cpp
 	g++ -o proxy Main.cpp ../Code/*.cpp -std=c++1z -O2 -lpthread -ggdb3
 testParser:ParserTest.cpp
