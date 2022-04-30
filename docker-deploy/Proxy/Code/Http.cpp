@@ -22,7 +22,7 @@ void Http::parsePairs(string & msg) {
 }
 
 string Http::getFirstLine() {
-    return firstLine;
+    return firstLine.substr(0, firstLine.size()-2);
 }
 
 /*

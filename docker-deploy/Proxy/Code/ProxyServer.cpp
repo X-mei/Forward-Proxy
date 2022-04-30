@@ -216,7 +216,7 @@ void ProxyServer::HandleWrite(int fd, uint32_t& event){
     // size_t n = OK_200.size();
     // write(fd, OK_200, n);
     try{
-        LOG_INFO("%d: Responding %s", fd_to_id[fd], pending_response[fd].getFirstLine());
+        LOG_INFO("%d: Responding %s", fd_to_id[fd], pending_response[fd].getFirstLine().c_str());
         SendData(pending_response[fd].getCompleteMessage(), fd);
         pending_response.erase(fd);
     }
@@ -236,7 +236,7 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
         LOG_ERROR("%d: %s", request->getUid(), ex.what());
         return;
     }
-    LOG_INFO("%d: %s", request->getUid(), request->getFirstLine());
+    LOG_INFO("%d: %s", request->getUid(), request->getFirstLine().c_str());
     int server_fd = RunClient(request->getHost(), request->getPort(), client_fd);
     try{
         if (server_fd<0){
@@ -291,12 +291,12 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
         // SendData(response.getCompleteMessage(), request->getSocket());
     }
     else {
-        LOG_INFO("%d: Requesting %s", request->getUid(), request->getFirstLine());
+        LOG_INFO("%d: Requesting %s", request->getUid(), request->getFirstLine().c_str());
         SendData(request->getCompleteMessage(), server_fd);
         vector<char> headers(BUFFER_SIZE);
         ReceiveOneChunk(server_fd, headers);
         response.parseHeader(headers);
-        LOG_INFO("%d: Received %s from destination server", request->getUid(), response.getFirstLine());
+        LOG_INFO("%d: Received %s from destination server", request->getUid(), response.getFirstLine().c_str());
         // if the response is chunked, send back the initial chunk, then send back every chunk until chunk size is zero
         if (response.checkIfChunked()){
             LOG_INFO("%d: Responding chunked message", request->getUid());
@@ -327,14 +327,14 @@ void ProxyServer::HandleGET(Request* request, int server_fd){
 }
 
 void ProxyServer::HandlePOST(Request* request, int server_fd){
-    LOG_INFO("%d: Requesting %s", request->getUid(), request->getFirstLine());
+    LOG_INFO("%d: Requesting %s", request->getUid(), request->getFirstLine().c_str());
     SendData(request->getCompleteMessage(), server_fd);
     Response response;
     int client_fd = request->getSocket();
     vector<char> headers(BUFFER_SIZE);
     ReceiveOneChunk(server_fd, headers);
     response.parseHeader(headers);
-    LOG_INFO("%d: Received %s from destination server", request->getUid(), response.getFirstLine());
+    LOG_INFO("%d: Received %s from destination server", request->getUid(), response.getFirstLine().c_str());
     while (response.getBodySizeLeft()>0){
         vector<char> temp(BUFFER_SIZE);
         ReceiveOneChunk(server_fd, temp);
@@ -347,7 +347,7 @@ void ProxyServer::HandlePOST(Request* request, int server_fd){
 void ProxyServer::HandleCONNECT(Request* request, int server_fd){
     int client_fd = request->getSocket();
     // for some reason have to set fd to blocking, haven't found a circumvent yet
-    this->SetFdBlock(client_fd);
+    // this->SetFdBlock(client_fd);
     LOG_INFO("%d: Responding %s", request->getUid(), "HTTP/1.1 200 OK");
     send(client_fd, "HTTP/1.1 200 OK\r\n\r\n", 19, 0);
     fd_set readable;
@@ -371,12 +371,12 @@ void ProxyServer::HandleCONNECT(Request* request, int server_fd){
         memset(message, 0, sizeof(message));
         if(FD_ISSET(server_fd, &readable)) {
             int len_recv = recv(server_fd, message, sizeof(message), 0);
-            if(len_recv == 0) {
+            if(len_recv <= 0) {
                 break;
             }
-            else if (len_recv == -1 && errno != EAGAIN){
-                break;
-            }
+            // else if (len_recv == -1 && errno != EAGAIN){
+            //     break;
+            // }
             else {
                 //if the request message is valid, then send the message to server
                 int len_send = send(client_fd, message, len_recv, 0);
@@ -390,12 +390,12 @@ void ProxyServer::HandleCONNECT(Request* request, int server_fd){
         memset(message, 0, sizeof(message));
         if(FD_ISSET(client_fd, &readable)) {
             int len_recv = recv(client_fd, message, sizeof(message), 0);
-            if(len_recv == 0) {
+            if(len_recv <= 0) {
                 break;
             }
-            else if (len_recv == -1 && errno != EAGAIN){
-                break;
-            }
+            // else if (len_recv == -1 && errno != EAGAIN){
+            //     break;
+            // }
             else {
                 //if the response message is valid, then return the message to client
                 int len_send = send(server_fd, message, len_recv, 0);
@@ -406,7 +406,7 @@ void ProxyServer::HandleCONNECT(Request* request, int server_fd){
         }
     }
     // set it back to non-blocking
-    this->SetFdNonBlock(client_fd);
+    // this->SetFdNonBlock(client_fd);
     LOG_INFO("%d: Tunnel closed", request->getUid());
 }
 
