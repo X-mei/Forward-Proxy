@@ -13,7 +13,7 @@ ProxyServer::ProxyServer(size_t thread_pool_size, int trigger_mode, int port, bo
         is_close = true;    
     }
     if (enable_log){
-        Log::Instance()->init(log_level, "./log", ".log", log_queue_size, 1024);
+        Log::Instance()->init(log_level, "/var/log/erss", ".log", log_queue_size, 1024);
         if (is_close){
             LOG_ERROR("========== Server init error!==========");
         }
@@ -238,6 +238,9 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
     }
     LOG_INFO("%d: %s", request->getUid(), request->getFirstLine().c_str());
     int server_fd = RunClient(request->getHost(), request->getPort(), client_fd);
+    if (request->getMethod() == "CONNECT"){
+        LOG_DEBUG("%d: Assigned fd No.%d", request->getHost(), server_fd);
+    }
     try{
         if (server_fd<0){
             std::string ERROR_404("HTTP/1.1 404 Not Found\r\n\r\n");
@@ -270,6 +273,7 @@ void ProxyServer::ProcessRequest(vector<char>& requestFull, int client_fd, int r
 
 int ProxyServer::RunClient(std::string host, std::string port, int client_fd){
     socketInfo serverSocket = socketInfo(host.c_str(), port.c_str());
+    LOG_ERROR("%d: Host-%s; Port:%s", fd_to_id[client_fd], host.c_str(), port.c_str());
     try{
         serverSocket.clientSetup();
         serverSocket.socketConnect();
@@ -371,6 +375,7 @@ void ProxyServer::HandleCONNECT(Request* request, int server_fd){
         memset(message, 0, sizeof(message));
         if(FD_ISSET(server_fd, &readable)) {
             int len_recv = recv(server_fd, message, sizeof(message), 0);
+            
             if(len_recv <= 0) {
                 break;
             }
@@ -378,6 +383,7 @@ void ProxyServer::HandleCONNECT(Request* request, int server_fd){
             //     break;
             // }
             else {
+                LOG_INFO("%d: Server send %d bytes", request->getUid(), len_recv);
                 //if the request message is valid, then send the message to server
                 int len_send = send(client_fd, message, len_recv, 0);
                 if(len_send <= 0) {
@@ -398,6 +404,7 @@ void ProxyServer::HandleCONNECT(Request* request, int server_fd){
             // }
             else {
                 //if the response message is valid, then return the message to client
+                LOG_INFO("%d: Client send %d bytes", request->getUid(), len_recv);
                 int len_send = send(server_fd, message, len_recv, 0);
                 if(len_send <= 0) {
                     return;

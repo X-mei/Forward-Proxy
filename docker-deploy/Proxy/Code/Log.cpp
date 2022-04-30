@@ -80,8 +80,9 @@ void Log::init(int level = 1, const char* path, const char* suffix, int maxQueue
         if(fp_ == nullptr) {
             mkdir(path_, 0777);
             fp_ = fopen(fileName, "a");
+            std::cout << "Hi" << std::endl;
         } 
-        //cout << fileName << endl;
+        std::cout << fileName << std::endl;
         assert(fp_ != nullptr);
         // locker goes out of scope here, hence releaseing the lock.
     }
@@ -190,7 +191,7 @@ void Log::AsyncWrite() {
     while(deque_->pop(str)) {
         std::lock_guard<std::mutex> locker(mtx_);
         assert(fp_ != nullptr);
-        std::cout << "writing to file: " << str << std::endl;
+        // std::cout << "writing to file: " << str << std::endl;
         fputs(str.c_str(), fp_);
         fflush(fp_);
     }

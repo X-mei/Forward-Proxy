@@ -40,7 +40,7 @@ void socketInfo::clientSetup(){
   // std::cout<<"Fetching address info(client)..."<<std::endl;
   if ((status = getaddrinfo(hostname, port, &host_info, &host_info_list)) != 0) {
     std::stringstream ss;
-    ss << "Error getaddrinfo: " << gai_strerror(status);
+    ss << "Error getaddrinfo for " << hostname << "-" << port << " : " << gai_strerror(status);
     throw myException(ss.str());
   }
   // std::cout<<"Creating a socket descriptor..."<<std::endl;
@@ -96,7 +96,6 @@ void socketInfo::socketConnect(){
   // std::cout<<"Initiating connection with socket..."<<std::endl;
   if (connect(socket_fd, host_info_list->ai_addr, host_info_list->ai_addrlen) == -1){
     close(socket_fd);
-    // std::cout<<"Error connect.";
     throw myException("Error connect.");
   }
   /*

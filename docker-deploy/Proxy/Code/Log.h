@@ -14,7 +14,7 @@
 
 class Log {
 public:
-    void init(int level, const char* path = "./log", 
+    void init(int level, const char* path = "/var/log/erss", 
                 const char* suffix =".log",
                 int maxQueueCapacity = 1024,
                 int logBufferSize = 1024);
