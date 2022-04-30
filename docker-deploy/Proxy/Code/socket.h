@@ -1,8 +1,9 @@
 #ifndef MYSOCKET_H
 #define MYSOCKET_H
 
-#include "common.h"
-#include "myException.h"
+#include <string>
+#include <netdb.h>
+
 class socketInfo {
 private:
   int socket_fd;

@@ -1,0 +1,93 @@
+../Code/BlockQueue:
+
+../Code/Cache:
+	../Code/Log
+	../Code/Request
+	../Code/Response
+	../Code/common
+	../Code/myException
+
+../Code/Epoll:
+
+../Code/Http:
+	../Code/myException
+	../Code/socket
+
+../Code/Log:
+	../Code/BlockQueue
+
+../Code/ProxyServer:
+	../Code/Cache
+	../Code/Epoll
+	../Code/Log
+	../Code/Request
+	../Code/Response
+	../Code/ThreadPool
+	../Code/socket
+
+../Code/Request:
+	../Code/Http
+	../Code/common
+
+../Code/Response:
+	../Code/Http
+	../Code/common
+
+../Code/ThreadPool:
+
+../Code/common:
+
+../Code/myException:
+	../Code/common
+
+../Code/socket:
+	../Code/common
+	../Code/myException
+
+LogTest:
+	../Code/Log
+
+Main:
+	../Code/Epoll
+	../Code/ProxyServer
+
+ParserTest:
+	../Code/Epoll
+	../Code/ProxyServer
+
+ThreadPoolTest:
+	../Code/ThreadPool
+
+LEVEL 1:
+	../Code/BlockQueue
+	../Code/Epoll
+	../Code/ThreadPool
+	../Code/common
+
+LEVEL 2:
+	../Code/Log
+	../Code/myException
+	ThreadPoolTest
+
+LEVEL 3:
+	../Code/socket
+	LogTest
+
+LEVEL 4:
+	../Code/Http
+
+LEVEL 5:
+	../Code/Request
+	../Code/Response
+
+LEVEL 6:
+	../Code/Cache
+
+LEVEL 7:
+	../Code/ProxyServer
+
+LEVEL 8:
+	Main
+	ParserTest
+
+COUPLING_METRIC = 1.3751

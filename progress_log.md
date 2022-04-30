@@ -49,3 +49,8 @@ In order to exploit edge of RAII design, we tried to minimize the case we call n
 - Added testing for log & fixed issue of log not flushed to file.
 - Depending on the file stream mode (full buff, line buff, no buff, default full buff), stream is flushed to disk at different time in the execution.
 - `fclose()` and `fflush()` are two ways to make sure stream is flushed to the file. The bug has to do with two thread not syncronized, that is, `fflush()` is called in one thread before the `fputs()` in the other thread is executed.
+
+### 04/29/2022
+- Added back log usauge in server code
+- Tried to optimize compile time, have most header files be included in the cpp files so less duplicate include occurs, but still messy.
+- PIMP seems like a good way to further handle the issue, but would need huge overhaul of code, not doing it right now.

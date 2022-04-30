@@ -1,4 +1,13 @@
 #include "socket.h"
+#include "myException.h"
+
+#include <string>
+
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <bits/stdc++.h>
+#include <unistd.h>
+
 #define BACKLOG 100
 
 socketInfo::socketInfo(const char * myHost, const char * myPort):socket_fd(0), host_info_list(nullptr), hostname(myHost), port(myPort){}

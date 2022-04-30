@@ -1,6 +1,4 @@
 #include "../Code/ProxyServer.h"
-#include "../Code/Epoll.h"
-#include <iostream>
 #include <time.h>
 #include <thread>
 

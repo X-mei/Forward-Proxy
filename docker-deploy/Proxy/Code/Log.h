@@ -2,7 +2,6 @@
 #define LOG_H
 
 #include <mutex>
-#include <string>
 #include <thread>
 #include <sys/time.h>
 #include <string.h>
