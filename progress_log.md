@@ -54,3 +54,7 @@ In order to exploit edge of RAII design, we tried to minimize the case we call n
 - Added back log usauge in server code
 - Tried to optimize compile time, have most header files be included in the cpp files so less duplicate include occurs, but still messy.
 - PIMP seems like a good way to further handle the issue, but would need huge overhaul of code, not doing it right now.
+
+### 04/30/2022
+- CONNECT only works in container environment, others too. Might be weird issue with VirtualBox.
+- Docker containerized, need reorganize the files to make it cleaner.

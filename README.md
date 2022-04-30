@@ -13,9 +13,10 @@ Cache Size is set to 100. LRU policy is implemented to update caches. Once the c
 ## To Do:
 - [x] Log overhaul needed.
     - [ ] Better utilization of buffer, performance mode & debugg mode
-- [ ] Compile speed too slow.
+- [-] Compile speed too slow.
     - [ ] A technique called PIMP, which is pointer to implementation could be used here (https://github.com/balloonwj/CppGuide/blob/master/articles/C%2B%2B%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/C%2B%2B%E5%BF%85%E9%A1%BB%E6%8E%8C%E6%8F%A1%E7%9A%84pimpl%E6%83%AF%E7%94%A8%E6%B3%95.md)
-- [ ] Containerization change on the new project layout.
+- [x] Containerization on the new project layout.
+- [ ] File structure change.
 - [ ] Better IO performance by polling both client side and server side.
 - [ ] Stability, segmentation sometimes occurs.
 
